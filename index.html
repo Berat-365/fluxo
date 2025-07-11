@@ -62,6 +62,9 @@
     body.light #suggestions li.selected {
       background-color: #d1d1d1;
     }
+    body.light .logo .logo-name {
+      color: #000 !important; /* Ensure logo name is black in light mode */
+    }
     .weather-widget {
       position: fixed;
       top: 20px;
@@ -148,7 +151,6 @@
       font-weight: bold; 
       color: #e8eaed;
     }
-    body.light .logo .logo-name { color: #000; }
     .search-bar {
       width: 100%;
       max-width: 580px;
@@ -354,7 +356,7 @@
       border-radius: 10px;
       width: 320px;
       text-align: left;
-      z-index: 1005; /* Increased z-index to ensure panels are above search bar */
+      z-index: 1005;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       max-height: 80vh;
       overflow-y: auto;
@@ -692,7 +694,7 @@
         right: 5%;
         top: 60px;
         max-height: 70vh;
-        z-index: 1005; /* Ensure panels are above search bar on small screens */
+        z-index: 1005;
       }
       #settingsButton { 
         right: 10px;
@@ -748,7 +750,7 @@
 </head>
 <body>
   <div class="weather-widget" id="weatherWidget" onclick="window.open('https://wttr.in', '_blank')">Yükleniyor...</div>
-  <div class="info-bar" id="infoBar">Fluxo 1.2 | <span id="languageDisplay">Türkçe</span></div>
+  <div class="info-bar" id="infoBar">Fluxo 1.3 | <span id="languageDisplay">Türkçe</span></div>
   <div class="url-sidebar" id="urlSidebar"></div>
   <button id="settingsButton">
     <img id="settingsIcon" src="settings.png" alt="Ayarlar">
@@ -793,6 +795,7 @@
       <option value="tr" data-lang-key="turkish">Türkçe</option>
       <option value="en" data-lang-key="english">English</option>
       <option value="es" data-lang-key="spanish">Español</option>
+      <option value="ru" data-lang-key="russian">Русский</option>
     </select>
     <label for="logoDisplaySelect" data-lang-key="logoDisplay">Logo Görüntüleme:</label>
     <select id="logoDisplaySelect">
@@ -833,6 +836,18 @@
     </select>
     <label for="weatherLocation" data-lang-key="weatherLocation">Hava Durumu Konumu:</label>
     <input type="text" id="weatherLocation" placeholder="Şehir ismi">
+    <label for="weatherUpdateInterval" data-lang-key="weatherUpdateInterval">Hava Durumu Güncelleme Sıklığı:</label>
+    <select id="weatherUpdateInterval">
+      <option value="5" data-lang-key="every5Min">Her 5 Dakika</option>
+      <option value="10" data-lang-key="every10Min">Her 10 Dakika</option>
+      <option value="30" data-lang-key="every30Min">Her 30 Dakika</option>
+      <option value="0" data-lang-key="manual">Manuel</option>
+    </select>
+    <label for="linkBehavior" data-lang-key="linkBehavior">Link Davranışı:</label>
+    <select id="linkBehavior">
+      <option value="newTab" data-lang-key="newTab">Yeni Sekmede Aç</option>
+      <option value="closeCurrent" data-lang-key="closeCurrent">Bu Sayfayı Kapat</option>
+    </select>
     <label for="showInfoBar" data-lang-key="showInfoBar">Bilgi Barını Göster:</label>
     <select id="showInfoBar">
       <option value="true" data-lang-key="yes">Evet</option>
@@ -907,6 +922,8 @@
         showWeather: "Hava Durumunu Göster:",
         weatherLocation: "Hava Durumu Konumu:",
         showInfoBar: "Bilgi Barını Göster:",
+        weatherUpdateInterval: "Hava Durumu Güncelleme Sıklığı:",
+        linkBehavior: "Link Davranışı:",
         apply: "Uygula",
         favoriteName: "İsim:",
         favoriteUrl: "URL:",
@@ -921,11 +938,18 @@
         turkish: "Türkçe",
         english: "English",
         spanish: "Español",
+        russian: "Русский",
         logoOnly: "Sadece Logo",
         logoAndName: "Logo ve İsim",
         none: "Hiçbiri",
         yes: "Evet",
         no: "Hayır",
+        every5Min: "Her 5 Dakika",
+        every10Min: "Her 10 Dakika",
+        every30Min: "Her 30 Dakika",
+        manual: "Manuel",
+        newTab: "Yeni Sekmede Aç",
+        closeCurrent: "Bu Sayfayı Kapat",
         searchPlaceholder: "Arama yap...",
         favoritePlaceholder: "Favori ismi",
         urlPlaceholder: "https://...",
@@ -963,6 +987,8 @@
         showWeather: "Show Weather:",
         weatherLocation: "Weather Location:",
         showInfoBar: "Show Info Bar:",
+        weatherUpdateInterval: "Weather Update Frequency:",
+        linkBehavior: "Link Behavior:",
         apply: "Apply",
         favoriteName: "Name:",
         favoriteUrl: "URL:",
@@ -977,11 +1003,18 @@
         turkish: "Turkish",
         english: "English",
         spanish: "Spanish",
+        russian: "Russian",
         logoOnly: "Logo Only",
         logoAndName: "Logo and Name",
         none: "None",
         yes: "Yes",
         no: "No",
+        every5Min: "Every 5 Minutes",
+        every10Min: "Every 10 Minutes",
+        every30Min: "Every 30 Minutes",
+        manual: "Manual",
+        newTab: "Open in New Tab",
+        closeCurrent: "Close This Page",
         searchPlaceholder: "Search...",
         favoritePlaceholder: "Favorite name",
         urlPlaceholder: "https://...",
@@ -1019,6 +1052,8 @@
         showWeather: "Mostrar Clima:",
         weatherLocation: "Ubicación del Clima:",
         showInfoBar: "Mostrar Barra de Información:",
+        weatherUpdateInterval: "Frecuencia de Actualización del Clima:",
+        linkBehavior: "Comportamiento del Enlace:",
         apply: "Aplicar",
         favoriteName: "Nombre:",
         favoriteUrl: "URL:",
@@ -1033,11 +1068,18 @@
         turkish: "Turco",
         english: "Inglés",
         spanish: "Español",
+        russian: "Ruso",
         logoOnly: "Solo Logotipo",
         logoAndName: "Logotipo y Nombre",
         none: "Ninguno",
         yes: "Sí",
         no: "No",
+        every5Min: "Cada 5 Minutos",
+        every10Min: "Cada 10 Minutos",
+        every30Min: "Cada 30 Minutos",
+        manual: "Manual",
+        newTab: "Abrir en Nueva Pestaña",
+        closeCurrent: "Cerrar Esta Página",
         searchPlaceholder: "Buscar...",
         favoritePlaceholder: "Nombre del favorito",
         urlPlaceholder: "https://...",
@@ -1059,6 +1101,71 @@
         searchHistory: "Historial de Búsqueda",
         clearHistory: "Borrar Historial",
         noHistory: "No hay historial de búsqueda."
+      },
+      ru: {
+        bgUrl: "URL фона:",
+        font: "Шрифт:",
+        theme: "Цветовая тема:",
+        accentColor: "Цвет акцента:",
+        language: "Язык:",
+        logoDisplay: "Отображение логотипа:",
+        system: "Система",
+        searchEngine: "Поисковая система:",
+        showFavorites: "Показать избранное:",
+        maxFavorites: "Максимальное количество избранного:",
+        showSuggestions: "Показать подсказки поиска:",
+        showWeather: "Показать погоду:",
+        weatherLocation: "Местоположение погоды:",
+        showInfoBar: "Показать информационную панель:",
+        weatherUpdateInterval: "Частота обновления погоды:",
+        linkBehavior: "Поведение ссылки:",
+        apply: "Применить",
+        favoriteName: "Название:",
+        favoriteUrl: "URL:",
+        add: "Добавить",
+        search: "Поиск",
+        images: "Изображения",
+        shopping: "Покупки",
+        news: "Новости",
+        addFavorite: "+ Добавить в избранное",
+        dark: "Темная",
+        light: "Светлая",
+        turkish: "Турецкий",
+        english: "Английский",
+        spanish: "Испанский",
+        russian: "Русский",
+        logoOnly: "Только логотип",
+        logoAndName: "Логотип и название",
+        none: "Ничего",
+        yes: "Да",
+        no: "Нет",
+        every5Min: "Каждые 5 минут",
+        every10Min: "Каждые 10 минут",
+        every30Min: "Каждые 30 минут",
+        manual: "Вручную",
+        newTab: "Открыть в новой вкладке",
+        closeCurrent: "Закрыть эту страницу",
+        searchPlaceholder: "Поиск...",
+        favoritePlaceholder: "Название избранного",
+        urlPlaceholder: "https://...",
+        weatherLocationPlaceholder: "Название города",
+        languageDisplay: "Русский",
+        maxFavoritesAlert: "Достигнуто максимальное количество избранного!",
+        invalidUrlAlert: "Введите действительный URL (например, https://example.com).",
+        voiceSearchNotSupported: "Голосовой поиск не поддерживается в вашем браузере. Используйте текстовый поиск.",
+        weatherError: "Не удалось загрузить погоду.",
+        personalization: "Персонализация",
+        shortcuts: "Горячие клавиши",
+        searchShortcut: "Строка поиска:",
+        favoriteShortcut: "Добавить в избранное:",
+        settingsShortcut: "Панель настроек:",
+        historyShortcut: "Панель истории:",
+        imagesShortcut: "Поиск изображений:",
+        shoppingShortcut: "Поиск покупок:",
+        newsShortcut: "Поиск новостей:",
+        searchHistory: "История поиска",
+        clearHistory: "Очистить историю",
+        noHistory: "Нет истории поиска."
       }
     };
 
@@ -1115,6 +1222,14 @@
       }
     }
 
+    // Hava durumu güncelleme
+    function startWeatherUpdate() {
+      const interval = parseInt(localStorage.getItem("weatherUpdateInterval") || "10") * 60 * 1000;
+      if (interval > 0) {
+        setInterval(fetchWeather, interval);
+      }
+    }
+
     async function cacheBackgroundImage(url) {
       try {
         const response = await fetch(url);
@@ -1161,6 +1276,7 @@
       suggestionsBox.style.display = "none";
       if (!q) return;
       const engine = localStorage.getItem("searchEngine") || "google";
+      const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
       let url;
       if (engine === "yandex") {
         if (type === 'images') {
@@ -1208,7 +1324,11 @@
       }
       loadSearchHistory();
       document.getElementById("searchInput").value = "";
-      window.open(url, "_blank");
+      if (linkBehavior === "closeCurrent") {
+        window.location.href = url;
+      } else {
+        window.open(url, "_blank");
+      }
     }
 
     function saveFavorites(favs) {
@@ -1220,6 +1340,7 @@
       cont.innerHTML = "";
       const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
       const maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
+      const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
       favs.forEach((f, i) => {
         const btn = document.createElement("div");
         btn.className = "favorite-item";
@@ -1228,7 +1349,7 @@
         btn.innerHTML = `
           <div style="display:flex; flex-direction: column; align-items: center; gap:4px; text-align: center;">
             <img src="https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}" style="width:32px;height:32px;border-radius:6px;">
-            <a href="${f.url}" target="_blank">${f.name}</a>
+            <a href="${f.url}" ${linkBehavior === "closeCurrent" ? "" : 'target="_blank"'}>${f.name}</a>
           </div>
           <span onclick="removeFavorite(${i})">×</span>`;
         btn.addEventListener("dragstart", handleDragStart);
@@ -1331,7 +1452,7 @@
         return;
       }
       const r = new webkitSpeechRecognition();
-      r.lang = lang === "tr" ? "tr-TR" : lang === "en" ? "en-US" : "es-ES";
+      r.lang = lang === "tr" ? "tr-TR" : lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "ru-RU";
       r.interimResults = true;
       r.continuous = true;
       r.start();
@@ -1463,6 +1584,8 @@
       const shoppingShortcut = document.getElementById("shoppingShortcutInput").value.trim();
       const newsShortcut = document.getElementById("newsShortcutInput").value.trim();
       const weatherLocation = document.getElementById("weatherLocation").value.trim();
+      const weatherUpdateInterval = document.getElementById("weatherUpdateInterval").value;
+      const linkBehavior = document.getElementById("linkBehavior").value;
       loadCachedBackground(bg);
       document.documentElement.style.setProperty('--site-font', f);
       document.documentElement.style.setProperty('--accent-color', c);
@@ -1523,12 +1646,15 @@
       localStorage.setItem("shoppingShortcut", shoppingShortcut);
       localStorage.setItem("newsShortcut", newsShortcut);
       localStorage.setItem("weatherLocation", weatherLocation);
+      localStorage.setItem("weatherUpdateInterval", weatherUpdateInterval);
+      localStorage.setItem("linkBehavior", linkBehavior);
       localStorage.removeItem("notes");
       updateLanguage(l);
       loadFavorites();
       updateSearchEnginePreview();
       fetchWeather();
       bindShortcuts();
+      startWeatherUpdate();
     };
 
     window.onload = () => {
@@ -1549,132 +1675,182 @@
       const favoriteShortcut = localStorage.getItem("favoriteShortcut") || "Ctrl + Shift + F";
       const settingsShortcut = localStorage.getItem("settingsShortcut") || "Ctrl + Shift + S";
       const historyShortcut = localStorage.getItem("historyShortcut") || "Ctrl + Shift + H";
-      const imagesShortcut = localStorage.getItem("imagesShortcut") || "Ctrl + I";
-      const shoppingShortcut = localStorage.getItem("shoppingShortcut") || "Ctrl + S";
-      const newsShortcut = localStorage.getItem("newsShortcut") || "Ctrl + N";
-      const weatherLocation = localStorage.getItem("weatherLocation") || "";
-      document.getElementById("bgUrlInput").value = bg;
-      document.getElementById("fontSelect").value = f;
-      document.getElementById("themeSelect").value = t;
-      document.getElementById("accentColor").value = c;
-      document.getElementById("languageSelect").value = l;
-      document.getElementById("searchEngineSelect").value = se;
-      document.getElementById("showFavorites").value = sf;
-      document.getElementById("showSuggestions").value = ss;
-      document.getElementById("showWeather").value = sw;
-      document.getElementById("showInfoBar").value = si;
-      document.getElementById("logoDisplaySelect").value = ld;
-      document.getElementById("maxFavorites").value = maxFav;
-      document.getElementById("searchShortcutInput").value = searchShortcut;
-      document.getElementById("favoriteShortcutInput").value = favoriteShortcut;
-      document.getElementById("settingsShortcutInput").value = settingsShortcut;
-      document.getElementById("historyShortcutInput").value = historyShortcut;
-      document.getElementById("imagesShortcutInput").value = imagesShortcut;
-      document.getElementById("shoppingShortcutInput").value = shoppingShortcut;
-      document.getElementById("newsShortcutInput").value = newsShortcut;
-      document.getElementById("weatherLocation").value = weatherLocation;
-      document.getElementById("applySettingsBtn").click();
-      loadFavorites();
-      loadSearchHistory();
-      bindShortcuts();
-    };
+const imagesShortcut = localStorage.getItem("imagesShortcut") || "Ctrl + I";
+const shoppingShortcut = localStorage.getItem("shoppingShortcut") || "Ctrl + S";
+const newsShortcut = localStorage.getItem("newsShortcut") || "Ctrl + N";
+const weatherLocation = localStorage.getItem("weatherLocation") || "";
+const weatherUpdateInterval = localStorage.getItem("weatherUpdateInterval") || "10";
+const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
 
-    const searchInput = document.getElementById("searchInput");
-    const suggestionsBox = document.getElementById("suggestions");
-    let selectedIndex = -1;
+// Load settings into input fields
+document.getElementById("bgUrlInput").value = bg;
+document.getElementById("fontSelect").value = f;
+document.getElementById("themeSelect").value = t;
+document.getElementById("accentColor").value = c;
+document.getElementById("languageSelect").value = l;
+document.getElementById("searchEngineSelect").value = se;
+document.getElementById("showFavorites").value = sf;
+document.getElementById("showSuggestions").value = ss;
+document.getElementById("showWeather").value = sw;
+document.getElementById("showInfoBar").value = si;
+document.getElementById("logoDisplaySelect").value = ld;
+document.getElementById("maxFavorites").value = maxFav;
+document.getElementById("searchShortcutInput").value = searchShortcut;
+document.getElementById("favoriteShortcutInput").value = favoriteShortcut;
+document.getElementById("settingsShortcutInput").value = settingsShortcut;
+document.getElementById("historyShortcutInput").value = historyShortcut;
+document.getElementById("imagesShortcutInput").value = imagesShortcut;
+document.getElementById("shoppingShortcutInput").value = shoppingShortcut;
+document.getElementById("newsShortcutInput").value = newsShortcut;
+document.getElementById("weatherLocation").value = weatherLocation;
+document.getElementById("weatherUpdateInterval").value = weatherUpdateInterval;
+document.getElementById("linkBehavior").value = linkBehavior;
 
-    function handleSuggestions(data) {
-      if (!data || !data[1] || localStorage.getItem("showSuggestions") === "false") {
-        suggestionsBox.style.display = "none";
-        return;
-      }
-      const suggestions = data[1].slice(0, 5);
-      suggestionsBox.innerHTML = "";
-      suggestions.forEach((s, i) => {
-        const li = document.createElement("li");
-        li.textContent = s;
-        li.className = i === selectedIndex ? "selected" : "";
-        li.setAttribute("aria-selected", i === selectedIndex ? "true" : "false");
-        li.addEventListener("click", () => {
-          searchInput.value = s;
-          suggestionsBox.style.display = "none";
-          selectedIndex = -1;
-          search();
-        });
-        li.addEventListener("touchstart", () => {
-          searchInput.value = s;
-          suggestionsBox.style.display = "none";
-          selectedIndex = -1;
-          search();
-        });
-        suggestionsBox.appendChild(li);
-      });
-      suggestionsBox.style.display = suggestions.length ? "block" : "none";
-    }
+// Apply settings
+loadCachedBackground(bg);
+document.documentElement.style.setProperty('--site-font', f);
+document.documentElement.style.setProperty('--accent-color', c);
+document.body.classList.add(t);
+const logoImg = document.getElementById("logoImg");
+const logoName = document.getElementById("logoName");
+const searchIcon = document.getElementById("searchIcon");
+const voiceIcon = document.getElementById("voiceIcon");
+const settingsIcon = document.getElementById("settingsIcon");
+const historyIcon = document.getElementById("historyIcon");
+logoImg.src = t === "light" ? "logo-dark.png" : "logo.png";
+searchIcon.src = t === "light" ? "search-dark.png" : "search.png";
+voiceIcon.src = t === "light" ? "mic-dark.png" : "mic.png";
+settingsIcon.src = t === "light" ? "settings-dark.png" : "settings.png";
+historyIcon.src = t === "light" ? "history-dark.png" : "history.png";
+document.getElementById("favorites").classList.toggle("hidden", sf === "false");
+document.getElementById("weatherWidget").classList.toggle("hidden", sw === "false");
+document.getElementById("logo").classList.toggle("hidden", ld === "none");
+if (ld === "logo-name") {
+logoName.style.display = "inline";
+} else if (ld === "logo") {
+logoName.style.display = "none";
+} else {
+logoName.style.display = "none";
+}
+document.getElementById("infoBar").classList.toggle("hidden", si === "false");
 
-    searchInput.addEventListener("input", debounce(() => {
-      const q = searchInput.value.trim();
-      selectedIndex = -1;
-      if (!q || q.length < 3 || localStorage.getItem("showSuggestions") === "false") {
-        suggestionsBox.style.display = "none";
-        return;
-      }
-      const oldScript = document.getElementById("jsonpScript");
-      if (oldScript) oldScript.remove();
-      const script = document.createElement("script");
-      script.id = "jsonpScript";
-      script.src = `https://suggestqueries.google.com/complete/search?client=firefox&callback=handleSuggestions&q=${encodeURIComponent(q)}`;
-      document.body.appendChild(script);
-    }, 500));
+// Load background history
+const bgHistory = JSON.parse(localStorage.getItem("bgHistory") || "[]");
+const recentBgList = document.getElementById("recentBgList");
+recentBgList.innerHTML = bgHistory.map(bg => `
 
-    searchInput.addEventListener("keydown", (e) => {
-      const suggestions = suggestionsBox.querySelectorAll("li");
-      if (e.key === "Enter") {
-        if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-          searchInput.value = suggestions[selectedIndex].textContent;
-          suggestionsBox.style.display = "none";
-          selectedIndex = -1;
-          search();
-        } else {
-          suggestionsBox.style.display = "none";
-          search();
-        }
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault();
-        if (selectedIndex < suggestions.length - 1) {
-          selectedIndex++;
-          updateSelected(suggestions);
-        }
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        if (selectedIndex > 0) {
-          selectedIndex--;
-          updateSelected(suggestions);
-        }
-      }
-    });
+  <img src="${localStorage.getItem(`bgCache_${bg}`) || bg}" alt="Preview"> ${bg}
+`).join('');
+// Load favorites and search history
+loadFavorites();
+loadSearchHistory();
+updateSearchEnginePreview();
+updateLanguage(l);
 
-    function updateSelected(suggestions) {
-      suggestions.forEach((li, i) => {
-        li.className = i === selectedIndex ? "selected" : "";
-        li.setAttribute("aria-selected", i === selectedIndex ? "true" : "false");
-      });
-    }
+// Bind shortcuts
+bindShortcuts();
 
-    document.addEventListener("click", (e) => {
-      if (!suggestionsBox.contains(e.target) && e.target !== searchInput) {
-        suggestionsBox.style.display = "none";
-        selectedIndex = -1;
-      }
-      if (!document.getElementById("settingsPanel").contains(e.target) && e.target !== document.getElementById("settingsButton")) {
-        document.getElementById("settingsPanel").style.display = "none";
-      }
-      if (!document.getElementById("historyPanel").contains(e.target) && e.target !== document.getElementById("historyButton")) {
-        document.getElementById("historyPanel").style.display = "none";
-      }
-    });
+// Start weather updates
+startWeatherUpdate();
 
-    document.getElementById("searchEngineSelect").addEventListener("change", updateSearchEnginePreview);
-  </script>
-</body>
-</html>
+// Search suggestions
+const searchInput = document.getElementById("searchInput");
+const suggestionsBox = document.getElementById("suggestions");
+let selectedIndex = -1;
+
+async function fetchSuggestions(query) {
+if (localStorage.getItem("showSuggestions") === "false") return;
+try {
+const response = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
+const data = await response.json();
+suggestionsBox.innerHTML = "";
+suggestionsBox.style.display = data[1].length ? "block" : "none";
+data[1].forEach(suggestion => {
+const li = document.createElement("li");
+li.textContent = suggestion;
+li.onclick = () => {
+searchInput.value = suggestion;
+search();
+suggestionsBox.style.display = "none";
+};
+suggestionsBox.appendChild(li);
+});
+selectedIndex = -1;
+} catch (e) {
+console.error("Öneri alınamadı:", e);
+suggestionsBox.style.display = "none";
+}
+}
+
+const debouncedFetchSuggestions = debounce(fetchSuggestions, 300);
+
+searchInput.addEventListener("input", () => {
+const query = searchInput.value.trim();
+if (query) {
+debouncedFetchSuggestions(query);
+} else {
+suggestionsBox.style.display = "none";
+}
+});
+
+searchInput.addEventListener("keydown", (e) => {
+const suggestions = suggestionsBox.querySelectorAll("li");
+if (e.key === "ArrowDown") {
+e.preventDefault();
+if (selectedIndex < suggestions.length - 1) {
+selectedIndex++;
+suggestions.forEach((li, i) => {
+li.classList.toggle("selected", i === selectedIndex);
+});
+suggestionsBox.scrollTop = suggestions[selectedIndex]?.offsetTop - suggestionsBox.offsetHeight / 2;
+}
+} else if (e.key === "ArrowUp") {
+e.preventDefault();
+if (selectedIndex > -1) {
+selectedIndex--;
+suggestions.forEach((li, i) => {
+li.classList.toggle("selected", i === selectedIndex);
+});
+suggestionsBox.scrollTop = suggestions[selectedIndex]?.offsetTop - suggestionsBox.offsetHeight / 2;
+}
+} else if (e.key === "Enter") {
+e.preventDefault();
+if (selectedIndex > -1 && suggestions[selectedIndex]) {
+searchInput.value = suggestions[selectedIndex].textContent;
+suggestionsBox.style.display = "none";
+search();
+} else if (searchInput.value.trim()) {
+search();
+}
+} else if (e.key === "Escape") {
+suggestionsBox.style.display = "none";
+}
+});
+
+// Close panels and suggestions when clicking outside
+document.addEventListener("click", (e) => {
+if (!e.target.closest("#settingsPanel") && !e.target.closest("#settingsButton")) {
+document.getElementById("settingsPanel").style.display = "none";
+}
+if (!e.target.closest("#historyPanel") && !e.target.closest("#historyButton")) {
+document.getElementById("historyPanel").style.display = "none";
+}
+if (!e.target.closest("#searchBar") && !e.target.closest("#suggestions")) {
+suggestionsBox.style.display = "none";
+}
+if (!e.target.closest("#addFavoriteModal") && !e.target.closest("#addFavoriteBtn")) {
+document.getElementById("addFavoriteModal").style.display = "none";
+}
+});
+
+// Apply settings button click
+document.getElementById("applySettingsBtn").click();
+};
+
+// Color palette selection
+document.querySelectorAll(".color-option").forEach(option => {
+option.addEventListener("click", () => {
+selectColor(option.style.backgroundColor);
+});
+});
+</script>
