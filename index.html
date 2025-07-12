@@ -10,7 +10,7 @@
   <style>
     :root {
       --site-font: 'Segoe UI', sans-serif;
-      --accent-color: #00bcd4;
+      --accent-color: #dce4e6;
     }
     * { 
       box-sizing: border-box; 
@@ -206,30 +206,27 @@
       flex-wrap: wrap;
     }
     .buttons button {
-      background-color: #303134;
-      color: #e8eaed;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
-      will-change: transform, box-shadow;
+    background-color: #303134;
+    color: #e8eaed;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s; /* filter'ı transition'a ekledik */
+    will-change: transform, box-shadow;
     }
     .buttons button:hover {
-      background-color: #3c4043;
-      transform: scale(1.05);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.2); /* Rengi %20 oranında parlat */
     }
     .buttons button:active {
-      transform: scale(0.95);
+    transform: scale(0.95);
+    filter: brightness(0.9); /* Rengi %10 oranında koyulaştır */
     }
     .buttons button.accent {
-      background-color: var(--accent-color);
-      color: #000;
-    }
-    .buttons button.accent:hover {
-      background-color: #00a3b4;
+    background-color: var(--accent-color);
+    color: #000;
     }
     .favorites {
       margin-top: 20px;
@@ -448,27 +445,29 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    #settingsPanel button, #historyPanel button {
-      margin-top: 10px;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      background-color: var(--accent-color);
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
-      will-change: transform, box-shadow;
-      pointer-events: auto;
+/* Ayarlar panelindeki butonlar için de aynı mantığı uyguluyoruz */
+   #settingsPanel button, #historyPanel button {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--accent-color);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s; /* filter'ı transition'a ekledik */
+    will-change: transform, box-shadow;
+    pointer-events: auto;
     }
     #settingsPanel button:hover, #historyPanel button:hover {
-      background-color: #00a3b4;
-      transform: scale(1.05);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
+    transform: scale(1.05); /* scale efektini koruyabiliriz */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1); /* Vurgu rengini biraz parlat */
+    } 
     #settingsPanel button:active, #historyPanel button:active {
-      transform: scale(0.95);
+    transform: scale(0.95);
+    filter: brightness(0.9); /* Vurgu rengini biraz koyulaştır */
     }
     #recentBgList {
       margin-top: 10px;
