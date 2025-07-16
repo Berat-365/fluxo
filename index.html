@@ -749,7 +749,7 @@
 </head>
 <body>
     <div class="weather-widget" id="weatherWidget" onclick="window.open('https://wttr.in', '_blank')">Yükleniyor...</div>
-    <div class="info-bar" id="infoBar">Fluxo 3.1,2 | Vanilla | <span id="languageDisplay">Türkçe</span></div>
+    <div class="info-bar" id="infoBar">Fluxo 3.1,2 | Vanilla - BetaPreview | <span id="languageDisplay">Türkçe</span></div>
     <div class="url-sidebar" id="urlSidebar"></div>
     <button id="settingsButton">
         <img id="settingsIcon" src="ico/settings.png" alt="Ayarlar">
@@ -1096,49 +1096,51 @@
             }
         }
 
-        function loadFavorites() {
-            const cont = document.getElementById("favorites");
-            cont.innerHTML = "";
-            let favs = [];
-            let maxFav = 5;
-            let linkBehavior = "newTab";
-            let lang = "tr";
-            try {
-                favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
-                maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
-                linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
-                lang = localStorage.getItem("language") || "tr";
-            } catch (e) {
-                // Storage might be blocked
-                console.warn("Could not load favorites/settings:", e);
-            }
-            favs.forEach((f, i) => {
-                const btn = document.createElement("div");
-                btn.className = "favorite-item";
-                btn.setAttribute("draggable", "true");
-                btn.setAttribute("data-index", i);
-                btn.innerHTML = `
-                    <div style="display:flex; flex-direction: column; align-items: center; gap:4px; text-align: center;">
-                        <img src="https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}" style="width:32px;height:32px;border-radius:6px;">
-                        <a href="${f.url}" ${linkBehavior === "closeCurrent" ? "" : 'target="_blank"'}>${f.name}</a>
-                    </div>
-                    <span onclick="removeFavorite(${i})">×</span>`;
-                btn.addEventListener("dragstart", handleDragStart);
-                btn.addEventListener("dragover", handleDragOver);
-                btn.addEventListener("drop", handleDrop);
-                cont.appendChild(btn);
-            });
-            const addBtn = document.createElement("div");
-            addBtn.id = "addFavoriteBtn";
-            addBtn.className = "favorite-item accent";
-            addBtn.textContent = (typeof translations !== "undefined" && translations[lang] && translations[lang].addFavorite) ? translations[lang].addFavorite : "+ Favori Ekle";
-            addBtn.onclick = () => {
-                document.getElementById("addFavoriteModal").style.display = "block";
-                document.getElementById("modalName").focus();
-            };
-            cont.appendChild(addBtn);
-            document.getElementById("addFavoriteBtn").style.display = favs.length >= maxFav ? "none" : "flex";
-        }
+function loadFavorites() {
+    const cont = document.getElementById("favorites");
+    cont.innerHTML = "";
+    let favs = [];
+    let maxFav = 5;
+    let linkBehavior = "newTab";
+    let lang = "tr";
+    try {
+        favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
+        maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
+        linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
+        lang = localStorage.getItem("language") || "tr";
+    } catch (e) {
+        console.warn("Favoriler/ayarlar yüklenemedi:", e);
+    }
+    favs.forEach((f, i) => {
+        const btn = document.createElement("div");
+        btn.className = "favorite-item";
+        btn.setAttribute("draggable", "true");
+        btn.setAttribute("data-index", i);
+        btn.innerHTML = `
+            <div style="display:flex; flex-direction: column; align-items: center; gap:4px; text-align: center;">
+                <img src="https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}" style="width:32px;height:32px;border-radius:6px;">
+                <a href="${f.url}" ${linkBehavior === "closeCurrent" ? "" : 'target="_blank"'}>${f.name}</a>
+            </div>
+            <span class="remove-btn">×</span>`; // Inline onclick kaldırıldı, class eklendi
+        btn.addEventListener("dragstart", handleDragStart);
+        btn.addEventListener("dragover", handleDragOver);
+        btn.addEventListener("drop", handleDrop);
+        // Kaldırma butonuna olay dinleyici ekle
+        const removeBtn = btn.querySelector(".remove-btn");
+        removeBtn.addEventListener("click", () => removeFavorite(i));
+        cont.appendChild(btn);
+    });
+    const addBtn = document.createElement("div");
+    addBtn.id = "addFavoriteBtn";
+    addBtn.className = "favorite-item accent";
+    addBtn.textContent = (typeof translations !== "undefined" && translations[lang] && translations[lang].addFavorite) ? translations[lang].addFavorite : "+ Favori Ekle";
+    addBtn.onclick = () => {
+        document.getElementById("addFavoriteModal").style.display = "block";
+        document.getElementById("modalName").focus();
+    };
+    cont.appendChild(addBtn);
+    document.getElementById("addFavoriteBtn").style.display = favs.length >= maxFav ? "none" : "flex";
+}
 
         function removeFavorite(i) {
             const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
@@ -1571,14 +1573,19 @@ function fetchSuggestions(query) {
     };
     const script = document.createElement("script");
     script.src = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodedQuery}&jsonp=${callbackName}`;
-    document.body.appendChild(script);
+    script.onload = () => {
+        // Remove script after load (success or not, callback will handle data)
+        script.remove();
+    };
     script.onerror = () => {
         console.error("Öneri alınamadı: Script yüklenemedi");
         const suggestionsBox = document.getElementById("suggestions");
         suggestionsBox.innerHTML = `<li style="padding: 12px; color: #ff4444;">${translations[localStorage.getItem("language") || "tr"].noSuggestions}</li>`;
         suggestionsBox.style.display = "block";
         delete window[callbackName];
+        script.remove();
     };
+    document.body.appendChild(script);
 }
 const debouncedFetchSuggestions = debounce(fetchSuggestions, 200);
 
