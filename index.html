@@ -1116,16 +1116,16 @@ function loadFavorites() {
         btn.className = "favorite-item";
         btn.setAttribute("draggable", "true");
         btn.setAttribute("data-index", i);
+        const faviconUrl = f.url ? `https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}` : "ico/default-favicon.png";
         btn.innerHTML = `
             <div style="display:flex; flex-direction: column; align-items: center; gap:4px; text-align: center;">
-                <img src="https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}" style="width:32px;height:32px;border-radius:6px;">
+                <img src="${faviconUrl}" style="width:32px;height:32px;border-radius:6px;" onerror="this.src='ico/default-favicon.png'">
                 <a href="${f.url}" ${linkBehavior === "closeCurrent" ? "" : 'target="_blank"'}>${f.name}</a>
             </div>
-            <span class="remove-btn">×</span>`; // Inline onclick kaldırıldı, class eklendi
+            <span class="remove-btn">×</span>`;
         btn.addEventListener("dragstart", handleDragStart);
         btn.addEventListener("dragover", handleDragOver);
         btn.addEventListener("drop", handleDrop);
-        // Kaldırma butonuna olay dinleyici ekle
         const removeBtn = btn.querySelector(".remove-btn");
         removeBtn.addEventListener("click", () => removeFavorite(i));
         cont.appendChild(btn);
@@ -1160,44 +1160,53 @@ function loadFavorites() {
             e.preventDefault();
         }
 
-        function handleDrop(e) {
-            e.preventDefault();
-            const droppedIndex = e.target.closest(".favorite-item")?.getAttribute("data-index");
-            if (draggedIndex !== null && draggedIndex !== droppedIndex) {
-                const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
-                const draggedFav = favs[draggedIndex];
-                favs.splice(draggedIndex, 1);
-                favs.splice(droppedIndex, 0, draggedFav);
-                saveFavorites(favs);
-                loadFavorites();
-            }
-            draggedIndex = null;
-        }
+function handleDrop(e) {
+    e.preventDefault();
+    const droppedItem = e.target.closest(".favorite-item");
+    if (!droppedItem) return; // Null kontrolü
+    const droppedIndex = droppedItem.getAttribute("data-index");
+    if (draggedIndex !== null && droppedIndex !== null && draggedIndex !== droppedIndex) {
+        const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
+        const draggedFav = favs[draggedIndex];
+        favs.splice(draggedIndex, 1);
+        favs.splice(droppedIndex, 0, draggedFav);
+        saveFavorites(favs);
+        loadFavorites();
+    }
+    draggedIndex = null;
+}
 
-        async function addFavoriteFromModal() {
-            const name = document.getElementById("modalName").value.trim();
-            const url = document.getElementById("modalUrl").value.trim();
-            const lang = localStorage.getItem("language") || "tr";
-            if (!url) return alert(translations[lang].invalidUrlAlert);
-            try {
-                new URL(url);
-                const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
-                const maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
-                if (favs.length >= maxFav) {
-                    alert(translations[lang].maxFavoritesAlert);
-                    return;
-                }
-                const finalName = name || await fetchWebsiteTitle(url);
-                favs.push({ name: finalName, url });
-                saveFavorites(favs);
-                loadFavorites();
-                document.getElementById("addFavoriteModal").style.display = "none";
-                document.getElementById("modalName").value = "";
-                document.getElementById("modalUrl").value = "";
-            } catch {
-                alert(translations[lang].invalidUrlAlert);
-            }
+async function addFavoriteFromModal() {
+    const name = document.getElementById("modalName").value.trim();
+    let url = document.getElementById("modalUrl").value.trim();
+    const lang = localStorage.getItem("language") || "tr";
+    if (!url) {
+        alert(translations[lang].invalidUrlAlert);
+        return;
+    }
+    // URL'nin başına http:// ekle, eğer protokol yoksa
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + url;
+    }
+    try {
+        new URL(url);
+        const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
+        const maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
+        if (favs.length >= maxFav) {
+            alert(translations[lang].maxFavoritesAlert);
+            return;
         }
+        const finalName = name || await fetchWebsiteTitle(url);
+        favs.push({ name: finalName, url });
+        saveFavorites(favs);
+        loadFavorites();
+        document.getElementById("addFavoriteModal").style.display = "none";
+        document.getElementById("modalName").value = "";
+        document.getElementById("modalUrl").value = "";
+    } catch {
+        alert(translations[lang].invalidUrlAlert);
+    }
+}
 
         function loadSearchHistory() {
             const historyList = document.getElementById("historyList");
@@ -1485,6 +1494,8 @@ function loadFavorites() {
             document.getElementById("weatherLocation").value = weatherLocation;
             document.getElementById("weatherUpdateInterval").value = weatherUpdateInterval;
             document.getElementById("linkBehavior").value = linkBehavior;
+            document.getElementById("addFavoriteModalBtn").addEventListener("click", addFavoriteFromModal);
+            document.getElementById("addFavoriteBtn").style.display = favs.length >= maxFav ? "none" : "flex";
 
             // Ayarları uygula
             loadCachedBackground(bg);
