@@ -1495,7 +1495,10 @@ async function addFavoriteFromModal() {
             document.getElementById("weatherUpdateInterval").value = weatherUpdateInterval;
             document.getElementById("linkBehavior").value = linkBehavior;
             document.getElementById("addFavoriteModalBtn").addEventListener("click", addFavoriteFromModal);
-            document.getElementById("addFavoriteBtn").style.display = favs.length >= maxFav ? "none" : "flex";
+            document.getElementById("applySettingsBtn").addEventListener("click", () => {
+                document.getElementById("settingsPanel").style.display = "none";
+                document.getElementById("historyPanel").style.display = "none";
+            });
 
             // Ayarları uygula
             loadCachedBackground(bg);
