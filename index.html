@@ -420,12 +420,14 @@
             background-color: #e0e0e0;
             color: #000;
         }
-        #colorPalette {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
+#colorPalette .color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.2s;
+}
         .color-option {
             width: 30px;
             height: 30px;
@@ -749,7 +751,7 @@
 </head>
 <body>
     <div class="weather-widget" id="weatherWidget" onclick="window.open('https://wttr.in', '_blank')">Yükleniyor...</div>
-    <div class="info-bar" id="infoBar">Fluxo 3.1,2 | Vanilla - BetaPreview | <span id="languageDisplay">Türkçe</span></div>
+    <div class="info-bar" id="infoBar">Fluxo 3.1,2 | Vanilla | <span id="languageDisplay">Türkçe</span></div>
     <div class="url-sidebar" id="urlSidebar"></div>
     <button id="settingsButton">
         <img id="settingsIcon" src="ico/settings.png" alt="Ayarlar">
@@ -782,21 +784,38 @@
             <option value="light" data-lang-key="light">Açık</option>
         </select>
         <label for="accentColor" data-lang-key="accentColor">Vurgu Rengi:</label>
-        <div id="colorPalette" class="flex flex-wrap gap-2 mt-2">
-            <div class="color-option" style="background-color: #00bcd4;" onclick="selectColor('#00bcd4')"></div>
-            <div class="color-option" style="background-color: #ff5722;" onclick="selectColor('#ff5722')"></div>
-            <div class="color-option" style="background-color: #4caf50;" onclick="selectColor('#4caf50')"></div>
-            <div class="color-option" style="background-color: #9c27b0;" onclick="selectColor('#9c27b0')"></div>
-            <div class="color-option" style="background-color: #ffeb3b;" onclick="selectColor('#ffeb3b')"></div>
-        </div>
+<div id="colorPalette" class="flex flex-wrap gap-2 mt-2">
+    <div class="color-option" style="background-color: #00bcd4 !important;" onclick="selectColor('#00bcd4')"></div>
+    <div class="color-option" style="background-color: #ff5722 !important;" onclick="selectColor('#ff5722')"></div>
+    <div class="color-option" style="background-color: #4caf50 !important;" onclick="selectColor('#4caf50')"></div>
+    <div class="color-option" style="background-color: #9c27b0 !important;" onclick="selectColor('#9c27b0')"></div>
+    <div class="color-option" style="background-color: #ffeb3b !important;" onclick="selectColor('#ffeb3b')"></div>
+</div>
         <input type="color" id="accentColor" value="#00bcd4">
         <label for="languageSelect" data-lang-key="language">Dil:</label>
-        <select id="languageSelect">
-            <option value="tr" data-lang-key="turkish">Türkçe</option>
-            <option value="en" data-lang-key="english">English</option>
-            <option value="es" data-lang-key="spanish">Español</option>
-            <option value="ru" data-lang-key="russian">Русский</option>
-        </select>
+<select id="languageSelect">
+    <option value="tr" data-lang-key="turkish">Türkçe</option>
+    <option value="en" data-lang-key="english">English</option>
+    <option value="es" data-lang-key="spanish">Español</option>
+    <option value="ru" data-lang-key="russian">Русский</option>
+    <option value="jp" data-lang-key="japanese">日本語</option>
+    <option value="zh" data-lang-key="chinese">中文</option>
+    <option value="ko" data-lang-key="korean">한국어</option>
+    <option value="de" data-lang-key="german">Deutsch</option>
+    <option value="fr" data-lang-key="french">Français</option>
+    <option value="ar" data-lang-key="arabic">العربية</option>
+    <option value="az" data-lang-key="azerbaijani">Azərbaycan dili</option>
+    <option value="tk" data-lang-key="turkmen">Türkmençe</option>
+    <option value="kk" data-lang-key="kazakh">Қазақша</option>
+    <option value="ky" data-lang-key="kyrgyz">Кыргызча</option>
+    <option value="uz" data-lang-key="uzbek">O'zbekcha</option>
+    <option value="tt" data-lang-key="tatar">Татарча</option>
+    <option value="ba" data-lang-key="bashkir">Башкортса</option>
+    <option value="ug" data-lang-key="uyghur">ئۇيغۇرچە</option>
+    <option value="sah" data-lang-key="yakut">Саха тыла</option>
+    <option value="cv" data-lang-key="chuvash">Чӑваш чӗлхи</option>
+    <option value="gag" data-lang-key="gagavuz">Gagavuzca</option>
+</select>
         <label for="logoDisplaySelect" data-lang-key="logoDisplay">Logo Görüntüleme:</label>
         <select id="logoDisplaySelect">
             <option value="logo" data-lang-key="logoOnly">Sadece Logo</option>
@@ -1227,34 +1246,79 @@ async function addFavoriteFromModal() {
             });
         }
 
-        document.getElementById("voiceSearchBtn").onclick = () => {
-            const lang = localStorage.getItem("language") || "tr";
-            if (!("webkitSpeechRecognition" in window)) {
-                alert(translations[lang].voiceSearchNotSupported);
-                return;
+ document.getElementById("voiceSearchBtn").onclick = () => {
+    const lang = localStorage.getItem("language") || "tr";
+    if (!("webkitSpeechRecognition" in window)) {
+        alert(translations[lang].voiceSearchNotSupported);
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    // Yeni dilleri ekleyerek dil kodlarını genişlet
+const langMap = {
+    "tr": "tr-TR",
+    "en": "en-US",
+    "es": "es-ES",
+    "ru": "ru-RU",
+    "jp": "ja-JP",
+    "zh": "zh-CN",
+    "ko": "ko-KR",
+    "de": "de-DE",
+    "fr": "fr-FR",
+    "ar": "ar-SA",
+    "az": "az-AZ",
+    "tk": "tk-TM",
+    "kk": "kk-KZ",
+    "ky": "ky-KG",
+    "uz": "uz-UZ",
+    "tt": "tt-RU",
+    "ba": "ba-RU",
+    "ug": "ug-CN",
+    "sah": "sah-RU",
+    "cv": "cv-RU",
+    "gag": "gag-TR"
+};
+    recognition.lang = langMap[lang] || "en-US"; // Varsayılan olarak İngilizce
+    recognition.interimResults = true;
+    recognition.continuous = false; // Sürekli dinlemeyi kapat, manuel kontrol eklenebilir
+    recognition.maxAlternatives = 1; // Daha iyi doğruluk için
+
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        let interimTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                document.getElementById("searchInput").value = transcript.trim();
+                search();
+                recognition.stop(); // Sadece son sonuçta durdur
+            } else {
+                interimTranscript += transcript;
             }
-            const r = new webkitSpeechRecognition();
-            r.lang = lang === "tr" ? "tr-TR" : lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "ru-RU";
-            r.interimResults = true;
-            r.continuous = true;
-            r.start();
-            r.onresult = (e) => {
-                let interimTranscript = '';
-                for (let i = e.resultIndex; i < e.results.length; i++) {
-                    if (e.results[i].isFinal) {
-                        document.getElementById("searchInput").value = e.results[i][0].transcript;
-                        search();
-                        r.stop();
-                    } else {
-                        interimTranscript += e.results[i][0].transcript;
-                    }
-                }
-                document.getElementById("searchInput").value = interimTranscript;
-            };
-            r.onend = () => {
-                r.stop();
-            };
-        };
+        }
+        document.getElementById("searchInput").value = interimTranscript.trim() || document.getElementById("searchInput").value;
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Ses tanıma hatası:", event.error);
+        alert(`${translations[lang].voiceSearchNotSupported} (Hata: ${event.error})`);
+        recognition.stop();
+    };
+
+    recognition.onend = () => {
+        console.log("Ses tanıma sona erdi.");
+        // Otomatik yeniden başlatma istenmezse boş bırak
+    };
+
+    // Manuel durdurma için bir zaman aşımı eklenebilir (isteğe bağlı)
+    setTimeout(() => {
+        if (recognition && recognition.state === "recording") {
+            recognition.stop();
+            alert(translations[lang].voiceSearchNotSupported + " (Zaman aşımı)");
+        }
+    }, 10000); // 10 saniye sonra durdur
+};
 
         document.getElementById("settingsButton").addEventListener("click", (e) => {
             e.stopPropagation();
@@ -1326,11 +1390,12 @@ async function addFavoriteFromModal() {
             document.addEventListener("keydown", handleShortcuts);
         }
 
-        function selectColor(color) {
-            document.getElementById("accentColor").value = color;
-            document.documentElement.style.setProperty('--accent-color', color);
-            localStorage.setItem("accentColor", color);
-        }
+function selectColor(color) {
+    console.log("Seçilen renk:", color); // Hata ayıklamak için
+    document.getElementById("accentColor").value = color;
+    document.documentElement.style.setProperty('--accent-color', color);
+    localStorage.setItem("accentColor", color);
+}
 
         function updateSearchEnginePreview() {
             const engine = document.getElementById("searchEngineSelect").value;
@@ -1666,12 +1731,21 @@ const debouncedFetchSuggestions = debounce(fetchSuggestions, 200);
             document.getElementById("applySettingsBtn").click();
         };
 
-        // Renk paleti seçimi
-        document.querySelectorAll(".color-option").forEach(option => {
-            option.addEventListener("click", () => {
-                selectColor(option.style.backgroundColor);
-            });
-        });
+
+function rgbToHex(rgb) {
+    if (!rgb) return '#000000'; // Varsayılan siyah
+    const result = rgb.match(/\d+/g);
+    if (!result) return '#000000';
+    return '#' + ((1 << 24) + (parseInt(result[0]) << 16) + (parseInt(result[1]) << 8) + parseInt(result[2])).toString(16).slice(1).toUpperCase();
+}
+
+        document.querySelectorAll('.color-option').forEach(option => {
+    option.onclick = () => {
+        const color = option.style.backgroundColor; // RGB formatında alınıyor
+        const hexColor = rgbToHex(color); // RGB'yi HEX'e çevir (aşağıdaki fonksiyonu ekleyin)
+        selectColor(hexColor);
+    };
+});
     </script>
 </body>
 </html>
