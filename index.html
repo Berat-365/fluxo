@@ -1227,24 +1227,25 @@ async function addFavoriteFromModal() {
     }
 }
 
-        function loadSearchHistory() {
-            const historyList = document.getElementById("historyList");
-            const searchHistory = JSON.parse(localStorage.getItem("searchHistory") || "[]");
-            historyList.innerHTML = searchHistory.length ? "" : `<div style="padding: 10px; font-size: 14px; color: #999;">${
-                translations[localStorage.getItem("language") || "tr"].noHistory
-            }</div>`;
-            searchHistory.forEach((query, i) => {
-                const div = document.createElement("div");
-                div.className = "history-item";
-                div.textContent = query;
-                div.onclick = () => {
-                    document.getElementById("searchInput").value = query;
-                    document.getElementById("historyPanel").style.display = "none";
-                    search();
-                };
-                historyList.appendChild(div);
+function loadSearchHistory() {
+    const lang = localStorage.getItem("language") || "tr";
+    const historyList = document.getElementById("historyList");
+    if (historyList) {
+        historyList.innerHTML = "";
+        const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+        if (history.length === 0) {
+            const noHistoryMsg = document.createElement("li");
+            noHistoryMsg.textContent = translations[lang] && translations[lang].noHistory ? translations[lang].noHistory : "Geçmiş yok"; // Güvenli erişim
+            historyList.appendChild(noHistoryMsg);
+        } else {
+            history.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = item;
+                historyList.appendChild(li);
             });
         }
+    }
+}
 
  document.getElementById("voiceSearchBtn").onclick = () => {
     const lang = localStorage.getItem("language") || "tr";
