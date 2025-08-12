@@ -25,7 +25,7 @@ const translations = {
         images: "Görseller",
         shopping: "Alışveriş",
         news: "Haberler",
-        addFavorite: "+ Favori Ekle",
+        addFavorite: "+",
         dark: "Koyu",
         light: "Açık",
         turkish: "Türkçe",
@@ -1368,3 +1368,4 @@ ar: {
 };
 
 export { translations };
+
