@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="weather-widget" id="weatherWidget" onclick="window.open('https://wttr.in', '_blank')">Yükleniyor...</div>
-    <div class="info-bar" id="infoBar">Fluxo 5 | Vanilla | <span id="languageDisplay">Türkçe</span></div>
+    <div class="info-bar" id="infoBar">Fluxo 3.7,2 | Vanilla | <span id="languageDisplay">Türkçe</span></div>
     <div class="url-sidebar" id="urlSidebar"></div>
     <button id="settingsButton">
         <img id="settingsIcon" src="ico/settings.png" alt="Ayarlar">
@@ -409,7 +409,7 @@
             const addBtn = document.createElement("div");
             addBtn.id = "addFavoriteBtn";
             addBtn.className = "favorite-item accent";
-            addBtn.textContent = (typeof translations !== "undefined" && translations[lang] && translations[lang].addFavorite) ? translations[lang].addFavorite : "+";
+            addBtn.textContent = (typeof translations !== "undefined" && translations[lang] && translations[lang].addFavorite) ? translations[lang].addFavorite : "+ Favori Ekle";
             addBtn.onclick = () => {
                 document.getElementById("addFavoriteModal").style.display = "block";
                 document.getElementById("modalName").focus();
@@ -780,4 +780,3 @@
     </script>
 </body>
 </html>
-
