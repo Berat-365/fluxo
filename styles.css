@@ -1,0 +1,739 @@
+:root {
+    --site-font: 'Inter', sans-serif; 
+    --accent-color: #dce4e6;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--site-font);
+}
+body {
+    background-color: #202124;
+    color: #e8eaed;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-color 0.3s, color 0.3s;
+    overflow: hidden;
+}
+body.light {
+    background-color: #fff;
+    color: #000;
+}
+body.light .search-bar input,
+body.light .buttons button,
+body.light .favorite-item,
+body.light #settingsButton,
+body.light #historyButton,
+body.light #settingsPanel,
+body.light #historyPanel,
+body.light .weather-widget {
+    background-color: #f1f3f4;
+    color: #000;
+}
+body.light .favorite-item a { color: #000; }
+body.light .favorite-item img {
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+body.light #suggestions {
+    background-color: #f1f3f4;
+    color: #000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+body.light #suggestions li:hover {
+    background-color: #e0e0e0;
+}
+body.light #suggestions li.selected {
+    background-color: #d1d1d1;
+}
+body.light .logo .logo-name {
+    color: #000 !important;
+}
+.weather-widget {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(48, 49, 52, 0.9);
+    color: #e8eaed;
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-family: var(--site-font);
+    max-width: 250px;
+    z-index: 1001;
+    white-space: normal;
+    word-wrap: break-word;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+body.light .weather-widget {
+    background-color: rgba(241, 243, 244, 0.9);
+    color: #000;
+}
+.weather-widget:hover {
+    background-color: rgba(60, 64, 67, 0.9);
+}
+body.light .weather-widget:hover {
+    background-color: rgba(224, 224, 224, 0.9);
+}
+.weather-widget.hidden { display: none; }
+.weather-error {
+    font-size: 12px;
+    color: #ff4444;
+    text-align: center;
+}
+.info-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(48, 49, 52, 0.9);
+    color: #e8eaed;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 1000;
+}
+body.light .info-bar {
+    background-color: rgba(241, 243, 244, 0.9);
+    color: #000;
+}
+.info-bar.hidden { display: none; }
+.url-sidebar {
+    position: fixed;
+    width: 200px;
+    height: calc(100vh - 40px);
+    background-color: rgba(48, 49, 52, 0.9);
+    color: #e8eaed;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 1000;
+    display: none;
+    overflow-y: auto;
+}
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1000;
+}
+.logo {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.logo.hidden { display: none; }
+.logo img {
+    max-height: 80px;
+    cursor: pointer;
+}
+.logo .logo-name {
+    font-size: 36px;
+    font-weight: bold;
+    color: #e8eaed;
+}
+.search-bar {
+    width: 100%;
+    max-width: 580px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1002;
+}
+.search-bar input {
+    width: 100%;
+    padding: 14px 50px 14px 44px;
+    border-radius: 25px;
+    border: none;
+    background-color: #303134;
+    color: #e8eaed;
+    font-size: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    will-change: transform, box-shadow;
+}
+.search-bar input:focus {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+body.light .search-bar input {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+body.light .search-bar input:focus {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.icon-left, .icon-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+}
+.icon-left {
+    left: 12px;
+}
+.icon-right {
+    right: 12px;
+}
+.icon-left img, .icon-right img {
+    width: 24px;
+    height: 24px;
+}
+.buttons {
+    margin-bottom: 20px;
+    z-index: 1001;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.buttons button {
+    background-color: #303134;
+    color: #e8eaed;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    will-change: transform, box-shadow;
+}
+.buttons button:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.2);
+}
+.buttons button:active {
+    transform: scale(0.95);
+    filter: brightness(0.9);
+}
+.buttons button.accent {
+    background-color: var(--accent-color);
+    color: #000;
+}
+.favorites {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    z-index: 1000;
+}
+.favorites.hidden { display: none; }
+.favorite-item {
+    position: relative;
+    background-color: #3a3b3c;
+    border-radius: 20px;
+    padding: 12px 10px 16px;
+    width: 90px;
+    cursor: move;
+    transition: transform 0.2s, background-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.favorite-item:hover {
+    transform: scale(1.05);
+    background-color: #5c5e60;
+}
+.favorite-item img {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.favorite-item span {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.favorite-item:hover span {
+    opacity: 1;
+}
+.favorite-item a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+    color: #e8eaed;
+    text-align: center;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#addFavoriteBtn {
+    background-color: var(--accent-color);
+    color: #000;
+    border-radius: 20px;
+    padding: 12px 10px 16px;
+    width: 90px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    will-change: transform, box-shadow;
+}
+#addFavoriteBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+#addFavoriteBtn:active {
+    transform: scale(0.95);
+}
+#settingsButton, #historyButton {
+    position: fixed;
+    top: 20px;
+    background-color: #303134;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1001;
+    transition: transform 0.2s, box-shadow 0.2s;
+    will-change: transform, box-shadow;
+    pointer-events: auto;
+}
+#settingsButton:hover, #historyButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+#settingsButton:active, #historyButton:active {
+    transform: scale(0.95);
+}
+#settingsButton {
+    right: 20px;
+}
+#historyButton {
+    right: 80px;
+}
+#settingsButton img, #historyButton img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+#settingsPanel, #historyPanel {
+    display: none;
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    background-color: #303134;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 320px;
+    text-align: left;
+    z-index: 1005;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    max-height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #5c5e60 #303134;
+}
+#settingsPanel::-webkit-scrollbar, #historyPanel::-webkit-scrollbar {
+    width: 8px;
+}
+#settingsPanel::-webkit-scrollbar-track, #historyPanel::-webkit-scrollbar-track {
+    background: #303134;
+    border-radius: 10px;
+}
+#settingsPanel::-webkit-scrollbar-thumb, #historyPanel::-webkit-scrollbar-thumb {
+    background: #5c5e60;
+    border-radius: 10px;
+}
+#settingsPanel::-webkit-scrollbar-thumb:hover, #historyPanel::-webkit-scrollbar-thumb:hover {
+    background: #7a7c80;
+}
+body.light #settingsPanel, body.light #historyPanel {
+    background-color: #f1f3f4;
+    color: #000;
+    scrollbar-color: #d1d1d1 #f1f3f4;
+}
+body.light #settingsPanel::-webkit-scrollbar-track, body.light #historyPanel::-webkit-scrollbar-track {
+    background: #f1f3f4;
+}
+body.light #settingsPanel::-webkit-scrollbar-thumb, body.light #historyPanel::-webkit-scrollbar-thumb {
+    background: #d1d1d1;
+}
+body.light #settingsPanel::-webkit-scrollbar-thumb:hover, body.light #historyPanel::-webkit-scrollbar-thumb:hover {
+    background: #b0b0b0;
+}
+#settingsPanel h3, #historyPanel h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 8px;
+    font-weight: 600;
+}
+body.light #settingsPanel h3, body.light #historyPanel h3 {
+    border-bottom: 2px solid #ccc;
+}
+#settingsPanel label, #historyPanel label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+#settingsPanel input, #settingsPanel select, #historyPanel input, #historyPanel select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: #202124;
+    color: white;
+    font-size: 14px;
+}
+body.light #settingsPanel input, body.light #settingsPanel select, body.light #historyPanel input, body.light #historyPanel select {
+    background-color: #e0e0e0;
+    color: #000;
+}
+#colorPalette .color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.2s;
+}
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.2s;
+}
+.color-option:hover {
+    border: 2px solid #fff;
+}
+body.light .color-option:hover {
+    border: 2px solid #000;
+}
+#settingsPanel input[type="color"] {
+    height: 40px;
+    padding: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#settingsPanel button, #historyPanel button {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    background-color: var(--accent-color);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    will-change: transform, box-shadow;
+    pointer-events: auto;
+}
+#settingsPanel button:hover, #historyPanel button:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1); 
+}
+#settingsPanel button:active, #historyPanel button:active {
+    transform: scale(0.95);
+    filter: brightness(0.9); 
+}
+#recentBgList {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+#recentBgList .bg-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: #202124;
+    transition: background-color 0.2s;
+}
+#recentBgList .bg-preview:hover {
+    background-color: #3c4043;
+}
+body.light #recentBgList .bg-preview {
+    background-color: #e0e0e0;
+}
+body.light #recentBgList .bg-preview:hover {
+    background-color: #d1d1d1;
+}
+#recentBgList .bg-preview img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+#recentBgList .bg-preview span {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+#historyList {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 60vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #5c5e60 #303134;
+}
+#historyList::-webkit-scrollbar {
+    width: 8px;
+}
+#historyList::-webkit-scrollbar-track {
+    background: #303134;
+    border-radius: 10px;
+}
+#historyList::-webkit-scrollbar-thumb {
+    background: #5c5e60;
+    border-radius: 10px;
+}
+#historyList::-webkit-scrollbar-thumb:hover {
+    background: #7a7c80;
+}
+body.light #historyList {
+    scrollbar-color: #d1d1d1 #f1f3f4;
+}
+body.light #historyList::-webkit-scrollbar-track {
+    background: #f1f3f4;
+}
+body.light #historyList::-webkit-scrollbar-thumb {
+    background: #d1d1d1;
+}
+body.light #historyList::-webkit-scrollbar-thumb:hover {
+    background: #b0b0b0;
+}
+#historyList .history-item {
+    padding: 10px;
+    background-color: #202124;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#historyList .history-item:hover {
+    background-color: #3c4043;
+}
+body.light #historyList .history-item {
+    background-color: #e0e0e0;
+}
+body.light #historyList .history-item:hover {
+    background-color: #d1d1d1;
+}
+#suggestions {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: #303134;
+    color: #e8eaed;
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1003;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+#suggestions[style*="block"] {
+    opacity: 1;
+}
+#suggestions::-webkit-scrollbar {
+    width: 8px;
+}
+#suggestions::-webkit-scrollbar-track {
+    background: #303134;
+    border-radius: 10px;
+}
+#suggestions::-webkit-scrollbar-thumb {
+    background: #5c5e60;
+    border-radius: 10px;
+}
+#suggestions::-webkit-scrollbar-thumb:hover {
+    background: #7a7c80;
+}
+body.light #suggestions {
+    scrollbar-color: #d1d1d1 #f1f3f4;
+}
+body.light #suggestions::-webkit-scrollbar-track {
+    background: #f1f3f4;
+}
+body.light #suggestions::-webkit-scrollbar-thumb {
+    background: #d1d1d1;
+}
+body.light #suggestions::-webkit-scrollbar-thumb:hover {
+    background: #b0b0b0;
+}
+#suggestions li {
+    padding: 12px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+#suggestions li:hover {
+    background-color: #3c4043;
+    transform: scale(1.02);
+}
+#suggestions li.selected {
+    background-color: #4a4e52;
+    font-weight: 500;
+}
+#suggestions li::before {
+    content: "";
+}
+#addFavoriteModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #303134;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    color: #e8eaed;
+    width: 320px;
+    text-align: center;
+}
+#addFavoriteModal label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+#addFavoriteModal input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #202124;
+    color: white;
+}
+#addFavoriteModal button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--accent-color);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    will-change: transform, box-shadow;
+}
+#addFavoriteModal button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+#addFavoriteModal button:active {
+    transform: scale(0.95);
+}
+#addFavoriteModal .close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #e8eaed;
+}
+@media (max-width: 600px) {
+    .search-bar {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+    #settingsPanel, #historyPanel {
+        width: 90%;
+        right: 5%;
+        top: 60px;
+        max-height: 70vh;
+        z-index: 1005;
+    }
+    #settingsButton {
+        right: 10px;
+        padding: 8px;
+    }
+    #historyButton {
+        right: 60px;
+        padding: 8px;
+    }
+    .weather-widget {
+        top: 10px;
+        left: 10px;
+        max-width: 200px;
+        font-size: 12px;
+    }
+    .info-bar {
+        bottom: 10px;
+        font-size: 10px;
+        padding: 8px 16px;
+    }
+    .logo img {
+        max-height: 60px;
+    }
+    .logo .logo-name {
+        font-size: 28px;
+    }
+    .favorites {
+        gap: 10px;
+    }
+    .favorite-item {
+        width: 80px;
+        padding: 10px;
+    }
+    #addFavoriteModal {
+        width: 80%;
+        max-width: 300px;
+    }
+    .container {
+        padding: 10px;
+    }
+}
+@media (max-width: 400px) {
+    .search-bar input {
+        font-size: 14px;
+        padding: 12px 40px 12px 36px;
+    }
+    .buttons button {
+        padding: 16px 16px;
+        font-size: 12px;
+    }
+}
