@@ -63,7 +63,7 @@ body.light .logo .logo-name {
     background-color: rgba(48, 49, 52, 0.9);
     color: #e8eaed;
     padding: 12px 16px;
-    border-radius: 16px;
+    border-radius: 20px;
     font-size: 14px;
     font-family: var(--site-font);
     max-width: 250px;
@@ -229,17 +229,24 @@ body.light .search-bar input:focus {
 }
 .favorites.hidden { display: none; }
 .favorite-item {
-    position: relative;
-    background-color: #3a3b3c;
-    border-radius: 20px;
-    padding: 12px 10px 16px;
-    width: 90px;
-    cursor: move;
-    transition: transform 0.2s, background-color 0.2s;
+    border-radius: 50%; 
+    width: 60px;
+    height: 60px; 
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    cursor: move;
+    background-color: #3a3b3c;
+    transition: transform 0.2s, background-color 0.2s;
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: move;
+  padding: 10px;
 }
 .favorite-item:hover {
     transform: scale(1.05);
@@ -249,26 +256,44 @@ body.light .search-bar input:focus {
     width: 32px;
     height: 32px;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: rgba(245, 40, 145, 0);
+    margin-top: 20px; 
 }
-.favorite-item span {
+.favorite-item span { 
     position: absolute;
-    top: 4px;
-    right: 6px;
-    cursor: pointer;
-    color: red;
-    font-weight: bold;
-    font-size: 16px;
-    user-select: none;
+    top: 37px;
+    right: 19px;
+    background: rgba(245, 40, 145, 0);
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 13px;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.3s;
+    z-index: 10;
+    cursor: pointer;
+    pointer-events: auto;
+}
+.favorite-item a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.favorite-item a img {
+    margin-bottom: 6px; 
+}
+
+.favorite-item a span, 
+.favorite-item a {
+    position: relative;
+    top: 10px; 
 }
 .favorite-item:hover span {
     opacity: 1;
 }
 .favorite-item a {
     text-decoration: none;
+        display: block; 
     font-weight: 600;
     font-size: 12px;
     color: #e8eaed;
@@ -277,13 +302,17 @@ body.light .search-bar input:focus {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    gap: 10px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 #addFavoriteBtn {
     background-color: var(--accent-color);
     color: #000;
-    border-radius: 20px;
-    padding: 12px 10px 16px;
-    width: 90px;
+    border-radius: 50%; 
+    width: 60px;
+    height: 60px;
     font-weight: bold;
     cursor: pointer;
     border: none;
@@ -675,6 +704,20 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
     color: #e8eaed;
 }
+.weather-error {
+    font-size: 12px;
+    color: #ff4444; 
+    text-align: center;
+    padding: 5px 10px;
+    background-color: rgba(245, 40, 145, 0);
+    border-radius: 5px;
+    display: inline-block;
+}
+
+body.light .weather-error {
+    background-color: rgba(255, 68, 68, 0.05); /* Light modda daha hafif */
+    color: #cc0000; /* Daha koyu kırmızı */
+}
 @media (max-width: 600px) {
     .search-bar {
         max-width: 90%;
@@ -733,7 +776,7 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
         padding: 12px 40px 12px 36px;
     }
     .buttons button {
-        padding: 16px 16px;
+        padding: 16px 10px;
         font-size: 12px;
     }
 }
