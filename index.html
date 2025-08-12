@@ -409,7 +409,7 @@
             const addBtn = document.createElement("div");
             addBtn.id = "addFavoriteBtn";
             addBtn.className = "favorite-item accent";
-            addBtn.textContent = (typeof translations !== "undefined" && translations[lang] && translations[lang].addFavorite) ? translations[lang].addFavorite : "+ Favori Ekle";
+            addBtn.textContent = (typeof translations !== "undefined" && translations[lang] && translations[lang].addFavorite) ? translations[lang].addFavorite : "+";
             addBtn.onclick = () => {
                 document.getElementById("addFavoriteModal").style.display = "block";
                 document.getElementById("modalName").focus();
@@ -780,3 +780,4 @@
     </script>
 </body>
 </html>
+
