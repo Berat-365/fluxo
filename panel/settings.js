@@ -1,6 +1,5 @@
 // ./panel/settings.js
 
-// Renk seçimi
 export function selectColor(color) {
     console.log("Seçilen renk:", color);
     document.getElementById("accentColor").value = color;
@@ -8,7 +7,6 @@ export function selectColor(color) {
     localStorage.setItem("accentColor", color);
 }
 
-// RGB'den HEX'e çevirme
 export function rgbToHex(rgb) {
     if (!rgb) return '#000000';
     const result = rgb.match(/\d+/g);
@@ -16,7 +14,6 @@ export function rgbToHex(rgb) {
     return '#' + ((1 << 24) + (parseInt(result[0]) << 16) + (parseInt(result[1]) << 8) + parseInt(result[2])).toString(16).slice(1).toUpperCase();
 }
 
-// Arama motoru önizlemesini güncelleme
 export function updateSearchEnginePreview() {
     const engine = document.getElementById("searchEngineSelect").value;
     const preview = document.getElementById("engineLogo");
@@ -31,7 +28,6 @@ export function updateSearchEnginePreview() {
     preview.style.display = logos[engine] ? "block" : "none";
 }
 
-// Klavye kısayollarını bağlama
 export function bindShortcuts() {
     let handleShortcuts = null;
     if (handleShortcuts) {
@@ -70,7 +66,7 @@ export function bindShortcuts() {
             const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
             if (history.length === 0) {
                 const noHistoryMsg = document.createElement("li");
-                noHistoryMsg.textContent = translations[lang] && translations[lang].noHistory ? translations[lang].noHistory : "Geçmiş yok";
+                noHistoryMsg.textContent = translations[lang]?.noHistory || "Geçmiş yok";
                 document.getElementById("historyList").appendChild(noHistoryMsg);
             } else {
                 history.forEach(item => {
@@ -103,6 +99,7 @@ export async function cacheBackgroundImage(url) {
     }
     try {
         const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch background image");
         const blob = await response.blob();
         const reader = new FileReader();
         reader.readAsDataURL(blob);
@@ -112,6 +109,13 @@ export async function cacheBackgroundImage(url) {
     } catch (e) {
         console.error("Arka plan önbellekleme hatası:", e);
     }
+}
+
+// YouTube video ID'sini çıkarma
+export function extractYouTubeId(url) {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
 }
 
 export function loadCachedBackground(url) {
@@ -129,13 +133,22 @@ export function loadCachedBackground(url) {
         const cached = localStorage.getItem(`bgCache_${url}`);
         const videoId = extractYouTubeId(cached || url);
         if (videoId) {
-            youTubeElement.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&autohide=1&playsinline=1&rel=0&iv_load_policy=3&vq=hd1080`;
+            youTubeElement.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&autohide=1&playsinline=1&rel=0&iv_load_policy=3&vq=hd720`;
             youTubeElement.style.display = 'block';
             document.body.style.backgroundImage = 'none';
             // Dinamik ölçeklendirme
             const aspectRatio = window.innerWidth / window.innerHeight;
             youTubeElement.style.transform = aspectRatio < 1.6 ? 'scale(1.15)' : 'scale(1.1)';
             cacheBackgroundImage(url);
+
+            // YouTube yükleme hatası için kontrol
+            youTubeElement.onerror = () => {
+                console.error("YouTube iframe yüklenemedi:", url);
+                alert("YouTube videosu yüklenemedi. Reklam engelleyicinizi kapatmayı veya başka bir video URL'si denemeyi deneyin.");
+                youTubeElement.style.display = 'none';
+                youTubeElement.src = '';
+                document.body.style.backgroundImage = 'none';
+            };
         } else {
             console.error("Geçersiz YouTube URL'si:", cached || url);
             alert("Geçersiz YouTube URL'si. Lütfen geçerli bir video bağlantısı girin.");
@@ -184,13 +197,6 @@ export function loadCachedBackground(url) {
             youTubeElement.style.transform = aspectRatio < 1.6 ? 'scale(1.15)' : 'scale(1.1)';
         }
     }, { once: true });
-}
-
-// YouTube video ID'sini çıkarma
-export function extractYouTubeId(url) {
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
 }
 
 export function applySettings(loadCachedBackground, updateLanguage, loadFavorites, updateSearchEnginePreview, fetchWeather, bindShortcuts, startWeatherUpdate) {
@@ -275,10 +281,9 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
     localStorage.setItem("linkBehavior", linkBehavior);
 
     let recentBgs = JSON.parse(localStorage.getItem("recentBackgrounds") || "[]");
-    // Geçersiz URL'leri filtrele
     recentBgs = recentBgs.filter(url => {
         try {
-            new URL(url); // Geçerli bir URL mi kontrol et
+            new URL(url);
             return true;
         } catch {
             return false;
@@ -300,6 +305,14 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
             loadCachedBackground(bgUrl);
             localStorage.setItem("bgUrl", bgUrl);
         };
+        const img = document.createElement("img");
+        const isYouTube = /youtube\.com|youtu\.be/i.test(bgUrl);
+        img.src = isYouTube ? `https://img.youtube.com/vi/${extractYouTubeId(bgUrl)}/0.jpg` : bgUrl;
+        img.style.width = "50px";
+        img.style.height = "30px";
+        img.style.borderRadius = "4px";
+        img.style.marginRight = "8px";
+        img.onerror = () => { img.src = "ico/default-favicon.png"; }; // Varsayılan resim
         const span = document.createElement("span");
         span.textContent = bgUrl.length > 30 ? bgUrl.substring(0, 27) + "..." : bgUrl;
         div.appendChild(img);
@@ -316,4 +329,3 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
     }
     bindShortcuts();
 }
-
