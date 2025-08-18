@@ -229,9 +229,9 @@ body.light .search-bar input:focus {
 }
 .favorites.hidden { display: none; }
 .favorite-item {
-    border-radius: 50%; 
+    border-radius: 50%; /* Tam yuvarlak yapar */
     width: 60px;
-    height: 60px; 
+    height: 60px; /* Yüksekliği de genişlik ile eşitle */
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -257,7 +257,7 @@ body.light .search-bar input:focus {
     height: 32px;
     border-radius: 6px;
     background: rgba(245, 40, 145, 0);
-    margin-top: 20px; 
+    margin-top: 20px; /* Resim ile yazı arasına boşluk */
 }
 .favorite-item span { 
     position: absolute;
@@ -280,20 +280,20 @@ body.light .search-bar input:focus {
 }
 
 .favorite-item a img {
-    margin-bottom: 6px; 
+    margin-bottom: 6px; /* img ile yazı arası */
 }
 
-.favorite-item a span, 
+.favorite-item a span, /* veya yazıyı tutan element */
 .favorite-item a {
     position: relative;
-    top: 10px; 
+    top: 10px; /* yukarı pozitif değer, aşağı negatif */
 }
 .favorite-item:hover span {
     opacity: 1;
 }
 .favorite-item a {
     text-decoration: none;
-        display: block; 
+        display: block; /* Altına yazı sarkmasın */
     font-weight: 600;
     font-size: 12px;
     color: #e8eaed;
@@ -302,7 +302,7 @@ body.light .search-bar input:focus {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    gap: 10px; 
+    gap: 10px; /* img ile yazı arasındaki boşluğu artırır */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -310,9 +310,9 @@ body.light .search-bar input:focus {
 #addFavoriteBtn {
     background-color: var(--accent-color);
     color: #000;
-    border-radius: 50%; 
+    border-radius: 50%; /* Tam yuvarlak yapar */
     width: 60px;
-    height: 60px;
+    height: 60px; /* Yüksekliği de genişlik ile eşitle */
     font-weight: bold;
     cursor: pointer;
     border: none;
@@ -706,7 +706,7 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
 }
 .weather-error {
     font-size: 12px;
-    color: #ff4444; 
+    color: #ff4444; /* Kırmızı hata metni */
     text-align: center;
     padding: 5px 10px;
     background-color: rgba(245, 40, 145, 0);
@@ -717,6 +717,24 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
 body.light .weather-error {
     background-color: rgba(255, 68, 68, 0.05); /* Light modda daha hafif */
     color: #cc0000; /* Daha koyu kırmızı */
+}
+#backgroundVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Videonun ekranı kaplamasını sağlar */
+    z-index: -1;
+}
+#backgroundYouTube {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 @media (max-width: 600px) {
     .search-bar {
