@@ -316,3 +316,4 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
     }
     bindShortcuts();
 }
+
