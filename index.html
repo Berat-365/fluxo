@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<video id="backgroundVideo" autoplay loop muted playsinline style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-    <source src="" type="video/mp4">
-</video>
-<iframe id="backgroundYouTube" frameborder="0" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;" allow="autoplay; encrypted-media"></iframe>
+    <video id="backgroundVideo" autoplay loop muted playsinline preload="auto" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; will-change: transform;">
+        <source src="" type="video/mp4">
+    </video>
+    <iframe id="backgroundYouTube" frameborder="0" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; object-fit: cover; transform: scale(1.1); will-change: transform;" allow="autoplay; encrypted-media"></iframe>
     <div class="weather-widget" id="weatherWidget" onclick="window.open('https://wttr.in', '_blank')">Yükleniyor...</div>
     <div class="info-bar" id="infoBar">Fluxo 3.7,2 | Vanilla | <span id="languageDisplay">Türkçe</span></div>
     <div class="url-sidebar" id="urlSidebar"></div>
@@ -189,8 +189,8 @@
         </div>
     </div>
     <script type="module">
-    import { translations } from './lang/language.js';
-import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview, loadCachedBackground } from './panel/settings.js';
+        import { translations } from './lang/language.js';
+        import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview, loadCachedBackground } from './panel/settings.js';
 
         // Dil değiştirme fonksiyonu
         function updateLanguage(lang) {
@@ -358,19 +358,37 @@ import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcu
             let linkBehavior = "newTab";
             let lang = "tr";
             try {
-                favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
+                const storedFavs = localStorage.getItem("userFavorites");
+                favs = storedFavs ? JSON.parse(storedFavs) : [];
+                if (!Array.isArray(favs)) {
+                    console.warn("userFavorites geçersiz formatta, sıfırlanıyor.");
+                    favs = [];
+                    localStorage.setItem("userFavorites", "[]");
+                }
                 maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
                 linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
                 lang = localStorage.getItem("language") || "tr";
             } catch (e) {
-                console.warn("Favoriler/ayarlar yüklenemedi:", e);
+                console.warn("Favoriler yüklenemedi, sıfırlanıyor:", e);
+                localStorage.setItem("userFavorites", "[]");
             }
+
             favs.forEach((f, i) => {
+                if (!f.url || !f.name) {
+                    console.warn(`Geçersiz favori atlanıyor: ${JSON.stringify(f)}`);
+                    return; // Geçersiz favorileri atla
+                }
+                let faviconUrl = "ico/default-favicon.png";
+                try {
+                    faviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}`;
+                } catch (e) {
+                    console.warn(`Geçersiz URL: ${f.url}`, e);
+                }
+
                 const btn = document.createElement("div");
                 btn.className = "favorite-item";
                 btn.setAttribute("draggable", "true");
                 btn.setAttribute("data-index", i);
-                const faviconUrl = f.url ? `https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}` : "ico/default-favicon.png";
                 btn.innerHTML = `
                     <div style="display:flex; flex-direction: column; align-items: center; gap:4px; text-align: center;">
                         <img src="${faviconUrl}" style="width:32px;height:32px;border-radius:6px;" onerror="this.src='ico/default-favicon.png'">
@@ -384,10 +402,11 @@ import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcu
                 removeBtn.addEventListener("click", () => removeFavorite(i));
                 cont.appendChild(btn);
             });
+
             const addBtn = document.createElement("div");
             addBtn.id = "addFavoriteBtn";
             addBtn.className = "favorite-item accent";
-            addBtn.textContent = (typeof translations !== "undefined" && translations[lang] && translations[lang].addFavorite) ? translations[lang].addFavorite : "+ Favori Ekle";
+            addBtn.textContent = translations[lang]?.addFavorite || "+ Favori Ekle";
             addBtn.onclick = () => {
                 document.getElementById("addFavoriteModal").style.display = "block";
                 document.getElementById("modalName").focus();
@@ -469,7 +488,7 @@ import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcu
                 const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
                 if (history.length === 0) {
                     const noHistoryMsg = document.createElement("li");
-                    noHistoryMsg.textContent = translations[lang] && translations[lang].noHistory ? translations[lang].noHistory : "Geçmiş yok";
+                    noHistoryMsg.textContent = translations[lang]?.noHistory || "Geçmiş yok";
                     historyList.appendChild(noHistoryMsg);
                 } else {
                     history.forEach(item => {
