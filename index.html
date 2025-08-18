@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<video id="backgroundVideo" autoplay loop muted playsinline style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+    <source src="" type="video/mp4">
+</video>
+<iframe id="backgroundYouTube" frameborder="0" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;" allow="autoplay; encrypted-media"></iframe>
     <div class="weather-widget" id="weatherWidget" onclick="window.open('https://wttr.in', '_blank')">Yükleniyor...</div>
     <div class="info-bar" id="infoBar">Fluxo 3.7,2 | Vanilla | <span id="languageDisplay">Türkçe</span></div>
     <div class="url-sidebar" id="urlSidebar"></div>
@@ -23,8 +27,8 @@
         <button id="applySettingsBtn" class="accent" data-lang-key="apply">Uygula</button>
         <button id="clearHistoryBtn" class="accent" data-lang-key="clearHistory">Geçmişi Temizle</button>
         <h3 data-lang-key="personalization">Kişiselleştirme</h3>
-        <label for="bgUrlInput" data-lang-key="bgUrl">Arka Plan URL:</label>
-        <input type="text" id="bgUrlInput" placeholder="https://...">
+        <label for="bgUrlInput" data-lang-key="bgUrl">Arka Plan URL (Resim, Video veya YouTube):</label>
+        <input type="text" id="bgUrlInput" placeholder="https://... (jpg, png, mp4, webm, ogg, youtube.com)">
         <div id="recentBgList" style="margin-top: 5px;"></div>
         <label for="fontSelect" data-lang-key="font">Yazı Tipi:</label>
         <select id="fontSelect">
@@ -185,8 +189,8 @@
         </div>
     </div>
     <script type="module">
-        import { translations } from './lang/language.js';
-        import { selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview } from './panel/settings.js';
+    import { translations } from './lang/language.js';
+import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview, loadCachedBackground } from './panel/settings.js';
 
         // Dil değiştirme fonksiyonu
         function updateLanguage(lang) {
@@ -249,32 +253,6 @@
             const interval = parseInt(localStorage.getItem("weatherUpdateInterval") || "10") * 60 * 1000;
             if (interval > 0) {
                 setInterval(fetchWeather, interval);
-            }
-        }
-
-        async function cacheBackgroundImage(url) {
-            try {
-                const response = await fetch(url);
-                const blob = await response.blob();
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = () => {
-                    localStorage.setItem(`bgCache_${url}`, reader.result);
-                };
-            } catch (e) {
-                console.error("Arka plan önbellekleme hatası:", e);
-            }
-        }
-
-        function loadCachedBackground(url) {
-            const cached = localStorage.getItem(`bgCache_${url}`);
-            if (cached) {
-                document.body.style.backgroundImage = `url('${cached}')`;
-            } else if (url) {
-                document.body.style.backgroundImage = `url('${url}')`;
-                cacheBackgroundImage(url);
-            } else {
-                document.body.style.backgroundImage = "none";
             }
         }
 
