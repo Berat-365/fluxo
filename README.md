@@ -18,4 +18,5 @@ Diğer tarayıcılar üzerinde de test edilmiştir
 Test edilen tarayıcılar: Arc, Zen, Firefox, Chrome, LibreWolf
 
 **Uyarı**
+
 Reklam engelleyiciler (Youtube kaynaklı arkaplanlar) hataya neden olabilir
