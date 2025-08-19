@@ -90,6 +90,78 @@ body.light .weather-widget:hover {
     color: #ff4444;
     text-align: center;
 }
+#voiceSearchModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(48, 49, 52); /* diğer modallarla uyumlu olsun */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 10010; /* diğerlerinden üste çıkması için */
+    color: #e8eaed;
+    width: 320px;
+    text-align: center;
+}
+body.light #voiceSearchModal {
+    background-color: rgb(255, 255, 255);
+    color: #000;
+}
+#voiceSearchModal.show {
+    display: block;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+#voiceTranscript {
+    width: 100%;
+    min-height: 0px;
+    max-height: 200px;
+    padding: 0.75rem;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 30px;
+    background: rgb(48, 49, 52);
+    color: #fff;
+    font-size: 1rem;
+    overflow-y: auto;
+    transition: border-color 0.2s ease;
+}
+body.light #voiceTranscript {
+    color: #000000;
+    background: rgba(241, 243, 244, 0.9);
+}
+#voiceSearchModal .accent {
+    background-color: var(--accent-color, #00bcd4);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0.5rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+#voiceIcon {
+    color: white; /* normalde beyaz */
+    transition: color 0.3s ease;
+}
+#voiceIcon.active {
+    color: red; /* ses tanıma açıkken kırmızı */
+}
+.voice-icon.active {
+    color: red; /* Ses tanıma açıkken */
+}
+.accent {
+    background-color: #00bcd4;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
 .info-bar {
     position: fixed;
     bottom: 20px;
@@ -223,13 +295,13 @@ body.light .search-bar input:focus {
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 19px;
     flex-wrap: wrap;
     z-index: 1000;
 }
 .favorites.hidden { display: none; }
 .favorite-item {
-    border-radius: 50%; /* Tam yuvarlak yapar */
+    border-radius: 40%; /* Tam yuvarlak yapar */
     width: 60px;
     height: 60px; /* Yüksekliği de genişlik ile eşitle */
     padding: 10px;
@@ -261,7 +333,7 @@ body.light .search-bar input:focus {
 }
 .favorite-item span { 
     position: absolute;
-    top: 37px;
+    top: 40px;
     right: 19px;
     background: rgba(245, 40, 145, 0);
     border-radius: 50%;
@@ -286,7 +358,7 @@ body.light .search-bar input:focus {
 .favorite-item a span, /* veya yazıyı tutan element */
 .favorite-item a {
     position: relative;
-    top: 10px; /* yukarı pozitif değer, aşağı negatif */
+    top: 12px; /* yukarı pozitif değer, aşağı negatif */
 }
 .favorite-item:hover span {
     opacity: 1;
@@ -310,7 +382,7 @@ body.light .search-bar input:focus {
 #addFavoriteBtn {
     background-color: var(--accent-color);
     color: #000;
-    border-radius: 50%; /* Tam yuvarlak yapar */
+    border-radius: 40%; /* Tam yuvarlak yapar */
     width: 60px;
     height: 60px; /* Yüksekliği de genişlik ile eşitle */
     font-weight: bold;
@@ -335,7 +407,7 @@ body.light .search-bar input:focus {
     background-color: #303134;
     color: white;
     border: none;
-    border-radius: 30px;
+    border-radius: 40px;
     padding: 15px 15px;
     cursor: pointer;
     font-size: 16px;
@@ -365,12 +437,12 @@ body.light .search-bar input:focus {
 #settingsPanel, #historyPanel {
     display: none;
     position: fixed;
-    top: 70px;
+    top: 78px;
     right: 20px;
     background-color: #303134;
     color: white;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 20px;
     width: 320px;
     text-align: left;
     z-index: 1005;
@@ -385,11 +457,9 @@ body.light .search-bar input:focus {
 }
 #settingsPanel::-webkit-scrollbar-track, #historyPanel::-webkit-scrollbar-track {
     background: #303134;
-    border-radius: 10px;
 }
 #settingsPanel::-webkit-scrollbar-thumb, #historyPanel::-webkit-scrollbar-thumb {
     background: #5c5e60;
-    border-radius: 10px;
 }
 #settingsPanel::-webkit-scrollbar-thumb:hover, #historyPanel::-webkit-scrollbar-thumb:hover {
     background: #7a7c80;
