@@ -1,5 +1,6 @@
 // ./panel/settings.js
 
+// Renk seçimi
 export function selectColor(color) {
     console.log("Seçilen renk:", color);
     document.getElementById("accentColor").value = color;
@@ -7,6 +8,7 @@ export function selectColor(color) {
     localStorage.setItem("accentColor", color);
 }
 
+// RGB'den HEX'e çevirme
 export function rgbToHex(rgb) {
     if (!rgb) return '#000000';
     const result = rgb.match(/\d+/g);
@@ -14,6 +16,7 @@ export function rgbToHex(rgb) {
     return '#' + ((1 << 24) + (parseInt(result[0]) << 16) + (parseInt(result[1]) << 8) + parseInt(result[2])).toString(16).slice(1).toUpperCase();
 }
 
+// Arama motoru önizlemesini güncelleme
 export function updateSearchEnginePreview() {
     const engine = document.getElementById("searchEngineSelect").value;
     const preview = document.getElementById("engineLogo");
@@ -28,6 +31,7 @@ export function updateSearchEnginePreview() {
     preview.style.display = logos[engine] ? "block" : "none";
 }
 
+// Klavye kısayollarını bağlama
 export function bindShortcuts() {
     let handleShortcuts = null;
     if (handleShortcuts) {
