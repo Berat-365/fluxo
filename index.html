@@ -8,6 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Microphone icon turns red when active */
+        #voiceIcon.active {
+            filter: invert(29%) sepia(99%) saturate(7482%) hue-rotate(359deg) brightness(97%) contrast(119%);
+        }
+    </style>
 </head>
 <body>
     <video id="backgroundVideo" autoplay loop muted playsinline preload="auto" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; will-change: transform;">
@@ -165,6 +171,11 @@
         <input type="text" id="modalUrl" placeholder="https://...">
         <button id="addFavoriteModalBtn" class="accent" data-lang-key="add">Ekle</button>
     </div>
+<div id="voiceSearchModal" class="modal">
+    <div id="voiceTranscript" contenteditable="true" class="transcript" data-placeholder="Söyledikleriniz burada görünecek..."></div>
+    <button id="confirmVoiceBtn" class="accent" data-lang-key="confirm">Tamam</button>
+    <button id="cancelVoiceBtn" class="accent" data-lang-key="cancel">İptal</button>
+</div>
     <div class="container">
         <div class="logo" id="logo">
             <a href="#" onclick="window.location.reload()">
@@ -500,76 +511,110 @@
             }
         }
 
-        document.getElementById("voiceSearchBtn").onclick = () => {
-            const lang = localStorage.getItem("language") || "tr";
-            if (!("webkitSpeechRecognition" in window)) {
-                alert(translations[lang].voiceSearchNotSupported);
-                return;
+document.getElementById("voiceSearchBtn").onclick = () => {
+    const lang = localStorage.getItem("language") || "tr";
+    if (!("webkitSpeechRecognition" in window)) {
+        alert(translations[lang].voiceSearchNotSupported);
+        return;
+    }
+
+    const modal = document.getElementById("voiceSearchModal");
+    const transcriptDiv = document.getElementById("voiceTranscript");
+    modal.style.display = "block";
+    transcriptDiv.textContent = translations[lang].voiceSearch || "Söyledikleriniz burada görünecek...";
+
+    const recognition = new webkitSpeechRecognition();
+    const langMap = {
+        "tr": "tr-TR",
+        "en": "en-US",
+        "es": "es-ES",
+        "ru": "ru-RU",
+        "jp": "ja-JP",
+        "zh": "zh-CN",
+        "ko": "ko-KR",
+        "de": "de-DE",
+        "fr": "fr-FR",
+        "ar": "ar-SA",
+        "az": "az-AZ",
+        "tk": "tk-TM",
+        "kk": "kk-KZ",
+        "ky": "ky-KG",
+        "uz": "uz-UZ",
+        "tt": "tt-RU",
+        "ba": "ba-RU",
+        "ug": "ug-CN",
+        "sah": "sah-RU",
+        "cv": "cv-RU",
+        "gag": "gag-TR"
+    };
+    recognition.lang = langMap[lang] || "en-US";
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        let interimTranscript = '';
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                finalTranscript = transcript.trim();
+                transcriptDiv.textContent = finalTranscript;
+                document.getElementById("searchInput").value = finalTranscript;
+            } else {
+                interimTranscript += transcript;
+                transcriptDiv.textContent = interimTranscript.trim() || translations[lang].voiceSearch;
             }
+        }
+    };
 
-            const recognition = new webkitSpeechRecognition();
-            const langMap = {
-                "tr": "tr-TR",
-                "en": "en-US",
-                "es": "es-ES",
-                "ru": "ru-RU",
-                "jp": "ja-JP",
-                "zh": "zh-CN",
-                "ko": "ko-KR",
-                "de": "de-DE",
-                "fr": "fr-FR",
-                "ar": "ar-SA",
-                "az": "az-AZ",
-                "tk": "tk-TM",
-                "kk": "kk-KZ",
-                "ky": "ky-KG",
-                "uz": "uz-UZ",
-                "tt": "tt-RU",
-                "ba": "ba-RU",
-                "ug": "ug-CN",
-                "sah": "sah-RU",
-                "cv": "cv-RU",
-                "gag": "gag-TR"
-            };
-            recognition.lang = langMap[lang] || "en-US";
-            recognition.interimResults = true;
-            recognition.continuous = false;
-            recognition.maxAlternatives = 1;
+    recognition.onerror = (event) => {
+        console.error("Ses tanıma hatası:", event.error);
+        transcriptDiv.textContent = `${translations[lang].voiceSearchNotSupported} (Hata: ${event.error})`;
+        recognition.stop();
+    };
 
-            recognition.start();
+    recognition.onend = () => {
+        console.log("Ses tanıma sona erdi.");
+    };
 
-            recognition.onresult = (event) => {
-                let interimTranscript = '';
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
-                    if (event.results[i].isFinal) {
-                        document.getElementById("searchInput").value = (transcript.trim());
-                        search();
-                        recognition.stop();
-                    } else {
-                        interimTranscript += transcript;
-                    }
-                }
-                document.getElementById("searchInput").value = interimTranscript.trim() || document.getElementById("searchInput").value;
-            };
+    document.getElementById("confirmVoiceBtn").onclick = () => {
+        if (document.getElementById("searchInput").value.trim()) {
+            search();
+            modal.style.display = "none";
+        }
+    };
 
-            recognition.onerror = (event) => {
-                console.error("Ses tanıma hatası:", event.error);
-                alert(`${translations[lang].voiceSearchNotSupported} (Hata: ${event.error})`);
-                recognition.stop();
-            };
+   const voiceIcon = document.getElementById("voiceIcon");
 
-            recognition.onend = () => {
-                console.log("Ses tanıma sona erdi.");
-            };
+// Ses tanıma başlatıldığında
+recognition.onstart = () => {
+    console.log("Ses tanıma başladı");
+    voiceIcon.classList.add("active"); // kırmızıya geç
+};
 
-            setTimeout(() => {
-                if (recognition && recognition.state === "recording") {
-                    recognition.stop();
-                    alert(translations[lang].voiceSearchNotSupported + " (Zaman aşımı)");
-                }
-            }, 10000);
-        };
+// Ses tanıma bittiğinde
+recognition.onend = () => {
+    console.log("Ses tanıma bitti");
+    voiceIcon.classList.remove("active"); // normale dön
+};
+
+    document.getElementById("cancelVoiceBtn").onclick = () => {
+        recognition.stop();
+        modal.style.display = "none";
+        transcriptDiv.textContent = translations[lang].voiceSearch || "Söyledikleriniz burada görünecek...";
+    };
+
+    setTimeout(() => {
+        if (recognition && recognition.state === "recording") {
+            recognition.stop();
+            transcriptDiv.textContent = translations[lang].voiceSearchNotSupported + " (Zaman aşımı)";
+            modal.style.display = "none";
+        }
+    }, 10000);
+};
 
         document.getElementById("settingsButton").addEventListener("click", (e) => {
             e.stopPropagation();
