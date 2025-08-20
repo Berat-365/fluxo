@@ -135,8 +135,8 @@ body.light #voiceTranscript {
     background: rgba(241, 243, 244, 0.9);
 }
 #voiceSearchModal .accent {
-    background-color: var(--accent-color);
     color: white;
+    background-color: #202124;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 15px;
@@ -144,6 +144,11 @@ body.light #voiceTranscript {
     font-size: 0.875rem;
     font-weight: 500;
     margin: 0.5rem;
+}
+#voiceSearchModal .accent:hover {
+    transform: scale(1.08);
+    background-color: var(--accent-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 #voiceIcon {
     color: white;
@@ -892,8 +897,22 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
     background: none;
     transition: none;
 }
+#accountModal .accent {
+    background-color: #202124;
+    border-radius: 20px;
+}
+#accountModal .accent:hover {
+    transform: scale(1.08);
+    background-color: var(--accent-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
 #accountModal.active {
     display: block;
+}
+#accountModalTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 12px;
 }
 #accountModalInner {
     background-color: #303134;
