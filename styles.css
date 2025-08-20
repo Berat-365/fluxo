@@ -29,23 +29,19 @@ body.light {
 body.light .search-bar input,
 body.light .buttons button,
 body.light .favorite-item,
-body.light #settingsButton,
-body.light #historyButton,
-body.light #settingsPanel,
-body.light #historyPanel,
+body.light #menuPanel,
+body.light #accountModalInner,
 body.light .weather-widget {
     background-color: #f1f3f4;
     color: #000;
 }
 body.light .favorite-item a { color: #000; }
 body.light .favorite-item img {
-    background: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0);
 }
 body.light #suggestions {
     background-color: #f1f3f4;
     color: #000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 body.light #suggestions li:hover {
     background-color: #e0e0e0;
@@ -60,7 +56,7 @@ body.light .logo .logo-name {
     position: fixed;
     top: 20px;
     left: 20px;
-    background-color: rgba(48, 49, 52, 0.9);
+    background-color: rgb(48, 49, 52);
     color: #e8eaed;
     padding: 12px 16px;
     border-radius: 20px;
@@ -89,21 +85,30 @@ body.light .weather-widget:hover {
     font-size: 12px;
     color: #ff4444;
     text-align: center;
+    padding: 5px 10px;
+    background-color: rgba(245, 40, 145, 0);
+    border-radius: 5px;
+    display: inline-block;
+}
+body.light .weather-error {
+    background-color: rgba(255, 68, 68, 0.05);
+    color: #cc0000;
 }
 #voiceSearchModal {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(48, 49, 52); /* diğer modallarla uyumlu olsun */
+    transform: translate(-50%, -50%) scale(0.95);
+    background-color: rgb(48, 49, 52);
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    z-index: 10010; /* diğerlerinden üste çıkması için */
+    z-index: 10010;
     color: #e8eaed;
     width: 320px;
     text-align: center;
+    animation: scaleIn 0.18s ease-out forwards;
 }
 body.light #voiceSearchModal {
     background-color: rgb(255, 255, 255);
@@ -124,15 +129,13 @@ body.light #voiceSearchModal {
     background: rgb(48, 49, 52);
     color: #fff;
     font-size: 1rem;
-    overflow-y: auto;
-    transition: border-color 0.2s ease;
 }
 body.light #voiceTranscript {
     color: #000000;
     background: rgba(241, 243, 244, 0.9);
 }
 #voiceSearchModal .accent {
-    background-color: var(--accent-color, #00bcd4);
+    background-color: var(--accent-color);
     color: white;
     padding: 0.5rem 1rem;
     border: none;
@@ -141,17 +144,16 @@ body.light #voiceTranscript {
     font-size: 0.875rem;
     font-weight: 500;
     margin: 0.5rem;
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 #voiceIcon {
-    color: white; /* normalde beyaz */
+    color: white;
     transition: color 0.3s ease;
 }
 #voiceIcon.active {
-    color: red; /* ses tanıma açıkken kırmızı */
+    color: red;
 }
 .voice-icon.active {
-    color: red; /* Ses tanıma açıkken */
+    color: red;
 }
 .accent {
     background-color: #00bcd4;
@@ -160,14 +162,13 @@ body.light #voiceTranscript {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 5px;
 }
 .info-bar {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(48, 49, 52, 0.9);
+    background-color: rgb(48, 49, 52);
     color: #e8eaed;
     padding: 10px 20px;
     border-radius: 20px;
@@ -261,12 +262,13 @@ body.light .search-bar input:focus {
     height: 24px;
 }
 .buttons {
-    margin-bottom: 20px;
+    margin-bottom: 0;
     z-index: 1001;
     display: flex;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
+    position: relative;
 }
 .buttons button {
     background-color: #303134;
@@ -287,23 +289,25 @@ body.light .search-bar input:focus {
     transform: scale(0.95);
     filter: brightness(0.9);
 }
-.buttons button.accent {
+.buttons button:hover {
+    transform: scale(1.08);
     background-color: var(--accent-color);
-    color: #000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 .favorites {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     justify-content: center;
     gap: 19px;
     flex-wrap: wrap;
     z-index: 1000;
+    position: relative;
 }
 .favorites.hidden { display: none; }
 .favorite-item {
-    border-radius: 40%; /* Tam yuvarlak yapar */
+    border-radius: 40%;
     width: 60px;
-    height: 60px; /* Yüksekliği de genişlik ile eşitle */
+    height: 60px;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -311,25 +315,43 @@ body.light .search-bar input:focus {
     justify-content: center;
     cursor: move;
     background-color: #3a3b3c;
-    transition: transform 0.2s, background-color 0.2s;
-    display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  cursor: move;
-  padding: 10px;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    position: relative;
 }
-.favorite-item:hover {
-    transform: scale(1.05);
-    background-color: #5c5e60;
+.favorite-item:hover, #addFavoriteBtn:hover {
+    transform: scale(1.08);
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.25);
+}
+.favorite-item:hover a, #addFavoriteBtn:hover {
+    color: #ffffff !important;
+}
+.favorite-item:active, #addFavoriteBtn:active {
+    transform: scale(0.96);
+    filter: brightness(0.95);
+}
+.favorite-item .remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background: rgba(245, 40, 145, 0);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    z-index: 10;
+}
+.favorite-item:hover span {
+    opacity: 1;
 }
 .favorite-item img {
     width: 32px;
     height: 32px;
     border-radius: 6px;
     background: rgba(245, 40, 145, 0);
-    margin-top: 20px; /* Resim ile yazı arasına boşluk */
+    margin-top: 20px;
 }
 .favorite-item span { 
     position: absolute;
@@ -350,22 +372,19 @@ body.light .search-bar input:focus {
     flex-direction: column;
     align-items: center;
 }
-
 .favorite-item a img {
-    margin-bottom: 6px; /* img ile yazı arası */
+    margin-bottom: 6px;
 }
-
-.favorite-item a span, /* veya yazıyı tutan element */
-.favorite-item a {
+.favorite-item a span, .favorite-item a {
     position: relative;
-    top: 12px; /* yukarı pozitif değer, aşağı negatif */
+    top: 12px;
 }
 .favorite-item:hover span {
     opacity: 1;
 }
 .favorite-item a {
     text-decoration: none;
-        display: block; /* Altına yazı sarkmasın */
+    display: block;
     font-weight: 600;
     font-size: 12px;
     color: #e8eaed;
@@ -374,7 +393,7 @@ body.light .search-bar input:focus {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    gap: 10px; /* img ile yazı arasındaki boşluğu artırır */
+    gap: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -382,62 +401,107 @@ body.light .search-bar input:focus {
 #addFavoriteBtn {
     background-color: var(--accent-color);
     color: #000;
-    border-radius: 40%; /* Tam yuvarlak yapar */
+    border-radius: 40%;
     width: 60px;
-    height: 60px; /* Yüksekliği de genişlik ile eşitle */
+    height: 60px;
     font-weight: bold;
     cursor: pointer;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
     will-change: transform, box-shadow;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 #addFavoriteBtn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    color: #ffffff !important;
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 #addFavoriteBtn:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
+    filter: brightness(0.95);
 }
-#settingsButton, #historyButton {
+#menuButton {
     position: fixed;
     top: 20px;
+    right: 20px;
     background-color: #303134;
     color: white;
     border: none;
     border-radius: 40px;
-    padding: 15px 15px;
+    padding: 15px;
     cursor: pointer;
     font-size: 16px;
     z-index: 1001;
     transition: transform 0.2s, box-shadow 0.2s;
     will-change: transform, box-shadow;
     pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
 }
-#settingsButton:hover, #historyButton:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+#menuButton:hover {
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
-#settingsButton:active, #historyButton:active {
-    transform: scale(0.95);
+#menuButton:active {
+    transform: scale(0.96);
+    filter: brightness(0.95);
 }
-#settingsButton {
-    right: 20px;
-}
-#historyButton {
-    right: 80px;
-}
-#settingsButton img, #historyButton img {
+#menuButton img {
     width: 20px;
     height: 20px;
     vertical-align: middle;
 }
-#settingsPanel, #historyPanel {
+body.light #menuButton {
+    background-color: #f1f3f4;
+    color: #000;
+}
+#accountButton {
+    position: fixed;
+    top: 20px;
+    right: 80px; /* menuButton’dan sonra */
+    background: #303134;
+    color: #fff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: none;
+    padding: 0;
+    transition: box-shadow 0.2s, background 0.2s, color 0.2s;
+    z-index: 1001;
+}
+#accountButton:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+    background: #444;
+    color: #fff;
+}
+body.light #accountButton {
+    background: #fff;
+    color: #000;
+}
+body.light #accountButton:hover {
+    background: #e0e0e0;
+    color: #000;
+}
+#accountButton img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+#menuPanel {
     display: none;
     position: fixed;
-    top: 78px;
+    top: 85px;
     right: 20px;
     background-color: #303134;
     color: white;
@@ -451,34 +515,74 @@ body.light .search-bar input:focus {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #5c5e60 #303134;
+    animation: modalFadeIn 0.18s;
+    contain: content; /* İçeriğin taşmasını engeller */
 }
-#settingsPanel::-webkit-scrollbar, #historyPanel::-webkit-scrollbar {
+#menuPanel::-webkit-scrollbar {
     width: 8px;
 }
-#settingsPanel::-webkit-scrollbar-track, #historyPanel::-webkit-scrollbar-track {
+#menuPanel::-webkit-scrollbar-track {
     background: #303134;
 }
-#settingsPanel::-webkit-scrollbar-thumb, #historyPanel::-webkit-scrollbar-thumb {
+#menuPanel::-webkit-scrollbar-thumb {
     background: #5c5e60;
 }
-#settingsPanel::-webkit-scrollbar-thumb:hover, #historyPanel::-webkit-scrollbar-thumb:hover {
+#menuPanel::-webkit-scrollbar-thumb:hover {
     background: #7a7c80;
 }
-body.light #settingsPanel, body.light #historyPanel {
+body.light #menuPanel {
     background-color: #f1f3f4;
     color: #000;
     scrollbar-color: #d1d1d1 #f1f3f4;
 }
-body.light #settingsPanel::-webkit-scrollbar-track, body.light #historyPanel::-webkit-scrollbar-track {
+body.light #menuPanel::-webkit-scrollbar-track {
     background: #f1f3f4;
 }
-body.light #settingsPanel::-webkit-scrollbar-thumb, body.light #historyPanel::-webkit-scrollbar-thumb {
+body.light #menuPanel::-webkit-scrollbar-thumb {
     background: #d1d1d1;
 }
-body.light #settingsPanel::-webkit-scrollbar-thumb:hover, body.light #historyPanel::-webkit-scrollbar-thumb:hover {
+body.light #menuPanel::-webkit-scrollbar-thumb:hover {
     background: #b0b0b0;
 }
-#settingsPanel h3, #historyPanel h3 {
+.tab-menu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #444;
+}
+body.light .tab-menu {
+    border-bottom: 2px solid #ccc;
+}
+.tab-button {
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #e8eaed;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+body.light .tab-button {
+    color: #000;
+}
+.tab-button.active {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+}
+.tab-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+body.light .tab-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+#menuPanel h3 {
     font-size: 18px;
     margin-bottom: 15px;
     margin-top: 20px;
@@ -486,16 +590,17 @@ body.light #settingsPanel::-webkit-scrollbar-thumb:hover, body.light #historyPan
     padding-bottom: 8px;
     font-weight: 600;
 }
-body.light #settingsPanel h3, body.light #historyPanel h3 {
+body.light #menuPanel h3 {
     border-bottom: 2px solid #ccc;
 }
-#settingsPanel label, #historyPanel label {
+#menuPanel label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
     font-size: 14px;
 }
-#settingsPanel input, #settingsPanel select, #historyPanel input, #historyPanel select {
+#menuPanel input,
+#menuPanel select {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -505,9 +610,33 @@ body.light #settingsPanel h3, body.light #historyPanel h3 {
     color: white;
     font-size: 14px;
 }
-body.light #settingsPanel input, body.light #settingsPanel select, body.light #historyPanel input, body.light #historyPanel select {
+body.light #menuPanel input,
+body.light #menuPanel select {
     background-color: #e0e0e0;
     color: #000;
+}
+#menuPanel button {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    background-color: var(--accent-color);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    will-change: transform, box-shadow;
+    pointer-events: auto;
+}
+#menuPanel button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
+}
+#menuPanel button:active {
+    transform: scale(0.95);
+    filter: brightness(0.9);
 }
 #colorPalette .color-option {
     width: 30px;
@@ -531,34 +660,11 @@ body.light #settingsPanel input, body.light #settingsPanel select, body.light #h
 body.light .color-option:hover {
     border: 2px solid #000;
 }
-#settingsPanel input[type="color"] {
+#menuPanel input[type="color"] {
     height: 40px;
     padding: 4px;
     cursor: pointer;
     margin-top: 10px;
-}
-#settingsPanel button, #historyPanel button {
-    margin-top: 10px;
-    padding: 12px;
-    width: 100%;
-    border: none;
-    border-radius: 50px;
-    background-color: var(--accent-color);
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
-    will-change: transform, box-shadow;
-    pointer-events: auto;
-}
-#settingsPanel button:hover, #historyPanel button:hover {
-    transform: scale(1.05); 
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    filter: brightness(1.1); 
-}
-#settingsPanel button:active, #historyPanel button:active {
-    transform: scale(0.95);
-    filter: brightness(0.9); 
 }
 #recentBgList {
     margin-top: 10px;
@@ -733,6 +839,7 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
     color: #e8eaed;
     width: 320px;
     text-align: center;
+    animation: scaleIn 0.18s ease-out forwards;
 }
 #addFavoriteModal label {
     display: block;
@@ -774,19 +881,149 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
     color: #e8eaed;
 }
-.weather-error {
-    font-size: 12px;
-    color: #ff4444; /* Kırmızı hata metni */
-    text-align: center;
-    padding: 5px 10px;
-    background-color: rgba(245, 40, 145, 0);
-    border-radius: 5px;
-    display: inline-block;
+#accountModal {
+    display: none;
+    position: fixed;
+    top: 78px;
+    right: 20px;
+    z-index: 1005;
+    width: 320px;
+    max-width: 95vw;
+    background: none;
+    transition: none;
 }
-
-body.light .weather-error {
-    background-color: rgba(255, 68, 68, 0.05); /* Light modda daha hafif */
-    color: #cc0000; /* Daha koyu kırmızı */
+#accountModal.active {
+    display: block;
+}
+#accountModalInner {
+    background-color: #303134;
+    color: #fff;
+    padding: 20px;
+    top: 5px;
+    border-radius: 20px;
+    width: 100%;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    max-height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #5c5e60 #303134;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    min-width: 0;
+    max-width: 100%;
+    animation: modalFadeIn 0.18s;
+}
+body.light #accountModalInner {
+    background-color: #f1f3f4;
+    color: #000;
+    scrollbar-color: #d1d1d1 #f1f3f4;
+}
+#accountModalInner::-webkit-scrollbar {
+    width: 8px;
+}
+#accountModalInner::-webkit-scrollbar-track {
+    background: #303134;
+    border-radius: 10px;
+}
+#accountModalInner::-webkit-scrollbar-thumb {
+    background: #5c5e60;
+    border-radius: 10px;
+}
+#accountModalInner::-webkit-scrollbar-thumb:hover {
+    background: #7a7c80;
+}
+body.light #accountModalInner::-webkit-scrollbar-track {
+    background: #f1f3f4;
+}
+body.light #accountModalInner::-webkit-scrollbar-thumb {
+    background: #d1d1d1;
+}
+body.light #accountModalInner::-webkit-scrollbar-thumb:hover {
+    background: #b0b0b0;
+}
+#accountModalInner .close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 1.7rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.15s;
+    z-index: 2;
+}
+#accountModalInner .close:hover {
+    color: #202124;
+}
+#accountForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+#accountForm input[type="text"],
+#accountForm input[type="password"] {
+    padding: 8px 12px;
+    border-radius: 17px;
+    font-size: 1rem;
+    outline: none;
+    background: #202124;
+    color: #222;
+    transition: border 0.15s;
+}
+#accountForm input[type="text"]:focus,
+#accountForm input[type="password"]:focus {
+    border-color: var(--accent-color);
+}
+body.light #accountForm input[type="text"],
+body.light #accountForm input[type="password"] {
+    background: #fff;
+    color: #222;
+}
+#accountForm > div {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+#accountForm .accent {
+    min-width: 90px;
+}
+#accountLoggedIn {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+#accountLoggedIn .accent {
+    min-width: 90px;
+}
+#accountWelcome {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.error-message {
+    color: #ff4444;
+    font-size: 0.98rem;
+    margin-top: 2px;
+    display: none;
+    text-align: center;
+}
+body.light .error-message {
+    color: #cc0000;
+}
+@media (max-width: 480px) {
+    #accountModalInner {
+        min-width: 0;
+        width: 98vw;
+        padding: 18px 6vw 18px 6vw;
+    }
+    #accountModal {
+        right: 1vw;
+        width: 98vw;
+        max-width: 98vw;
+        top: 60px;
+    }
 }
 #backgroundVideo {
     position: fixed;
@@ -794,7 +1031,7 @@ body.light .weather-error {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Videonun ekranı kaplamasını sağlar */
+    object-fit: cover;
     z-index: -1;
 }
 #backgroundYouTube {
@@ -806,65 +1043,28 @@ body.light .weather-error {
     height: 100%;
     z-index: -1;
 }
-@media (max-width: 600px) {
-    .search-bar {
-        max-width: 90%;
-        margin: 0 auto;
+@keyframes modalFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
     }
-    #settingsPanel, #historyPanel {
-        width: 90%;
-        right: 5%;
-        top: 60px;
-        max-height: 70vh;
-        z-index: 1005;
-    }
-    #settingsButton {
-        right: 10px;
-        padding: 8px;
-    }
-    #historyButton {
-        right: 60px;
-        padding: 8px;
-    }
-    .weather-widget {
-        top: 10px;
-        left: 10px;
-        max-width: 200px;
-        font-size: 12px;
-    }
-    .info-bar {
-        bottom: 10px;
-        font-size: 10px;
-        padding: 8px 16px;
-    }
-    .logo img {
-        max-height: 60px;
-    }
-    .logo .logo-name {
-        font-size: 28px;
-    }
-    .favorites {
-        gap: 10px;
-    }
-    .favorite-item {
-        width: 80px;
-        padding: 10px;
-    }
-    #addFavoriteModal {
-        width: 80%;
-        max-width: 300px;
-    }
-    .container {
-        padding: 10px;
+    100% {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
-@media (max-width: 400px) {
-    .search-bar input {
-        font-size: 14px;
-        padding: 12px 40px 12px 36px;
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
     }
-    .buttons button {
-        padding: 16px 10px;
-        font-size: 12px;
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
+}
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-color, #00bcd4);
 }
