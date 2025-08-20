@@ -1,4 +1,3 @@
-// ./panel/settings.js
 
 // Renk seçimi
 export function selectColor(color) {
@@ -31,7 +30,6 @@ export function updateSearchEnginePreview() {
     preview.style.display = logos[engine] ? "block" : "none";
 }
 
-// Klavye kısayollarını bağlama
 export function bindShortcuts() {
     let handleShortcuts = null;
     if (handleShortcuts) {
@@ -40,56 +38,54 @@ export function bindShortcuts() {
 
     const searchShortcut = localStorage.getItem("searchShortcut") || "Ctrl + /";
     const favoriteShortcut = localStorage.getItem("favoriteShortcut") || "Ctrl + Shift + F";
-    const settingsShortcut = localStorage.getItem("settingsShortcut") || "Ctrl + Shift + S";
+    const settingsShortcut = localStorage.getItem("settingsShortcut") || "Ctrl + Shift + X";
     const historyShortcut = localStorage.getItem("historyShortcut") || "Ctrl + Shift + H";
     const imagesShortcut = localStorage.getItem("imagesShortcut") || "Ctrl + I";
     const shoppingShortcut = localStorage.getItem("shoppingShortcut") || "Ctrl + S";
     const newsShortcut = localStorage.getItem("newsShortcut") || "Ctrl + N";
+    const accountShortcut = localStorage.getItem("accountShortcut") || "Ctrl + Shift + A";
+    const aiShortcut = localStorage.getItem("aiShortcut") || "Ctrl + Shift + I";
 
-    handleShortcuts = (e) => {
-        const keyCombo = `${e.ctrlKey ? 'Ctrl + ' : ''}${e.shiftKey ? 'Shift + ' : ''}${e.key}`;
-        if (keyCombo === searchShortcut) {
-            e.preventDefault();
-            document.getElementById("searchInput").focus();
-        } else if (keyCombo === favoriteShortcut) {
-            e.preventDefault();
-            document.getElementById("addFavoriteModal").style.display = "block";
-            document.getElementById("modalName").focus();
-        } else if (keyCombo === settingsShortcut) {
-            e.preventDefault();
-            const p = document.getElementById("settingsPanel");
-            p.style.display = p.style.display === "block" ? "none" : "block";
-            document.getElementById("historyPanel").style.display = "none";
-        } else if (keyCombo === historyShortcut) {
-            e.preventDefault();
-            const p = document.getElementById("historyPanel");
-            p.style.display = p.style.display === "block" ? "none" : "block";
-            document.getElementById("settingsPanel").style.display = "none";
-            document.getElementById("historyList").innerHTML = "";
-            const lang = localStorage.getItem("language") || "tr";
-            const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
-            if (history.length === 0) {
-                const noHistoryMsg = document.createElement("li");
-                noHistoryMsg.textContent = translations[lang]?.noHistory || "Geçmiş yok";
-                document.getElementById("historyList").appendChild(noHistoryMsg);
-            } else {
-                history.forEach(item => {
-                    const li = document.createElement("li");
-                    li.textContent = item;
-                    document.getElementById("historyList").appendChild(li);
-                });
-            }
-        } else if (keyCombo === imagesShortcut && document.getElementById("searchInput").value.trim()) {
-            e.preventDefault();
-            search('images');
-        } else if (keyCombo === shoppingShortcut && document.getElementById("searchInput").value.trim()) {
-            e.preventDefault();
-            search('shopping');
-        } else if (keyCombo === newsShortcut && document.getElementById("searchInput").value.trim()) {
-            e.preventDefault();
-            search('news');
-        }
-    };
+handleShortcuts = (e) => {
+    const keyCombo = `${e.ctrlKey ? 'Ctrl + ' : ''}${e.shiftKey ? 'Shift + ' : ''}${e.key}`;
+    if (keyCombo === searchShortcut) {
+        e.preventDefault();
+        document.getElementById("searchInput").focus();
+    } else if (keyCombo === favoriteShortcut) {
+        e.preventDefault();
+        document.getElementById("addFavoriteModal").style.display = "block";
+        document.getElementById("modalName").focus();
+    } else if (keyCombo === settingsShortcut) {
+        e.preventDefault();
+        const p = document.getElementById("menuPanel");
+        p.style.display = p.style.display === "block" ? "none" : "block";
+        document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+        document.getElementById("settingsContent").classList.add("active");
+        document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
+        document.querySelector(".tab-button[data-tab='settings']").classList.add("active");
+    } else if (keyCombo === historyShortcut) {
+        e.preventDefault();
+        const p = document.getElementById("menuPanel");
+        p.style.display = p.style.display === "block" ? "none" : "block";
+        document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+        document.getElementById("historyContent").classList.add("active");
+        document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
+        document.querySelector(".tab-button[data-tab='history']").classList.add("active");
+        loadSearchHistory();
+    } else if (keyCombo === imagesShortcut && document.getElementById("searchInput").value.trim()) {
+        e.preventDefault();
+        search('images');
+    } else if (keyCombo === shoppingShortcut && document.getElementById("searchInput").value.trim()) {
+        e.preventDefault();
+        search('shopping');
+    } else if (keyCombo === newsShortcut && document.getElementById("searchInput").value.trim()) {
+        e.preventDefault();
+        search('news');
+    } else if (keyCombo === aiShortcut && document.getElementById("searchInput").value.trim()) {
+        e.preventDefault();
+        search('ai');
+    }
+};
 
     document.addEventListener("keydown", handleShortcuts);
 }
@@ -226,6 +222,17 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
     const weatherLocation = document.getElementById("weatherLocation").value.trim();
     const weatherUpdateInterval = document.getElementById("weatherUpdateInterval").value;
     const linkBehavior = document.getElementById("linkBehavior").value;
+    const aiProvider = document.getElementById("aiProviderSelect").value;
+    const customAiUrl = document.getElementById("customAiUrl").value.trim();
+    const showAISearch = document.getElementById("showAISearch").checked;
+    const openWeatherMapApiKey = document.getElementById("openWeatherMapApiKey").value.trim();
+const weatherApiKey = document.getElementById("weatherApiKey").value.trim();
+const visualCrossingApiKey = document.getElementById("visualCrossingApiKey").value.trim();
+localStorage.setItem("openWeatherMapApiKey", openWeatherMapApiKey);
+localStorage.setItem("weatherApiKey", weatherApiKey);
+localStorage.setItem("visualCrossingApiKey", visualCrossingApiKey);
+    localStorage.setItem("showAISearch", showAISearch);
+    document.getElementById("searchAIBtn").style.display = showAISearch ? "inline-block" : "none";
 
     loadCachedBackground(bg);
     document.documentElement.style.setProperty('--site-font', f);
@@ -236,17 +243,17 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
     const logoName = document.getElementById("logoName");
     const searchIcon = document.getElementById("searchIcon");
     const voiceIcon = document.getElementById("voiceIcon");
-    const settingsIcon = document.getElementById("settingsIcon");
-    const historyIcon = document.getElementById("historyIcon");
+    const accountIcon = document.getElementById("accountIcon");
     logoImg.src = t === "light" ? "ico/logo-dark.png" : "ico/logo.png";
     searchIcon.src = t === "light" ? "ico/search-dark.png" : "ico/search.png";
     voiceIcon.src = t === "light" ? "ico/mic-dark.png" : "ico/mic.png";
-    settingsIcon.src = t === "light" ? "ico/settings-dark.png" : "ico/settings.png";
-    historyIcon.src = t === "light" ? "ico/history-dark.png" : "ico/history.png";
+    menuIcon.src = t === "light" ? "ico/menu-dark.png" : "ico/menu.png";
+    accountIcon.src = t === "light" ? "ico/account-dark.png" : "ico/account.png";
 
     document.getElementById("favorites").style.display = sf === "true" ? "flex" : "none";
     document.getElementById("weatherWidget").style.display = sw === "true" ? "block" : "none";
     document.getElementById("infoBar").style.display = si === "true" ? "block" : "none";
+    document.getElementById("searchAIBtn").style.display = showAISearch ? "inline-block" : "none";
 
     const logo = document.getElementById("logo");
     if (ld === "logo") {
@@ -283,6 +290,9 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
     localStorage.setItem("weatherLocation", weatherLocation);
     localStorage.setItem("weatherUpdateInterval", weatherUpdateInterval);
     localStorage.setItem("linkBehavior", linkBehavior);
+    localStorage.setItem("aiProvider", aiProvider);
+    localStorage.setItem("customAiUrl", customAiUrl);
+    localStorage.setItem("showAISearch", showAISearch);
 
     let recentBgs = JSON.parse(localStorage.getItem("recentBackgrounds") || "[]");
     recentBgs = recentBgs.filter(url => {
@@ -332,4 +342,95 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
         startWeatherUpdate();
     }
     bindShortcuts();
+}
+
+let isFetchingWeather = false;
+
+export async function fetchWeather() {
+    if (isFetchingWeather) {
+        console.log("Hava durumu sorgusu zaten işleniyor, atlanıyor...");
+        return;
+    }
+
+    isFetchingWeather = true;
+    const widget = document.getElementById("weatherWidget");
+    const location = localStorage.getItem("weatherLocation") || "Trabzon";
+    const api = localStorage.getItem("weatherAPI") || "wttrin"; // wttr.in varsayılan
+    let url, responseHandler;
+
+    try {
+        if (api === "openweathermap") {
+            const apiKey = localStorage.getItem("openWeatherMapApiKey") || "746302b25ec28740be573d4fb095b2b0";
+            if (!apiKey) throw new Error("OpenWeatherMap API anahtarı eksik");
+            url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${apiKey}&units=metric&lang=tr`;
+            responseHandler = async (resp) => {
+                if (!resp.ok) throw new Error(`HTTP hatası: ${resp.status}`);
+                const data = await resp.json();
+                return `${data.name}: ${data.weather[0].description}, ${data.main.temp}°C, Rüzgar: ${data.wind.speed} m/s`;
+            };
+        } else if (api === "weatherapi") {
+            const apiKey = localStorage.getItem("weatherApiKey") || "";
+            if (!apiKey) throw new Error("WeatherAPI anahtarı eksik");
+            url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(location)}&lang=tr`;
+            responseHandler = async (resp) => {
+                if (!resp.ok) throw new Error(`HTTP hatası: ${resp.status}`);
+                const data = await resp.json();
+                return `${data.location.name}: ${data.current.condition.text}, ${data.current.temp_c}°C, Rüzgar: ${data.current.wind_kph} km/s`;
+            };
+        } else if (api === "openmeteo") {
+            url = `https://api.open-meteo.com/v1/forecast?latitude=41.0050&longitude=39.7167&current=temperature_2m,weathercode,windspeed_10m&timezone=auto`; // Trabzon koordinatları
+            responseHandler = async (resp) => {
+                if (!resp.ok) throw new Error(`HTTP hatası: ${resp.status}`);
+                const data = await resp.json();
+                const weatherCodes = {
+                    0: "Açık", 1: "Parçalı Bulutlu", 2: "Bulutlu", 3: "Çok Bulutlu", 45: "Sis", 61: "Hafif Yağmur", 63: "Yağmur", 80: "Sağanak",
+                };
+                return `${location}: ${weatherCodes[data.current.weathercode] || "Bilinmeyen Hava"}, ${data.current.temperature_2m}°C, Rüzgar: ${data.current.windspeed_10m} km/s`;
+            };
+        } else if (api === "visualcrossing") {
+            const apiKey = localStorage.getItem("visualCrossingApiKey") || "2PYY93L453G6X8VMBXBHGY9E9";
+            if (!apiKey) throw new Error("Visual Crossing API anahtarı eksik");
+            url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(location)}?unitGroup=metric&key=${apiKey}&lang=tr`;
+            responseHandler = async (resp) => {
+                if (!resp.ok) throw new Error(`HTTP hatası: ${resp.status}`);
+                const data = await resp.json();
+                return `${data.address}: ${data.days[0].conditions}, ${data.days[0].temp}°C, Rüzgar: ${data.days[0].windspeed} km/s`;
+            };
+        } else if (api === "wttrin") {
+            url = `https://wttr.in/${encodeURIComponent(location)}?format=%l:+%C+%t+%w&lang=tr`; // Türkçe dil desteği eklendi
+            responseHandler = async (resp) => {
+                if (!resp.ok) throw new Error(`HTTP hatası: ${resp.status} - wttr.in sunucusuna ulaşılamadı`);
+                const text = await resp.text();
+                if (!text.trim()) throw new Error("wttr.in boş yanıt döndü, konumu kontrol edin: " + location);
+        // wttr.in çıktısını temizle ve düzenle
+        const cleanedText = text.replace(/\+/g, ' ').trim();
+        return cleanedText || `${location}: Veri alınamadı`;
+    };
+}
+
+
+console.log("Hava durumu isteği gönderiliyor:", url);
+        const resp = await fetch(url, {
+            headers: { Accept: api === "wttrin" ? "text/plain" : "application/json" },
+        });
+        const text = await responseHandler(resp);
+        widget.textContent = text;
+        widget.title = text;
+    } catch (error) {
+        console.error("Hava durumu hatası:", error.message);
+        widget.innerHTML = `<span class="weather-error">${
+            typeof translations !== "undefined" && translations[localStorage.getItem("language") || "tr"]?.weatherError || "Hava durumu alınamadı: " + error.message
+        }</span>`;
+        // alert yerine konsola yaz, tarayıcıyı kilitlemesin
+        console.warn("Hava durumu alınamadı:", error.message);
+    } finally {
+        isFetchingWeather = false;
+    }
+}
+export function startWeatherUpdate() {
+    fetchWeather();
+    const interval = parseInt(localStorage.getItem("weatherUpdateInterval") || "10") * 60 * 1000;
+    if (interval > 0) {
+        setInterval(fetchWeather, interval);
+    }
 }
