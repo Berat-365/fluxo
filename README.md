@@ -21,3 +21,5 @@ Test edilen tarayıcılar: Arc, Zen, Firefox, Chrome, LibreWolf
 
 Reklam engelleyiciler (Youtube kaynaklı arkaplanlar) hataya neden olabilir
 Hata Günlüğü: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+
+This site was built using [GitHub Pages](https://pages.github.com/).
