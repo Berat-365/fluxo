@@ -21,15 +21,20 @@
     </video>
     <iframe id="backgroundYouTube" frameborder="0" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; object-fit: cover; transform: scale(1.1); will-change: transform;" allow="autoplay; encrypted-media"></iframe>
     <div class="weather-widget" id="weatherWidget" onclick="window.open('https://wttr.in', '_blank')">Yükleniyor...</div>
-    <div class="info-bar" id="infoBar">Fluxo 3.7,2 | Vanilla | <span id="languageDisplay">Türkçe</span></div>
+    <div class="info-bar" id="infoBar">
+        Fluxo 3.8,2 | Vanilla | <span id="languageDisplay">Türkçe</span>
+        <span id="accountInfo" style="margin-left:0px;"></span>
+    </div>
     <div class="url-sidebar" id="urlSidebar"></div>
-    <button id="settingsButton">
-        <img id="settingsIcon" src="ico/settings.png" alt="Ayarlar">
-    </button>
-    <button id="historyButton">
-        <img id="historyIcon" src="ico/history.png" alt="Geçmiş Aramalar">
-    </button>
-    <div id="settingsPanel">
+<button id="menuButton">
+    <img id="menuIcon" src="ico/menu.png" alt="Menü">
+</button>
+<div id="menuPanel">
+    <div class="tab-menu">
+        <button class="tab-button active" data-tab="settings" data-lang-key="settings">Ayarlar</button>
+        <button class="tab-button" data-tab="history" data-lang-key="history">Geçmiş</button>
+    </div>
+    <div id="settingsContent" class="tab-content active">
         <button id="applySettingsBtn" class="accent" data-lang-key="apply">Uygula</button>
         <button id="clearHistoryBtn" class="accent" data-lang-key="clearHistory">Geçmişi Temizle</button>
         <h3 data-lang-key="personalization">Kişiselleştirme</h3>
@@ -55,11 +60,11 @@
         </select>
         <label for="accentColor" data-lang-key="accentColor">Vurgu Rengi:</label>
         <div id="colorPalette" class="flex flex-wrap gap-2 mt-2">
-            <div class="color-option" style="background-color: #00bcd4 !important;" onclick="selectColor('#00bcd4')"></div>
-            <div class="color-option" style="background-color: #ff5722 !important;" onclick="selectColor('#ff5722')"></div>
-            <div class="color-option" style="background-color: #4caf50 !important;" onclick="selectColor('#4caf50')"></div>
-            <div class="color-option" style="background-color: #9c27b0 !important;" onclick="selectColor('#9c27b0')"></div>
-            <div class="color-option" style="background-color: #ffeb3b !important;" onclick="selectColor('#ffeb3b')"></div>
+            <div class="color-option" style="background-color: #00bcd4;" onclick="selectColor('#00bcd4')"></div>
+            <div class="color-option" style="background-color: #ff5722;" onclick="selectColor('#ff5722')"></div>
+            <div class="color-option" style="background-color: #4caf50;" onclick="selectColor('#4caf50')"></div>
+            <div class="color-option" style="background-color: #9c27b0;" onclick="selectColor('#9c27b0')"></div>
+            <div class="color-option" style="background-color: #ffeb3b;" onclick="selectColor('#ffeb3b')"></div>
         </div>
         <input type="color" id="accentColor" value="#00bcd4">
         <label for="languageSelect" data-lang-key="language">Dil:</label>
@@ -93,6 +98,28 @@
             <option value="none" data-lang-key="none">Hiçbiri</option>
         </select>
         <h3 data-lang-key="system">Sistem</h3>
+        <div class="flex flex-col mb-2">
+            <label for="weatherAPI" data-lang-key="weatherAPI" class="text-sm mb-1">Hava Durumu API:</label>
+            <select id="weatherAPI" class="border rounded px-2 py-1 text-sm w-full max-w-xs">
+                <option value="openweathermap" data-lang-key="openweathermap">OpenWeatherMap</option>
+                <option value="weatherapi" data-lang-key="weatherapi">WeatherAPI</option>
+                <option value="openmeteo" data-lang-key="openmeteo">Open-Meteo</option>
+                <option value="visualcrossing" data-lang-key="visualcrossing">Visual Crossing</option>
+                <option value="wttrin" data-lang-key="wttrin">wttr.in</option>
+            </select>
+        </div>
+        <div class="api-key-input" id="openWeatherMapKeyInput">
+            <label for="openWeatherMapApiKey" data-lang-key="openWeatherMapApiKey">OpenWeatherMap API Anahtarı:</label>
+            <input type="text" id="openWeatherMapApiKey" placeholder="OpenWeatherMap anahtarınızı girin" class="border rounded px-2 py-1 text-sm w-full max-w-xs">
+        </div>
+        <div class="api-key-input" id="weatherApiKeyInput">
+            <label for="weatherApiKey" data-lang-key="weatherApiKey">WeatherAPI Anahtarı:</label>
+            <input type="text" id="weatherApiKey" placeholder="WeatherAPI anahtarınızı girin" class="border rounded px-2 py-1 text-sm w-full max-w-xs">
+        </div>
+        <div class="api-key-input" id="visualCrossingKeyInput">
+            <label for="visualCrossingApiKey" data-lang-key="visualCrossingApiKey">Visual Crossing API Anahtarı:</label>
+            <input type="text" id="visualCrossingApiKey" placeholder="Visual Crossing anahtarınızı girin" class="border rounded px-2 py-1 text-sm w-full max-w-xs">
+        </div>
         <label for="searchEngineSelect" data-lang-key="searchEngine">Arama Motoru:</label>
         <select id="searchEngineSelect">
             <option value="google">Google</option>
@@ -143,27 +170,49 @@
             <option value="true" data-lang-key="yes">Evet</option>
             <option value="false" data-lang-key="no">Hayır</option>
         </select>
+        <h3 data-lang-key="aiSettings">Yapay Zeka Ayarları</h3>
+        <label for="aiProviderSelect" data-lang-key="aiProvider">Yapay Zeka Sağlayıcısı:</label>
+        <select id="aiProviderSelect">
+            <option value="grok" data-lang-key="grok">Grok (xAI)</option>
+            <option value="chatgpt" data-lang-key="chatgpt">ChatGPT (OpenAI)</option>
+            <option value="claude" data-lang-key="claude">Claude (Anthropic)</option>
+            <option value="custom" data-lang-key="custom">Özel</option>
+        </select>
+        <div class="flex items-center gap-2">
+            <label for="showAISearch" data-lang-key="showAISearch" class="text-sm">AI Ara Butonunu Göster</label>
+            <input type="checkbox" id="showAISearch" class="w-4 h-4">
+        </div>
+        <label for="customAiUrl" data-lang-key="customAiUrl">Özel AI Sitesi URL'si (isteğe bağlı):</label>
+        <input type="text" id="customAiUrl" placeholder="https://ai.example.com">
         <h3 data-lang-key="shortcuts">Klavye Kısayolları</h3>
         <label for="searchShortcutInput" data-lang-key="searchShortcut">Arama Çubuğu:</label>
         <input type="text" id="searchShortcutInput" placeholder="Ör: Ctrl + /" value="Ctrl + /">
         <label for="favoriteShortcutInput" data-lang-key="favoriteShortcut">Favori Ekle:</label>
         <input type="text" id="favoriteShortcutInput" placeholder="Ör: Ctrl + Shift + F" value="Ctrl + Shift + F">
         <label for="settingsShortcutInput" data-lang-key="settingsShortcut">Ayarlar Paneli:</label>
-        <input type="text" id="settingsShortcutInput" placeholder="Ör: Ctrl + Shift + S" value="Ctrl + Shift + S">
+        <input type="text" id="settingsShortcutInput" placeholder="Ör: Ctrl + Shift + X" value="Ctrl + Shift + X">
         <label for="historyShortcutInput" data-lang-key="historyShortcut">Geçmiş Paneli:</label>
         <input type="text" id="historyShortcutInput" placeholder="Ör: Ctrl + Shift + H" value="Ctrl + Shift + H">
         <label for="imagesShortcutInput" data-lang-key="imagesShortcut">Görseller Araması:</label>
-        <input type="text" id="imagesShortcutInput" placeholder="Ör: Ctrl + I" value="Ctrl + I">
+        <input type="text" id="imagesShortcutInput" placeholder="Ör: Ctrl + i" value="Ctrl + i">
         <label for="shoppingShortcutInput" data-lang-key="shoppingShortcut">Alışveriş Araması:</label>
         <input type="text" id="shoppingShortcutInput" placeholder="Ör: Ctrl + S" value="Ctrl + S">
         <label for="newsShortcutInput" data-lang-key="newsShortcut">Haberler Araması:</label>
         <input type="text" id="newsShortcutInput" placeholder="Ör: Ctrl + N" value="Ctrl + N">
+        <label for="accountShortcutInput" data-lang-key="accountShortcut">Hesap Paneli:</label>
+        <input type="text" id="accountShortcutInput" placeholder="Ör: Ctrl + Shift + A" value="Ctrl + Shift + A">
+        <label for="aiShortcutInput" data-lang-key="aiShortcut">Yapay Zeka Araması:</label>
+        <input type="text" id="aiShortcutInput" placeholder="Ör: Ctrl + Shift + I" value="Ctrl + Shift + I">
     </div>
-    <div id="historyPanel">
+    <div id="historyContent" class="tab-content">
         <h3 data-lang-key="searchHistory">Arama Geçmişi</h3>
         <div id="historyList"></div>
     </div>
-    <div id="addFavoriteModal">
+</div>
+<button id="accountButton" title="Hesap">
+        <img id="accountIcon" src="ico/account.png" alt="Hesap">
+    </button>
+<div id="addFavoriteModal">
         <span class="close" onclick="document.getElementById('addFavoriteModal').style.display='none'">×</span>
         <label for="modalName" data-lang-key="favoriteName">İsim:</label>
         <input type="text" id="modalName" placeholder="Favori ismi">
@@ -171,11 +220,11 @@
         <input type="text" id="modalUrl" placeholder="https://...">
         <button id="addFavoriteModalBtn" class="accent" data-lang-key="add">Ekle</button>
     </div>
-<div id="voiceSearchModal" class="modal">
-    <div id="voiceTranscript" contenteditable="true" class="transcript" data-placeholder="Söyledikleriniz burada görünecek..."></div>
-    <button id="confirmVoiceBtn" class="accent" data-lang-key="confirm">Tamam</button>
-    <button id="cancelVoiceBtn" class="accent" data-lang-key="cancel">İptal</button>
-</div>
+    <div id="voiceSearchModal" class="modal">
+        <div id="voiceTranscript" contenteditable="true" class="transcript" data-placeholder="Söyledikleriniz burada görünecek..."></div>
+        <button id="confirmVoiceBtn" class="accent" data-lang-key="confirm">Tamam</button>
+        <button id="cancelVoiceBtn" class="accent" data-lang-key="cancel">İptal</button>
+    </div>
     <div class="container">
         <div class="logo" id="logo">
             <a href="#" onclick="window.location.reload()">
@@ -189,107 +238,120 @@
             <span class="icon-right" id="voiceSearchBtn"><img id="voiceIcon" src="ico/mic.png" alt="Sesli Arama"></span>
             <ul id="suggestions" role="listbox" aria-label="Arama önerileri"></ul>
         </div>
-        <div class="buttons">
-            <button onclick="search('web')" class="accent" data-lang-key="search">Ara</button>
-            <button onclick="search('images')" data-lang-key="images">Görseller</button>
-            <button onclick="search('shopping')" data-lang-key="shopping">Alışveriş</button>
-            <button onclick="search('news')" data-lang-key="news">Haberler</button>
-        </div>
+<div class="buttons">
+    <button id="searchWebBtn" class="accent" data-lang-key="search">Ara</button>
+    <button id="searchImagesBtn" class="accent" data-lang-key="images">Görseller</button>
+    <button id="searchShoppingBtn" class="accent" data-lang-key="shopping">Alışveriş</button>
+    <button id="searchNewsBtn" class="accent" data-lang-key="news">Haberler</button>
+    <button id="searchAIBtn" class="accent" data-lang-key="aiSearch">AI Arama</button>
+</div>
         <div class="favorites" id="favorites">
             <div id="addFavoriteBtn" class="favorite-item accent" data-lang-key="addFavorite">+ Favori Ekle</div>
         </div>
     </div>
-    <script type="module">
-        import { translations } from './lang/language.js';
-        import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview, loadCachedBackground } from './panel/settings.js';
+    <div id="accountModal">
+        <div id="accountModalInner">
+            <span class="close" onclick="closeAccountPanel()">×</span>
+            <h3 id="accountModalTitle" data-lang-key="account">Hesap</h3>
+            <div id="accountForm">
+                <input type="text" id="accountUsername" placeholder="Kullanıcı adı" autocomplete="username">
+                <input type="password" id="accountPassword" placeholder="Şifre" autocomplete="current-password">
+                <div>
+                    <button id="accountLoginBtn" class="accent" data-lang-key="login">Giriş Yap</button>
+                    <button id="accountRegisterBtn" class="accent" data-lang-key="register">Kayıt Ol</button>
+                </div>
+                <span id="accountError" class="error-message" data-lang-key="accountError">Hatalı kullanıcı adı veya şifre.</span>
+            </div>
+            <div id="accountLoggedIn">
+                <span id="accountWelcome"></span>
+                <button id="accountLogoutBtn" class="accent" data-lang-key="logout">Çıkış Yap</button>
+            </div>
+        </div>
+    </div>
+<script type="module">
+    import { translations } from './lang/language.js';
+    import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview, loadCachedBackground, fetchWeather, startWeatherUpdate } from './panel/settings.js';
 
-        // Dil değiştirme fonksiyonu
-        function updateLanguage(lang) {
-            if (typeof translations === "undefined" || !translations[lang]) {
+    // Dil değiştirme fonksiyonu
+    function updateLanguage(lang) {
+        if (typeof translations === "undefined" || !translations[lang]) {
+            return;
+        }
+        if (typeof translations === "undefined" || !translations[lang]) {
+    console.error("translations tanımlı değil, varsayılan Türkçe kullanılıyor.");
+    document.getElementById("weatherWidget").innerHTML = `<span class="weather-error">Hava durumu alınamadı</span>`;
+    return;
+}
+        document.documentElement.lang = lang;
+        const elements = document.querySelectorAll('[data-lang-key]');
+        elements.forEach(el => {
+            const key = el.getAttribute('data-lang-key');
+            if (translations[lang] && translations[lang][key]) {
+                if (el.tagName === 'INPUT' && el.type === 'text') {
+                    el.placeholder = translations[lang][key];
+                } else if (el.tagName === 'OPTION') {
+                    el.textContent = translations[lang][key];
+                } else {
+                    el.textContent = translations[lang][key];
+                }
+            }
+        });
+
+        document.getElementById('searchInput').placeholder = translations[lang].searchPlaceholder;
+        document.getElementById('modalName').placeholder = translations[lang].favoritePlaceholder;
+        document.getElementById('modalUrl').placeholder = translations[lang].urlPlaceholder;
+        document.getElementById('weatherLocation').placeholder = translations[lang].weatherLocationPlaceholder;
+        document.getElementById('languageDisplay').textContent = translations[lang].languageDisplay;
+        document.getElementById('addFavoriteBtn').textContent = translations[lang].addFavorite;
+        document.getElementById('accountError').textContent = translations[lang].accountError || 'Hatalı kullanıcı adı veya şifre.';
+    }
+
+    // Debounce fonksiyonu
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    async function search(type = 'web') {
+        const q = document.getElementById("searchInput").value.trim();
+        const suggestionsBox = document.getElementById("suggestions");
+        suggestionsBox.style.display = "none";
+        if (!q) return;
+        const engine = localStorage.getItem("searchEngine") || "google";
+        const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
+        const aiProvider = localStorage.getItem("aiProvider") || "grok";
+        const customAiUrl = localStorage.getItem("customAiUrl") || "";
+        const lang = localStorage.getItem("language") || "tr";
+        let url;
+
+        if (type === "ai") {
+            if (aiProvider === "custom" && !customAiUrl) {
+                alert(translations[lang].invalidAiUrl || "Geçersiz veya eksik AI sitesi URL'si!");
                 return;
             }
-            document.documentElement.lang = lang;
-            const elements = document.querySelectorAll('[data-lang-key]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-lang-key');
-                if (translations[lang] && translations[lang][key]) {
-                    if (el.tagName === 'INPUT' && el.type === 'text') {
-                        el.placeholder = translations[lang][key];
-                    } else if (el.tagName === 'OPTION') {
-                        el.textContent = translations[lang][key];
-                    } else {
-                        el.textContent = translations[lang][key];
-                    }
+            if (aiProvider === "grok") {
+                url = `https://grok.x.ai/?query=${encodeURIComponent(q)}`;
+            } else if (aiProvider === "chatgpt") {
+                url = `https://chat.openai.com/?q=${encodeURIComponent(q)}`;
+            } else if (aiProvider === "claude") {
+                url = `https://claude.anthropic.com/?q=${encodeURIComponent(q)}`;
+            } else if (aiProvider === "custom") {
+                try {
+                    new URL(customAiUrl);
+                    url = `${customAiUrl}?q=${encodeURIComponent(q)}`;
+                } catch {
+                    alert(translations[lang].invalidAiUrl || "Geçersiz AI sitesi URL'si!");
+                    return;
                 }
-            });
-            document.getElementById('searchInput').placeholder = translations[lang].searchPlaceholder;
-            document.getElementById('modalName').placeholder = translations[lang].favoritePlaceholder;
-            document.getElementById('modalUrl').placeholder = translations[lang].urlPlaceholder;
-            document.getElementById('weatherLocation').placeholder = translations[lang].weatherLocationPlaceholder;
-            document.getElementById('languageDisplay').textContent = translations[lang].languageDisplay;
-            document.getElementById('addFavoriteBtn').textContent = translations[lang].addFavorite;
-        }
-
-        // Debounce fonksiyonu
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        async function fetchWeather() {
-            const widget = document.getElementById("weatherWidget");
-            const location = localStorage.getItem("weatherLocation") || "";
-            try {
-                const resp = await fetch(`https://wttr.in/${encodeURIComponent(location)}?format=%l:+%c+%t+%w`);
-                if (!resp.ok) throw new Error("Weather fetch failed");
-                const txt = await resp.text();
-                widget.textContent = txt;
-                widget.title = txt;
-            } catch {
-                widget.innerHTML = `<span class="weather-error">${
-                    translations[localStorage.getItem("language") || "tr"].weatherError
-                }</span>`;
             }
-        }
-
-        // Hava durumu güncelleme
-        function startWeatherUpdate() {
-            const interval = parseInt(localStorage.getItem("weatherUpdateInterval") || "10") * 60 * 1000;
-            if (interval > 0) {
-                setInterval(fetchWeather, interval);
-            }
-        }
-
-        async function fetchWebsiteTitle(url) {
-            try {
-                const domain = new URL(url).hostname;
-                const apiUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(domain)}&format=json&no_redirect=1&no_html=1`;
-                const resp = await fetch(apiUrl);
-                if (resp.ok) {
-                    const data = await resp.json();
-                    if (data.Heading) return data.Heading;
-                }
-                return domain.split('.')[0] || "Site";
-            } catch (e) {
-                return "Site";
-            }
-        }
-
-        function search(type = 'web') {
-            const q = document.getElementById("searchInput").value.trim();
-            const suggestionsBox = document.getElementById("suggestions");
-            suggestionsBox.style.display = "none";
-            if (!q) return;
-            const engine = localStorage.getItem("searchEngine") || "google";
-            const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
-            let url;
+        } else {
             if (engine === "yandex") {
                 if (type === 'images') {
                     url = `https://yandex.com/images/search?text=${encodeURIComponent(q)}`;
@@ -339,486 +401,691 @@
                     url = `https://search.yahoo.com/search?p=${encodeURIComponent(q)}`;
                 }
             }
-            let searchHistory = JSON.parse(localStorage.getItem("searchHistory") || "[]");
-            if (!searchHistory.includes(q)) {
-                searchHistory.unshift(q);
-                localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-            }
-            loadSearchHistory();
-            document.getElementById("searchInput").value = "";
-            if (linkBehavior === "closeCurrent") {
-                window.location.href = url;
-            } else {
-                window.open(url, "_blank");
-            }
         }
 
-        function saveFavorites(favs) {
-            try {
-                localStorage.setItem("userFavorites", JSON.stringify(favs));
-            } catch (e) {
-                console.warn("Could not save favorites:", e);
-            }
+        let searchHistory = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+        if (!searchHistory.includes(q)) {
+            searchHistory.unshift(q);
+            localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
         }
+        loadSearchHistory();
+        document.getElementById("searchInput").value = "";
+        if (linkBehavior === "closeCurrent") {
+            window.location.href = url;
+        } else {
+            window.open(url, "_blank");
+        }
+    }
 
-        function loadFavorites() {
-            const cont = document.getElementById("favorites");
-            cont.innerHTML = "";
-            let favs = [];
-            let maxFav = 5;
-            let linkBehavior = "newTab";
-            let lang = "tr";
-            try {
-                const storedFavs = localStorage.getItem("userFavorites");
-                favs = storedFavs ? JSON.parse(storedFavs) : [];
-                if (!Array.isArray(favs)) {
-                    console.warn("userFavorites geçersiz formatta, sıfırlanıyor.");
-                    favs = [];
-                    localStorage.setItem("userFavorites", "[]");
-                }
-                maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
-                linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
-                lang = localStorage.getItem("language") || "tr";
-            } catch (e) {
-                console.warn("Favoriler yüklenemedi, sıfırlanıyor:", e);
+    function saveFavorites(favs) {
+        try {
+            localStorage.setItem("userFavorites", JSON.stringify(favs));
+        } catch (e) {
+            console.warn("Could not save favorites:", e);
+        }
+    }
+
+    function loadFavorites() {
+        const cont = document.getElementById("favorites");
+        cont.innerHTML = "";
+        let favs = [];
+        let maxFav = 5;
+        let linkBehavior = "newTab";
+        let lang = "tr";
+        try {
+            const storedFavs = localStorage.getItem("userFavorites");
+            favs = storedFavs ? JSON.parse(storedFavs) : [];
+            if (!Array.isArray(favs)) {
+                console.warn("userFavorites geçersiz formatta, sıfırlanıyor.");
+                favs = [];
                 localStorage.setItem("userFavorites", "[]");
             }
-
-            favs.forEach((f, i) => {
-                if (!f.url || !f.name) {
-                    console.warn(`Geçersiz favori atlanıyor: ${JSON.stringify(f)}`);
-                    return; // Geçersiz favorileri atla
-                }
-                let faviconUrl = "ico/default-favicon.png";
-                try {
-                    faviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}`;
-                } catch (e) {
-                    console.warn(`Geçersiz URL: ${f.url}`, e);
-                }
-
-                const btn = document.createElement("div");
-                btn.className = "favorite-item";
-                btn.setAttribute("draggable", "true");
-                btn.setAttribute("data-index", i);
-                btn.innerHTML = `
-                    <div style="display:flex; flex-direction: column; align-items: center; gap:4px; text-align: center;">
-                        <img src="${faviconUrl}" style="width:32px;height:32px;border-radius:6px;" onerror="this.src='ico/default-favicon.png'">
-                        <a href="${f.url}" ${linkBehavior === "closeCurrent" ? "" : 'target="_blank"'}>${f.name}</a>
-                    </div>
-                    <span class="remove-btn">×</span>`;
-                btn.addEventListener("dragstart", handleDragStart);
-                btn.addEventListener("dragover", handleDragOver);
-                btn.addEventListener("drop", handleDrop);
-                const removeBtn = btn.querySelector(".remove-btn");
-                removeBtn.addEventListener("click", () => removeFavorite(i));
-                cont.appendChild(btn);
-            });
-
-            const addBtn = document.createElement("div");
-            addBtn.id = "addFavoriteBtn";
-            addBtn.className = "favorite-item accent";
-            addBtn.textContent = translations[lang]?.addFavorite || "+ Favori Ekle";
-            addBtn.onclick = () => {
-                document.getElementById("addFavoriteModal").style.display = "block";
-                document.getElementById("modalName").focus();
-            };
-            cont.appendChild(addBtn);
-            document.getElementById("addFavoriteBtn").style.display = favs.length >= maxFav ? "none" : "flex";
+            maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
+            linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
+            lang = localStorage.getItem("language") || "tr";
+        } catch (e) {
+            console.warn("Favoriler yüklenemedi, sıfırlanıyor:", e);
+            localStorage.setItem("userFavorites", "[]");
         }
 
-        function removeFavorite(i) {
+        favs.forEach((f, i) => {
+            if (!f.url || !f.name) {
+                console.warn(`Geçersiz favori atlanıyor: ${JSON.stringify(f)}`);
+                return;
+            }
+            let faviconUrl = "ico/default-favicon.png";
+            try {
+                faviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(f.url).hostname}`;
+            } catch (e) {
+                console.warn(`Geçersiz URL: ${f.url}`, e);
+            }
+
+            const btn = document.createElement("div");
+            btn.className = "favorite-item";
+            btn.setAttribute("draggable", "true");
+            btn.setAttribute("data-index", i);
+            btn.innerHTML = `
+                <div style="display:flex; flex-direction: column; align-items: center; gap:4px; text-align: center;">
+                    <img src="${faviconUrl}" style="width:32px;height:32px;border-radius:6px;" onerror="this.src='ico/default-favicon.png'">
+                    <a href="${f.url}" ${linkBehavior === "closeCurrent" ? "" : 'target="_blank"'}>${f.name}</a>
+                </div>
+                <span class="remove-btn">×</span>`;
+            btn.addEventListener("dragstart", handleDragStart);
+            btn.addEventListener("dragover", handleDragOver);
+            btn.addEventListener("drop", handleDrop);
+            const removeBtn = btn.querySelector(".remove-btn");
+            removeBtn.addEventListener("click", () => removeFavorite(i));
+            cont.appendChild(btn);
+        });
+
+        const addBtn = document.createElement("div");
+        addBtn.id = "addFavoriteBtn";
+        addBtn.className = "favorite-item accent";
+        addBtn.textContent = translations[lang]?.addFavorite || "+ Favori Ekle";
+        addBtn.onclick = () => {
+            document.getElementById("addFavoriteModal").style.display = "block";
+            document.getElementById("modalName").focus();
+        };
+        cont.appendChild(addBtn);
+        document.getElementById("addFavoriteBtn").style.display = favs.length >= maxFav ? "none" : "flex";
+    }
+
+    function removeFavorite(i) {
+        const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
+        favs.splice(i, 1);
+        saveFavorites(favs);
+        loadFavorites();
+    }
+
+    let draggedIndex = null;
+
+    function handleDragStart(e) {
+        draggedIndex = e.target.getAttribute("data-index");
+        e.dataTransfer.setData("text/plain", draggedIndex);
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const droppedItem = e.target.closest(".favorite-item");
+        if (!droppedItem) return;
+        const droppedIndex = droppedItem.getAttribute("data-index");
+        if (draggedIndex !== null && droppedIndex !== null && draggedIndex !== droppedIndex) {
             const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
-            favs.splice(i, 1);
+            const draggedFav = favs[draggedIndex];
+            favs.splice(draggedIndex, 1);
+            favs.splice(droppedIndex, 0, draggedFav);
             saveFavorites(favs);
             loadFavorites();
         }
-
-        let draggedIndex = null;
-
-        function handleDragStart(e) {
-            draggedIndex = e.target.getAttribute("data-index");
-            e.dataTransfer.setData("text/plain", draggedIndex);
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            const droppedItem = e.target.closest(".favorite-item");
-            if (!droppedItem) return;
-            const droppedIndex = droppedItem.getAttribute("data-index");
-            if (draggedIndex !== null && droppedIndex !== null && draggedIndex !== droppedIndex) {
-                const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
-                const draggedFav = favs[draggedIndex];
-                favs.splice(draggedIndex, 1);
-                favs.splice(droppedIndex, 0, draggedFav);
-                saveFavorites(favs);
-                loadFavorites();
-            }
-            draggedIndex = null;
-        }
-
-        async function addFavoriteFromModal() {
-            const name = document.getElementById("modalName").value.trim();
-            let url = document.getElementById("modalUrl").value.trim();
-            const lang = localStorage.getItem("language") || "tr";
-            if (!url) {
-                alert(translations[lang].invalidUrlAlert);
-                return;
-            }
-            if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                url = "https://" + url;
-            }
-            try {
-                new URL(url);
-                const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
-                const maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
-                if (favs.length >= maxFav) {
-                    alert(translations[lang].maxFavoritesAlert);
-                    return;
-                }
-                const finalName = name || await fetchWebsiteTitle(url);
-                favs.push({ name: finalName, url });
-                saveFavorites(favs);
-                loadFavorites();
-                document.getElementById("addFavoriteModal").style.display = "none";
-                document.getElementById("modalName").value = "";
-                document.getElementById("modalUrl").value = "";
-            } catch {
-                alert(translations[lang].invalidUrlAlert);
-            }
-        }
-
-        function loadSearchHistory() {
-            const lang = localStorage.getItem("language") || "tr";
-            const historyList = document.getElementById("historyList");
-            if (historyList) {
-                historyList.innerHTML = "";
-                const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
-                if (history.length === 0) {
-                    const noHistoryMsg = document.createElement("li");
-                    noHistoryMsg.textContent = translations[lang]?.noHistory || "Geçmiş yok";
-                    historyList.appendChild(noHistoryMsg);
-                } else {
-                    history.forEach(item => {
-                        const li = document.createElement("li");
-                        li.textContent = item;
-                        historyList.appendChild(li);
-                    });
-                }
-            }
-        }
-
-document.getElementById("voiceSearchBtn").onclick = () => {
-    const lang = localStorage.getItem("language") || "tr";
-    if (!("webkitSpeechRecognition" in window)) {
-        alert(translations[lang].voiceSearchNotSupported);
-        return;
+        draggedIndex = null;
     }
 
-    const modal = document.getElementById("voiceSearchModal");
-    const transcriptDiv = document.getElementById("voiceTranscript");
-    modal.style.display = "block";
-    transcriptDiv.textContent = translations[lang].voiceSearch || "Söyledikleriniz burada görünecek...";
-
-    const recognition = new webkitSpeechRecognition();
-    const langMap = {
-        "tr": "tr-TR",
-        "en": "en-US",
-        "es": "es-ES",
-        "ru": "ru-RU",
-        "jp": "ja-JP",
-        "zh": "zh-CN",
-        "ko": "ko-KR",
-        "de": "de-DE",
-        "fr": "fr-FR",
-        "ar": "ar-SA",
-        "az": "az-AZ",
-        "tk": "tk-TM",
-        "kk": "kk-KZ",
-        "ky": "ky-KG",
-        "uz": "uz-UZ",
-        "tt": "tt-RU",
-        "ba": "ba-RU",
-        "ug": "ug-CN",
-        "sah": "sah-RU",
-        "cv": "cv-RU",
-        "gag": "gag-TR"
-    };
-    recognition.lang = langMap[lang] || "en-US";
-    recognition.interimResults = true;
-    recognition.continuous = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.start();
-
-    recognition.onresult = (event) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcript = event.results[i][0].transcript;
-            if (event.results[i].isFinal) {
-                finalTranscript = transcript.trim();
-                transcriptDiv.textContent = finalTranscript;
-                document.getElementById("searchInput").value = finalTranscript;
-            } else {
-                interimTranscript += transcript;
-                transcriptDiv.textContent = interimTranscript.trim() || translations[lang].voiceSearch;
-            }
+    async function addFavoriteFromModal() {
+        const name = document.getElementById("modalName").value.trim();
+        let url = document.getElementById("modalUrl").value.trim();
+        const lang = localStorage.getItem("language") || "tr";
+        if (!url) {
+            alert(translations[lang].invalidUrlAlert);
+            return;
         }
-    };
-
-    recognition.onerror = (event) => {
-        console.error("Ses tanıma hatası:", event.error);
-        transcriptDiv.textContent = `${translations[lang].voiceSearchNotSupported} (Hata: ${event.error})`;
-        recognition.stop();
-    };
-
-    recognition.onend = () => {
-        console.log("Ses tanıma sona erdi.");
-    };
-
-    document.getElementById("confirmVoiceBtn").onclick = () => {
-        if (document.getElementById("searchInput").value.trim()) {
-            search();
-            modal.style.display = "none";
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "https://" + url;
         }
-    };
-
-   const voiceIcon = document.getElementById("voiceIcon");
-
-// Ses tanıma başlatıldığında
-recognition.onstart = () => {
-    console.log("Ses tanıma başladı");
-    voiceIcon.classList.add("active"); // kırmızıya geç
-};
-
-// Ses tanıma bittiğinde
-recognition.onend = () => {
-    console.log("Ses tanıma bitti");
-    voiceIcon.classList.remove("active"); // normale dön
-};
-
-    document.getElementById("cancelVoiceBtn").onclick = () => {
-        recognition.stop();
-        modal.style.display = "none";
-        transcriptDiv.textContent = translations[lang].voiceSearch || "Söyledikleriniz burada görünecek...";
-    };
-
-    setTimeout(() => {
-        if (recognition && recognition.state === "recording") {
-            recognition.stop();
-            transcriptDiv.textContent = translations[lang].voiceSearchNotSupported + " (Zaman aşımı)";
-            modal.style.display = "none";
-        }
-    }, 10000);
-};
-
-        document.getElementById("settingsButton").addEventListener("click", (e) => {
-            e.stopPropagation();
-            const p = document.getElementById("settingsPanel");
-            p.style.display = p.style.display === "block" ? "none" : "block";
-            document.getElementById("historyPanel").style.display = "none";
-        });
-
-        document.getElementById("historyButton").addEventListener("click", (e) => {
-            e.stopPropagation();
-            const p = document.getElementById("historyPanel");
-            p.style.display = p.style.display === "block" ? "none" : "block";
-            document.getElementById("settingsPanel").style.display = "none";
-            loadSearchHistory();
-        });
-
-        document.getElementById("clearHistoryBtn").onclick = () => {
-            localStorage.setItem("searchHistory", "[]");
-            loadSearchHistory();
-        };
-
-        document.getElementById("searchEngineSelect").addEventListener("change", updateSearchEnginePreview);
-
-        document.getElementById("addFavoriteModalBtn").addEventListener("click", addFavoriteFromModal);
-
-        document.getElementById("applySettingsBtn").addEventListener("click", () => {
-            applySettings(loadCachedBackground, updateLanguage, loadFavorites, updateSearchEnginePreview, fetchWeather, bindShortcuts, startWeatherUpdate);
-            document.getElementById("settingsPanel").style.display = "none";
-            document.getElementById("historyPanel").style.display = "none";
-        });
-
-        document.querySelectorAll('.color-option').forEach(option => {
-            option.onclick = () => {
-                const color = option.style.backgroundColor;
-                const hexColor = rgbToHex(color);
-                selectColor(hexColor);
-            };
-        });
-
-        window.onload = () => {
-            if (typeof translations === "undefined") {
-                setTimeout(window.onload, 50);
+        try {
+            new URL(url);
+            const favs = JSON.parse(localStorage.getItem("userFavorites") || "[]");
+            const maxFav = parseInt(localStorage.getItem("maxFavorites") || "5");
+            if (favs.length >= maxFav) {
+                alert(translations[lang].maxFavoritesAlert);
                 return;
             }
+            const finalName = name || await fetchWebsiteTitle(url);
+            favs.push({ name: finalName, url });
+            saveFavorites(favs);
+            loadFavorites();
+            document.getElementById("addFavoriteModal").style.display = "none";
+            document.getElementById("modalName").value = "";
+            document.getElementById("modalUrl").value = "";
+        } catch {
+            alert(translations[lang].invalidUrlAlert);
+        }
+    }
+
+    async function fetchWebsiteTitle(url) {
+        try {
+            const response = await fetch(url);
+            const text = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, "text/html");
+            return doc.title || url;
+        } catch {
+            return url;
+        }
+    }
+
+    function loadSearchHistory() {
+        const lang = localStorage.getItem("language") || "tr";
+        const historyList = document.getElementById("historyList");
+        if (historyList) {
+            historyList.innerHTML = "";
+            const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+            if (history.length === 0) {
+                const noHistoryMsg = document.createElement("li");
+                noHistoryMsg.textContent = translations[lang]?.noHistory || "Geçmiş yok";
+                historyList.appendChild(noHistoryMsg);
+            } else {
+                history.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    li.className = "history-item";
+                    li.onclick = () => {
+                        document.getElementById("searchInput").value = item;
+                        document.getElementById("suggestions").style.display = "none";
+                        search();
+                    };
+                    historyList.appendChild(li);
+                });
+            }
+        }
+    }
+
+    document.getElementById("voiceSearchBtn").onclick = () => {
+        const lang = localStorage.getItem("language") || "tr";
+        if (!("webkitSpeechRecognition" in window)) {
+            alert(translations[lang].voiceSearchNotSupported);
+            return;
+        }
+
+        const modal = document.getElementById("voiceSearchModal");
+        const transcriptDiv = document.getElementById("voiceTranscript");
+        modal.style.display = "block";
+        transcriptDiv.textContent = translations[lang].voiceSearch || "Söyledikleriniz burada görünecek...";
+
+        const recognition = new webkitSpeechRecognition();
+        const langMap = {
+            "tr": "tr-TR",
+            "en": "en-US",
+            "es": "es-ES",
+            "ru": "ru-RU",
+            "jp": "ja-JP",
+            "zh": "zh-CN",
+            "ko": "ko-KR",
+            "de": "de-DE",
+            "fr": "fr-FR",
+            "ar": "ar-SA",
+            "az": "az-AZ",
+            "tk": "tk-TM",
+            "kk": "kk-KZ",
+            "ky": "ky-KG",
+            "uz": "uz-UZ",
+            "tt": "tt-RU",
+            "ba": "ba-RU",
+            "ug": "ug-CN",
+            "sah": "sah-RU",
+            "cv": "cv-RU",
+            "gag": "gag-TR"
+        };
+        recognition.lang = langMap[lang] || "en-US";
+        recognition.interimResults = true;
+        recognition.continuous = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.start();
+
+        recognition.onresult = (event) => {
+            let interimTranscript = '';
+            let finalTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript = transcript.trim();
+                    transcriptDiv.textContent = finalTranscript;
+                    document.getElementById("searchInput").value = finalTranscript;
+                } else {
+                    interimTranscript += transcript;
+                    transcriptDiv.textContent = interimTranscript.trim() || translations[lang].voiceSearch;
+                }
+            }
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Ses tanıma hatası:", event.error);
+            transcriptDiv.textContent = `${translations[lang].voiceSearchNotSupported} (Hata: ${event.error})`;
+            recognition.stop();
+        };
+
+        recognition.onend = () => {
+            console.log("Ses tanıma sona erdi.");
+            document.getElementById("voiceIcon").classList.remove("active");
+        };
+
+        document.getElementById("confirmVoiceBtn").onclick = () => {
+            if (document.getElementById("searchInput").value.trim()) {
+                search();
+                modal.style.display = "none";
+            }
+        };
+
+        const voiceIcon = document.getElementById("voiceIcon");
+
+        recognition.onstart = () => {
+            console.log("Ses tanıma başladı");
+            voiceIcon.classList.add("active");
+        };
+
+        recognition.onend = () => {
+            console.log("Ses tanıma bitti");
+            voiceIcon.classList.remove("active");
+        };
+
+        document.getElementById("cancelVoiceBtn").onclick = () => {
+            recognition.stop();
+            modal.style.display = "none";
+            transcriptDiv.textContent = translations[lang].voiceSearch || "Söyledikleriniz burada görünecek...";
+        };
+
+        setTimeout(() => {
+            if (recognition && recognition.state === "recording") {
+                recognition.stop();
+                transcriptDiv.textContent = translations[lang].voiceSearchNotSupported + " (Zaman aşımı)";
+                modal.style.display = "none";
+            }
+        }, 10000);
+    };
+
+document.getElementById("menuButton").addEventListener("click", (e) => {
+    e.stopPropagation();
+    const p = document.getElementById("menuPanel");
+    p.style.display = p.style.display === "block" ? "none" : "block";
+    const accountModal = document.getElementById("accountModal");
+    accountModal.style.display = "none";
+    accountModal.classList.remove("active");
+    // Varsayılan olarak Ayarlar sekmesini aç
+    document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+    document.getElementById("settingsContent").classList.add("active");
+    document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
+    document.querySelector(".tab-button[data-tab='settings']").classList.add("active");
+    loadSearchHistory(); // Geçmiş sekmesi için geçmiş yükle
+});
+
+// Sekme geçişleri
+document.querySelectorAll(".tab-button").forEach(button => {
+    button.addEventListener("click", () => {
+        const tab = button.getAttribute("data-tab");
+        document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+        document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
+        document.getElementById(`${tab}Content`).classList.add("active");
+        button.classList.add("active");
+        if (tab === "history") {
+            loadSearchHistory();
+        }
+    });
+});
+
+document.getElementById("applySettingsBtn").addEventListener("click", () => {
+    applySettings(loadCachedBackground, updateLanguage, loadFavorites, updateSearchEnginePreview, fetchWeather, bindShortcuts, startWeatherUpdate);
+    document.getElementById("menuPanel").style.display = "none";
+    const accountModal = document.getElementById("accountModal");
+    accountModal.style.display = "none";
+    accountModal.classList.remove("active");
+});
+
+document.getElementById("clearHistoryBtn").onclick = () => {
+    localStorage.setItem("searchHistory", "[]");
+    loadSearchHistory();
+};
+
+    document.getElementById("searchEngineSelect").addEventListener("change", updateSearchEnginePreview);
+
+    document.getElementById("addFavoriteModalBtn").addEventListener("click", addFavoriteFromModal);
+
+    document.querySelectorAll('.color-option').forEach(option => {
+        option.onclick = () => {
+            const color = option.style.backgroundColor;
+            const hexColor = rgbToHex(color);
+            selectColor(hexColor);
+        };
+    });
+
+    // Account system logic
+    function updateAccountUI() {
+        const username = localStorage.getItem("accountUsername");
+        const info = document.getElementById("accountInfo");
+        const btn = document.getElementById("accountButton");
+        if (username) {
+            info.textContent = `| 👤 ${username}`;
+            btn.title = translations[localStorage.getItem("language") || "tr"].accountLoggedIn || "Hesap (Çıkış için tıkla)";
+        } else {
+            info.textContent = "|";
+            btn.title = translations[localStorage.getItem("language") || "tr"].accountLogin || "Hesap (Giriş için tıkla)";
+        }
+    }
+
+    function showAccountModal() {
+        const modal = document.getElementById("accountModal");
+        const username = localStorage.getItem("accountUsername");
+        const errorMsg = document.getElementById("accountError");
+        errorMsg.style.display = "none";
+        if (username) {
+            document.getElementById("accountForm").style.display = "none";
+            document.getElementById("accountLoggedIn").style.display = "flex";
+            document.getElementById("accountWelcome").textContent = `${translations[localStorage.getItem("language") || "tr"].welcome || "Hoşgeldin"}, ${username}!`;
+        } else {
+            document.getElementById("accountForm").style.display = "flex";
+            document.getElementById("accountLoggedIn").style.display = "none";
+            document.getElementById("accountUsername").value = "";
+            document.getElementById("accountPassword").value = "";
+        }
+        modal.style.display = "block";
+        modal.classList.add("active");
+    }
+
+    function closeAccountPanel() {
+        const modal = document.getElementById("accountModal");
+        modal.style.display = "none";
+        modal.classList.remove("active");
+    }
+
+    function updateAccountModalTheme() {
+        const theme = localStorage.getItem("theme") || "dark";
+        const inner = document.getElementById("accountModalInner");
+        if (!inner) return;
+        inner.classList.remove("dark", "light");
+        inner.classList.add(theme === "light" ? "light" : "dark");
+    }
+
+    window.closeAccountPanel = closeAccountPanel;
+
+    document.getElementById("accountButton").onclick = showAccountModal;
+
+    document.getElementById("accountLoginBtn").onclick = () => {
+        const username = document.getElementById("accountUsername").value.trim();
+        const password = document.getElementById("accountPassword").value.trim();
+        const errorMsg = document.getElementById("accountError");
+        const lang = localStorage.getItem("language") || "tr";
+        errorMsg.style.display = "none";
+
+        if (username.length < 2) {
+            errorMsg.textContent = translations[lang].usernameTooShort || "Kullanıcı adı en az 2 karakter olmalı.";
+            errorMsg.style.display = "block";
+            return;
+        }
+        if (password.length < 4) {
+            errorMsg.textContent = translations[lang].passwordTooShort || "Şifre en az 4 karakter olmalı.";
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        const storedUsers = JSON.parse(localStorage.getItem("users") || "{}");
+        if (storedUsers[username] && storedUsers[username].password === password) {
+            localStorage.setItem("accountUsername", username);
+            updateAccountUI();
+            showAccountModal();
+        } else {
+            errorMsg.textContent = translations[lang].accountError || "Hatalı kullanıcı adı veya şifre.";
+            errorMsg.style.display = "block";
+        }
+    };
+
+    document.getElementById("accountRegisterBtn").onclick = () => {
+        const username = document.getElementById("accountUsername").value.trim();
+        const password = document.getElementById("accountPassword").value.trim();
+        const errorMsg = document.getElementById("accountError");
+        const lang = localStorage.getItem("language") || "tr";
+        errorMsg.style.display = "none";
+
+        if (username.length < 2) {
+            errorMsg.textContent = translations[lang].usernameTooShort || "Kullanıcı adı en az 2 karakter olmalı.";
+            errorMsg.style.display = "block";
+            return;
+        }
+        if (password.length < 4) {
+            errorMsg.textContent = translations[lang].passwordTooShort || "Şifre en az 4 karakter olmalı.";
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        const storedUsers = JSON.parse(localStorage.getItem("users") || "{}");
+        if (storedUsers[username]) {
+            errorMsg.textContent = translations[lang].usernameTaken || "Bu kullanıcı adı zaten alınmış.";
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        storedUsers[username] = { password };
+        localStorage.setItem("users", JSON.stringify(storedUsers));
+        localStorage.setItem("accountUsername", username);
+        updateAccountUI();
+        showAccountModal();
+    };
+
+    document.getElementById("accountLogoutBtn").onclick = () => {
+        localStorage.removeItem("accountUsername");
+        updateAccountUI();
+        closeAccountPanel();
+    };
+
+    function bindAccountShortcut() {
+        const accountShortcut = localStorage.getItem("accountShortcut") || "Ctrl + Shift + A";
+        document.addEventListener("keydown", (e) => {
+            const keyCombo = `${e.ctrlKey ? 'Ctrl + ' : ''}${e.shiftKey ? 'Shift + ' : ''}${e.key}`;
+            if (keyCombo === accountShortcut) {
+                e.preventDefault();
+                showAccountModal();
+            }
+        });
+    }
+
+    window.onload = () => {
+        if (typeof translations === "undefined") {
+            setTimeout(window.onload, 50);
+            return;
+        }
+        const bg = localStorage.getItem("bgUrl") || "https://images.pexels.com/photos/19161533/pexels-photo-19161533.jpeg";
+        const f = localStorage.getItem("font") || "'Open Sans', sans-serif";
+        const t = localStorage.getItem("theme") || "dark";
+        const c = localStorage.getItem("accentColor") || "#00bcd4";
+        const l = localStorage.getItem("language") || "tr";
+        const se = localStorage.getItem("searchEngine") || "google";
+        const sf = localStorage.getItem("showFavorites") || "true";
+        const ss = localStorage.getItem("showSuggestions") || "true";
+        const sw = localStorage.getItem("showWeather") || "true";
+        const si = localStorage.getItem("showInfoBar") || "true";
+        const ld = localStorage.getItem("logoDisplay") || "logo-name";
+        const maxFav = localStorage.getItem("maxFavorites") || "5";
+        const searchShortcut = localStorage.getItem("searchShortcut") || "Ctrl + /";
+        const favoriteShortcut = localStorage.getItem("favoriteShortcut") || "Ctrl + Shift + F";
+        const settingsShortcut = localStorage.getItem("settingsShortcut") || "Ctrl + Shift + X";
+        const historyShortcut = localStorage.getItem("historyShortcut") || "Ctrl + Shift + H";
+        const imagesShortcut = localStorage.getItem("imagesShortcut") || "Ctrl + i";
+        const shoppingShortcut = localStorage.getItem("shoppingShortcut") || "Ctrl + S";
+        const newsShortcut = localStorage.getItem("newsShortcut") || "Ctrl + N";
+        const accountShortcut = localStorage.getItem("accountShortcut") || "Ctrl + Shift + A";
+        const aiShortcut = localStorage.getItem("aiShortcut") || "Ctrl + Shift + I";
+        const weatherLocation = localStorage.getItem("weatherLocation") || "";
+        const weatherUpdateInterval = localStorage.getItem("weatherUpdateInterval") || "10";
+        const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
+        const aiProvider = localStorage.getItem("aiProvider") || "grok";
+        const customAiUrl = localStorage.getItem("customAiUrl") || "";
+        const showAISearch = localStorage.getItem("showAISearch") === "true";
+        localStorage.setItem("weatherAPI", "wttrin"); // Varsayılan olarak wttr.in
+        localStorage.setItem("openWeatherMapApiKey", ""); // Varsayılan olarak boş
+        localStorage.setItem("weatherApiKey", ""); // Varsayılan olarak boş
+        localStorage.setItem("visualCrossingApiKey", ""); // Varsayılan olarak boş
+
+        document.getElementById("bgUrlInput").value = bg;
+        document.getElementById("fontSelect").value = f;
+        document.getElementById("themeSelect").value = t;
+        document.getElementById("accentColor").value = c;
+        document.getElementById("languageSelect").value = l;
+        document.getElementById("searchEngineSelect").value = se;
+        document.getElementById("showFavorites").value = sf;
+        document.getElementById("showSuggestions").value = ss;
+        document.getElementById("showWeather").value = sw;
+        document.getElementById("showInfoBar").value = si;
+        document.getElementById("logoDisplaySelect").value = ld;
+        document.getElementById("maxFavorites").value = maxFav;
+        document.getElementById("searchShortcutInput").value = searchShortcut;
+        document.getElementById("favoriteShortcutInput").value = favoriteShortcut;
+        document.getElementById("settingsShortcutInput").value = settingsShortcut;
+        document.getElementById("historyShortcutInput").value = historyShortcut;
+        document.getElementById("imagesShortcutInput").value = imagesShortcut;
+        document.getElementById("shoppingShortcutInput").value = shoppingShortcut;
+        document.getElementById("newsShortcutInput").value = newsShortcut;
+        document.getElementById("accountShortcutInput").value = accountShortcut;
+        document.getElementById("aiShortcutInput").value = aiShortcut;
+        document.getElementById("weatherLocation").value = weatherLocation;
+        document.getElementById("weatherUpdateInterval").value = weatherUpdateInterval;
+        document.getElementById("linkBehavior").value = linkBehavior;
+        document.getElementById("aiProviderSelect").value = aiProvider;
+        document.getElementById("customAiUrl").value = customAiUrl;
+        document.getElementById("showAISearch").checked = showAISearch;
+        document.getElementById("searchAIBtn").style.display = showAISearch ? "inline-block" : "none";
+        document.getElementById("weatherAPI").value = localStorage.getItem("weatherAPI") || "openweathermap";
+
+        document.getElementById("searchWebBtn").addEventListener("click", () => search("web"));
+        document.getElementById("searchImagesBtn").addEventListener("click", () => search("images"));
+        document.getElementById("searchShoppingBtn").addEventListener("click", () => search("shopping"));
+        document.getElementById("searchNewsBtn").addEventListener("click", () => search("news"));
+        document.getElementById("searchAIBtn").addEventListener("click", () => search("ai"));
+
+        document.getElementById("weatherAPI").addEventListener("change", (e) => {
+            localStorage.setItem("weatherAPI", e.target.value);
             fetchWeather();
-            const bg = localStorage.getItem("bgUrl") || "https://images.pexels.com/photos/19161533/pexels-photo-19161533.jpeg";
-            const f = localStorage.getItem("font") || "'open-sans', sans-serif";
-            const t = localStorage.getItem("theme") || "dark";
-            const c = localStorage.getItem("accentColor") || "#00bcd4";
-            const l = localStorage.getItem("language") || "tr";
-            const se = localStorage.getItem("searchEngine") || "google";
-            const sf = localStorage.getItem("showFavorites") || "true";
-            const ss = localStorage.getItem("showSuggestions") || "true";
-            const sw = localStorage.getItem("showWeather") || "true";
-            const si = localStorage.getItem("showInfoBar") || "true";
-            const ld = localStorage.getItem("logoDisplay") || "logo-name";
-            const maxFav = localStorage.getItem("maxFavorites") || "5";
-            const searchShortcut = localStorage.getItem("searchShortcut") || "Ctrl + /";
-            const favoriteShortcut = localStorage.getItem("favoriteShortcut") || "Ctrl + Shift + F";
-            const settingsShortcut = localStorage.getItem("settingsShortcut") || "Ctrl + Shift + S";
-            const historyShortcut = localStorage.getItem("historyShortcut") || "Ctrl + Shift + H";
-            const imagesShortcut = localStorage.getItem("imagesShortcut") || "Ctrl + I";
-            const shoppingShortcut = localStorage.getItem("shoppingShortcut") || "Ctrl + S";
-            const newsShortcut = localStorage.getItem("newsShortcut") || "Ctrl + N";
-            const weatherLocation = localStorage.getItem("weatherLocation") || "";
-            const weatherUpdateInterval = localStorage.getItem("weatherUpdateInterval") || "10";
-            const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
+        });
 
-            document.getElementById("bgUrlInput").value = bg;
-            document.getElementById("fontSelect").value = f;
-            document.getElementById("themeSelect").value = t;
-            document.getElementById("accentColor").value = c;
-            document.getElementById("languageSelect").value = l;
-            document.getElementById("searchEngineSelect").value = se;
-            document.getElementById("showFavorites").value = sf;
-            document.getElementById("showSuggestions").value = ss;
-            document.getElementById("showWeather").value = sw;
-            document.getElementById("showInfoBar").value = si;
-            document.getElementById("logoDisplaySelect").value = ld;
-            document.getElementById("maxFavorites").value = maxFav;
-            document.getElementById("searchShortcutInput").value = searchShortcut;
-            document.getElementById("favoriteShortcutInput").value = favoriteShortcut;
-            document.getElementById("settingsShortcutInput").value = settingsShortcut;
-            document.getElementById("historyShortcutInput").value = historyShortcut;
-            document.getElementById("imagesShortcutInput").value = imagesShortcut;
-            document.getElementById("shoppingShortcutInput").value = shoppingShortcut;
-            document.getElementById("newsShortcutInput").value = newsShortcut;
-            document.getElementById("weatherLocation").value = weatherLocation;
-            document.getElementById("weatherUpdateInterval").value = weatherUpdateInterval;
-            document.getElementById("linkBehavior").value = linkBehavior;
+document.getElementById("weatherAPI").addEventListener("change", (e) => {
+    const api = e.target.value;
+    document.getElementById("openWeatherMapKeyInput").classList.toggle("active", api === "openweathermap");
+    document.getElementById("weatherApiKeyInput").classList.toggle("active", api === "weatherapi");
+    document.getElementById("visualCrossingKeyInput").classList.toggle("active", api === "visualcrossing");
+});
 
-            applySettings(loadCachedBackground, updateLanguage, loadFavorites, updateSearchEnginePreview, fetchWeather, bindShortcuts, startWeatherUpdate);
+        fetchWeather();
+        startWeatherUpdate();
+        applySettings(loadCachedBackground, updateLanguage, loadFavorites, updateSearchEnginePreview, fetchWeather, bindShortcuts, startWeatherUpdate);
+        updateAccountModalTheme();
+        bindAccountShortcut();
+        updateAccountUI();
 
-            const searchInput = document.getElementById("searchInput");
-            const suggestionsBox = document.getElementById("suggestions");
-            let selectedIndex = -1;
+        const searchInput = document.getElementById("searchInput");
+        const suggestionsBox = document.getElementById("suggestions");
+        let selectedIndex = -1;
 
-            function fetchSuggestions(query) {
-                if (localStorage.getItem("showSuggestions") === "false") return;
-                const encodedQuery = encodeURIComponent(query.trim());
-                const callbackName = "jsonpCallback_" + Math.random().toString(36).substr(2);
-                window[callbackName] = function(data) {
-                    try {
-                        console.log("Google Suggest JSONP yanıtı:", data);
-                        const suggestionsBox = document.getElementById("suggestions");
-                        suggestionsBox.innerHTML = "";
-                        const suggestions = data[1].slice(0, 8);
-                        suggestionsBox.style.display = suggestions.length ? "block" : "none";
-                        suggestions.forEach(suggestion => {
-                            const li = document.createElement("li");
-                            li.textContent = suggestion;
-                            li.onclick = () => {
-                                document.getElementById("searchInput").value = suggestion;
-                                search();
-                                suggestionsBox.style.display = "none";
-                            };
-                            suggestionsBox.appendChild(li);
-                        });
-                        selectedIndex = -1;
-                    } catch (e) {
-                        console.error("Öneri alınamadı:", e);
-                        const suggestionsBox = document.getElementById("suggestions");
-                        suggestionsBox.innerHTML = `<li style="padding: 12px; color: #ff4444;">${translations[localStorage.getItem("language") || "tr"].noSuggestions}</li>`;
-                        suggestionsBox.style.display = "block";
-                    } finally {
-                        delete window[callbackName];
-                    }
-                };
-                const script = document.createElement("script");
-                script.src = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodedQuery}&jsonp=${callbackName}`;
-                script.onload = () => {
-                    script.remove();
-                };
-                script.onerror = () => {
-                    console.error("Öneri alınamadı: Script yüklenemedi");
+        function fetchSuggestions(query) {
+            if (localStorage.getItem("showSuggestions") === "false") return;
+            const encodedQuery = encodeURIComponent(query.trim());
+            const callbackName = "jsonpCallback_" + Math.random().toString(36).substr(2);
+            window[callbackName] = function(data) {
+                try {
+                    console.log("Google Suggest JSONP yanıtı:", data);
+                    const suggestionsBox = document.getElementById("suggestions");
+                    suggestionsBox.innerHTML = "";
+                    const suggestions = data[1].slice(0, 8);
+                    suggestionsBox.style.display = suggestions.length ? "block" : "none";
+                    suggestions.forEach(suggestion => {
+                        const li = document.createElement("li");
+                        li.textContent = suggestion;
+                        li.onclick = () => {
+                            document.getElementById("searchInput").value = suggestion;
+                            search();
+                            suggestionsBox.style.display = "none";
+                        };
+                        suggestionsBox.appendChild(li);
+                    });
+                    selectedIndex = -1;
+                } catch (e) {
+                    console.error("Öneri alınamadı:", e);
                     const suggestionsBox = document.getElementById("suggestions");
                     suggestionsBox.innerHTML = `<li style="padding: 12px; color: #ff4444;">${translations[localStorage.getItem("language") || "tr"].noSuggestions}</li>`;
                     suggestionsBox.style.display = "block";
+                } finally {
                     delete window[callbackName];
-                    script.remove();
-                };
-                document.body.appendChild(script);
+                }
+            };
+            const script = document.createElement("script");
+            script.src = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodedQuery}&jsonp=${callbackName}`;
+            script.onload = () => {
+                script.remove();
+            };
+            script.onerror = () => {
+                console.error("Öneri alınamadı: Script yüklenemedi");
+                const suggestionsBox = document.getElementById("suggestions");
+                suggestionsBox.innerHTML = `<li style="padding: 12px; color: #ff4444;">${translations[localStorage.getItem("language") || "tr"].noSuggestions}</li>`;
+                suggestionsBox.style.display = "block";
+                delete window[callbackName];
+                script.remove();
+            };
+            document.body.appendChild(script);
+        }
+
+        const debouncedFetchSuggestions = debounce(fetchSuggestions, 200);
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                debouncedFetchSuggestions(query);
+            } else {
+                suggestionsBox.style.display = "none";
             }
+        });
 
-            const debouncedFetchSuggestions = debounce(fetchSuggestions, 200);
-
-            searchInput.addEventListener("input", () => {
-                const query = searchInput.value.trim();
-                if (query) {
-                    debouncedFetchSuggestions(query);
-                } else {
+        searchInput.addEventListener("keydown", (e) => {
+            const suggestions = suggestionsBox.querySelectorAll("li");
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                if (selectedIndex < suggestions.length - 1) {
+                    selectedIndex++;
+                    suggestions.forEach((li, i) => {
+                        li.classList.toggle("selected", i === selectedIndex);
+                    });
+                    suggestionsBox.scrollTop = suggestions[selectedIndex]?.offsetTop - suggestionsBox.offsetHeight / 2;
+                }
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                if (selectedIndex > -1) {
+                    selectedIndex--;
+                    suggestions.forEach((li, i) => {
+                        li.classList.toggle("selected", i === selectedIndex);
+                    });
+                    suggestionsBox.scrollTop = suggestions[selectedIndex]?.offsetTop - suggestionsBox.offsetHeight / 2;
+                }
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                if (selectedIndex > -1 && suggestions[selectedIndex]) {
+                    searchInput.value = suggestions[selectedIndex].textContent;
                     suggestionsBox.style.display = "none";
+                    search();
+                } else if (searchInput.value.trim()) {
+                    search();
                 }
-            });
+            } else if (e.key === "Escape") {
+                suggestionsBox.style.display = "none";
+            }
+        });
 
-            searchInput.addEventListener("keydown", (e) => {
-                const suggestions = suggestionsBox.querySelectorAll("li");
-                if (e.key === "ArrowDown") {
-                    e.preventDefault();
-                    if (selectedIndex < suggestions.length - 1) {
-                        selectedIndex++;
-                        suggestions.forEach((li, i) => {
-                            li.classList.toggle("selected", i === selectedIndex);
-                        });
-                        suggestionsBox.scrollTop = suggestions[selectedIndex]?.offsetTop - suggestionsBox.offsetHeight / 2;
-                    }
-                } else if (e.key === "ArrowUp") {
-                    e.preventDefault();
-                    if (selectedIndex > -1) {
-                        selectedIndex--;
-                        suggestions.forEach((li, i) => {
-                            li.classList.toggle("selected", i === selectedIndex);
-                        });
-                        suggestionsBox.scrollTop = suggestions[selectedIndex]?.offsetTop - suggestionsBox.offsetHeight / 2;
-                    }
-                } else if (e.key === "Enter") {
-                    e.preventDefault();
-                    if (selectedIndex > -1 && suggestions[selectedIndex]) {
-                        searchInput.value = suggestions[selectedIndex].textContent;
-                        suggestionsBox.style.display = "none";
-                        search();
-                    } else if (searchInput.value.trim()) {
-                        search();
-                    }
-                } else if (e.key === "Escape") {
-                    suggestionsBox.style.display = "none";
-                }
-            });
-
-            document.addEventListener("click", (e) => {
-                if (!e.target.closest("#settingsPanel") && !e.target.closest("#settingsButton")) {
-                    document.getElementById("settingsPanel").style.display = "none";
-                }
-                if (!e.target.closest("#historyPanel") && !e.target.closest("#historyButton")) {
-                    document.getElementById("historyPanel").style.display = "none";
-                }
-                if (!e.target.closest("#searchBar") && !e.target.closest("#suggestions")) {
-                    suggestionsBox.style.display = "none";
-                }
-                if (!e.target.closest("#addFavoriteModal") && !e.target.closest("#addFavoriteBtn")) {
-                    document.getElementById("addFavoriteModal").style.display = "none";
-                }
-            });
-        };
-    </script>
-</body>
-</html>
+document.addEventListener("click", (e) => {
+    if (!e.target.closest("#menuPanel") && !e.target.closest("#menuButton")) {
+        document.getElementById("menuPanel").style.display = "none";
+    }
+    if (!e.target.closest("#searchBar") && !e.target.closest("#suggestions")) {
+        suggestionsBox.style.display = "none";
+    }
+    if (!e.target.closest("#addFavoriteModal") && !e.target.closest("#addFavoriteBtn")) {
+        document.getElementById("addFavoriteModal").style.display = "none";
+    }
+    if (!e.target.closest("#accountModal") && !e.target.closest("#accountButton")) {
+        const accountModal = document.getElementById("accountModal");
+        accountModal.style.display = "none";
+        accountModal.classList.remove("active");
+    }
+    if (!e.target.closest("#voiceSearchModal") && !e.target.closest("#voiceSearchBtn")) {
+        document.getElementById("voiceSearchModal").style.display = "none";
+    }
+});
+    };
+</script>
