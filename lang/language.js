@@ -87,7 +87,7 @@ voiceSearch: "Söyledikleriniz burada görünecek...",
     openWeatherMapApiKey: "OpenWeatherMap API Anahtarı",
    visualCrossingApiKey: "Visual Crossing API Anahtarı",
    showAISearch: "AI Ara Butonunu Göster",
-   aiSearch: "AI Arama:"
+   aiSearch: "AI Arama"
 
 },
 az: {
@@ -177,7 +177,7 @@ voiceSearch: "Deyilənlər burada görsənəcək...",
     openWeatherMapApiKey: "OpenWeatherMap API Anahtarı",
     visualCrossingApiKey: "Visual Crossing API Anahtarı",
     weatherApiKey: "Hava API Anahtarı:",
-    aiSearch: "AI Axtarışı:"
+    aiSearch: "AI Axtarışı"
 },
 tk: {
 bgUrl: "Arka plan URL-si:",
@@ -266,7 +266,7 @@ voiceSearch: "Aýdýanlaryňyz şu ýerde görkeziler...",
     openWeatherMapApiKey: "OpenWeatherMap API Anahtary",
     visualCrossingApiKey: "Visual Crossing API Anahtary",
     weatherApiKey: "Hava API Anahtary:",
-    aiSearch: "AI Axtarışı:"
+    aiSearch: "AI Axtarışı"
 },
 kk: {
 bgUrl: "Фон URL:",
@@ -355,7 +355,7 @@ voiceSearch: "Айтқан сөздеріңіз осында көрінеді...
     openWeatherMapApiKey: "OpenWeatherMap API Кілті",
     visualCrossingApiKey: "Visual Crossing API Кілті",
     weatherApiKey: "Weather API Кілті:",
-    aiSearch: "AI Издөө:"
+    aiSearch: "AI Издөө"
 },
 ky: {
 bgUrl: "Фон URL:",
@@ -444,7 +444,7 @@ voiceSearch: "Айткандарыңыз бул жерде көрүнөт...",
     openWeatherMapApiKey: "OpenWeatherMap API Кілті",
     visualCrossingApiKey: "Visual Crossing API Кілті",
     weatherApiKey: "Ауа-райы API Кілті:",
-    aiSearch: "AI Издөө:"
+    aiSearch: "AI Издөө"
 },
 uz: {
 bgUrl: "Fon URL:",
@@ -533,7 +533,7 @@ voiceSearch: "Aytganlaringiz shu yerda ko'rinadi...",
     openWeatherMapApiKey: "OpenWeatherMap API Kaliti",
     visualCrossingApiKey: "Visual Crossing API Kaliti",
     weatherApiKey: "Havo API Kaliti:",
-    aiSearch: "AI Qidiruv:"
+    aiSearch: "AI Qidiruv"
 },
 tt: {
 bgUrl: "Фон URL:",
@@ -622,7 +622,7 @@ voiceSearch: "Сөйләгәннәрегез монда күренәчәк...",
     openWeatherMapApiKey: "OpenWeatherMap API Ключы",
     visualCrossingApiKey: "Visual Crossing API Ключы",
     weatherApiKey: "Һава API Ключы:",
-    aiSearch: "AI Эзләү:"
+    aiSearch: "AI Эзләү"
 },
 ba: {
 bgUrl: "Фон URL:",
@@ -711,7 +711,7 @@ voiceSearch: "Әйткәндәрегеҙ бында күренәсәк...",
     openWeatherMapApiKey: "OpenWeatherMap API Ключы",
     visualCrossingApiKey: "Visual Crossing API Ключы",
     weatherApiKey: "Һава API Ключы:",
-    aiSearch: "AI Эҙләү:"
+    aiSearch: "AI Эҙләү"
 },
 ug: {
 bgUrl: "تەگلىك URL:",
@@ -801,7 +801,7 @@ voiceSearch: "ئويلاپ باققانلىرىڭىز بۇ يەردە كۆرۈن
     openWeatherMapApiKey: "OpenWeatherMap API كىلىتى",
     visualCrossingApiKey: "Visual Crossing API كىلىتى",
     weatherApiKey: "ھава API كىلىتى:",
-    aiSearch: "AI ئىزدەش:"
+    aiSearch: "AI ئىزدەش"
 },
 sah: {
 bgUrl: "Фон URL:",
@@ -890,7 +890,7 @@ voiceSearch: "Эппиттэриҥ бу илик көрүөт...",
     openWeatherMapApiKey: "OpenWeatherMap API Кілті",
     visualCrossingApiKey: "Visual Crossing API Кілті",
     weatherApiKey: "Ауа-райы API Кілті:",
-    aiSearch: "AI Издөө:"
+    aiSearch: "AI Издөө"
 },
 cv: {
 bgUrl: "Фон URL:",
@@ -979,7 +979,7 @@ voiceSearch: "Сказанны здесь пӑхӑнчӗк...",
     openWeatherMapApiKey: "OpenWeatherMap API Кілті",
     visualCrossingApiKey: "Visual Crossing API Кілті",
     weatherApiKey: "Ауа-райы API Кілті:",
-    aiSearch: "AI Издөө:"
+    aiSearch: "AI Издөө"
 },
 gag: {
 bgUrl: "Arka Plan URL:",
@@ -1068,7 +1068,7 @@ voiceSearch: "Söyledikleriniz burada görünecek...",
     openWeatherMapApiKey: "OpenWeatherMap API Anahtarı",
     visualCrossingApiKey: "Visual Crossing API Anahtarı",
     weatherApiKey: "Hava API Anahtarı:",
-    aiSearch: "AI Arama:"
+    aiSearch: "AI Arama"
 },
 en: {
 bgUrl: "Background URL:",
@@ -1157,7 +1157,7 @@ voiceSearch: "Your speech will appear here...",
     openWeatherMapApiKey: "OpenWeatherMap API Key:",
     visualCrossingApiKey: "Visual Crossing API Key:",
     weatherApiKey: "Weather API Key:",
-    aiSearch: "AI Search:"
+    aiSearch: "AI Search"
 },
 es: {
 bgUrl: "URL de Fondo:",
@@ -1246,7 +1246,7 @@ voiceSearch: "Lo que digas aparecerá aquí...",
     openWeatherMapApiKey: "Clave API de OpenWeatherMap:",
     visualCrossingApiKey: "Clave API de Visual Crossing:",
     weatherApiKey: "Clave API de Clima:",
-    aiSearch: "Búsqueda de IA:"
+    aiSearch: "Búsqueda de IA"
 },
 jp: {
 bgUrl: "背景URL:",
@@ -1335,7 +1335,7 @@ voiceSearch: "話した内容がここに表示されます...",
     openWeatherMapApiKey: "OpenWeatherMap API キー:",
     visualCrossingApiKey: "Visual Crossing API キー:",
     weatherApiKey: "天気 API キー:",
-    aiSearch: "AI 検索:"
+    aiSearch: "AI 検索"
 },
 zh: {
 bgUrl: "背景URL:",
@@ -1424,7 +1424,7 @@ voiceSearch: "您所说的话将在这里出现...",
     openWeatherMapApiKey: "OpenWeatherMap API 密钥:",
     visualCrossingApiKey: "Visual Crossing API 密钥:",
     weatherApiKey: "天气 API 密钥:",
-    aiSearch: "AI 搜索:"
+    aiSearch: "AI 搜索"
 },
 ko: {
 bgUrl: "배경 URL:",
@@ -1513,7 +1513,7 @@ voiceSearch: "말한 내용이 여기 나타납니다...",
     openWeatherMapApiKey: "OpenWeatherMap API 키:",
     visualCrossingApiKey: "Visual Crossing API 키:",
     weatherApiKey: "날씨 API 키:",
-    aiSearch: "AI 검색:"
+    aiSearch: "AI 검색"
 },
 de: {
 bgUrl: "Hintergrund-URL:",
@@ -1602,7 +1602,7 @@ voiceSearch: "Ihre gesprochenen Worte erscheinen hier...",
     openWeatherMapApiKey: "OpenWeatherMap API Schlüssel:",
     visualCrossingApiKey: "Visual Crossing API Schlüssel:",
     weatherApiKey: "Wetter API Schlüssel:",
-    aiSearch: "AI Suche:"
+    aiSearch: "AI Suche"
 },
 fr: {
 bgUrl: "URL de l'arrière-plan:",
@@ -1691,7 +1691,7 @@ voiceSearch: "Ce que vous dites apparaîtra ici...",
     openWeatherMapApiKey: "Clé API OpenWeatherMap:",
     visualCrossingApiKey: "Clé API Visual Crossing:",
     weatherApiKey: "Clé API Météo:",
-    aiSearch: "Recherche IA:"
+    aiSearch: "Recherche IA"
 },
 ar: {
 bgUrl: "رابط الخلفية:",
@@ -1780,7 +1780,7 @@ voiceSearch: "ما تقوله سيظهر هنا...",
     openWeatherMapApiKey: "مفتاح API لـ OpenWeatherMap:",
     visualCrossingApiKey: "مفتاح API لـ Visual Crossing:",
     weatherApiKey: "مفتاح API لـ الطقس:",
-    aiSearch: "بحث الذكاء الاصطناعي:"
+    aiSearch: "بحث الذكاء الاصطناعي"
 },
 ru: {
 bgUrl: "URL фона:",
@@ -1870,7 +1870,7 @@ voiceSearch: "Ваш текст появится здесь...",
     openWeatherMapApiKey: "Ключ API OpenWeatherMap:",
     visualCrossingApiKey: "Ключ API Visual Crossing:",
     weatherApiKey: "Ключ API Погоды:",
-    aiSearch: "Поиск ИИ:"
+    aiSearch: "Поиск ИИ"
 },
 };
 export { translations };
