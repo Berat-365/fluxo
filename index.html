@@ -269,8 +269,8 @@
         </div>
     </div>
 <script type="module">
-    import { translations } from './lang/language.js';
-    import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview, loadCachedBackground, fetchWeather, startWeatherUpdate } from './panel/settings.js';
+    import { translations } from './system/language.js';
+    import { cacheBackgroundImage, selectColor, rgbToHex, applySettings, bindShortcuts, updateSearchEnginePreview, loadCachedBackground, fetchWeather, startWeatherUpdate } from './system/settings.js';
 
     // Dil değiştirme fonksiyonu
     function updateLanguage(lang) {
@@ -911,7 +911,7 @@ document.getElementById("clearHistoryBtn").onclick = () => {
         const linkBehavior = localStorage.getItem("linkBehavior") || "newTab";
         const aiProvider = localStorage.getItem("aiProvider") || "grok";
         const customAiUrl = localStorage.getItem("customAiUrl") || "";
-        const showAISearch = localStorage.getItem("showAISearch") === "true";
+        const showAISearch = localStorage.getItem("showAISearch") === "False";
         localStorage.setItem("weatherAPI", "wttrin"); // Varsayılan olarak wttr.in
         localStorage.setItem("openWeatherMapApiKey", ""); // Varsayılan olarak boş
         localStorage.setItem("weatherApiKey", ""); // Varsayılan olarak boş
@@ -1089,3 +1089,4 @@ document.addEventListener("click", (e) => {
 });
     };
 </script>
+
