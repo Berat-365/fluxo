@@ -9,7 +9,7 @@
     font-family: var(--site-font);
 }
 body {
-    background-color: #202124;
+    background-color: #20212400;
     color: #e8eaed;
     height: 100vh;
     display: flex;
@@ -19,12 +19,13 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.5s ease, color 0.5s ease, opacity 0.3s ease; /* Animasyon süresi ve türü */
     overflow: hidden;
 }
 body.light {
     background-color: #fff;
     color: #000;
+    transition: background-color 0.5s ease, color 0.5s ease, opacity 0.3s ease; /* Açık tema için de animasyon */
 }
 body.light .search-bar input,
 body.light .buttons button,
@@ -34,6 +35,7 @@ body.light #accountModalInner,
 body.light .weather-widget {
     background-color: #f1f3f4;
     color: #000;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Alt bileşenler için de geçiş */
 }
 body.light .favorite-item a { color: #000; }
 body.light .favorite-item img {
