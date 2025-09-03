@@ -225,13 +225,10 @@ export function applySettings(loadCachedBackground, updateLanguage, loadFavorite
     const aiProvider = document.getElementById("aiProviderSelect").value;
     const customAiUrl = document.getElementById("customAiUrl").value.trim();
     const showAISearch = document.getElementById("showAISearch").checked;
-    const openWeatherMapApiKey = document.getElementById("openWeatherMapApiKey").value.trim();
-const weatherApiKey = document.getElementById("weatherApiKey").value.trim();
-const visualCrossingApiKey = document.getElementById("visualCrossingApiKey").value.trim();
-localStorage.setItem("openWeatherMapApiKey", openWeatherMapApiKey);
-localStorage.setItem("weatherApiKey", weatherApiKey);
-localStorage.setItem("visualCrossingApiKey", visualCrossingApiKey);
-    localStorage.setItem("showAISearch", showAISearch);
+    const weatherAPI = document.getElementById("weatherAPI").value;
+    const openWeatherMapApiKey = document.getElementById("openWeatherMapApiKey").value;
+    const weatherApiKey = document.getElementById("weatherApiKey").value;
+    const visualCrossingApiKey = document.getElementById("visualCrossingApiKey").value;
     document.getElementById("searchAIBtn").style.display = showAISearch ? "inline-block" : "none";
 
     loadCachedBackground(bg);
@@ -293,6 +290,14 @@ localStorage.setItem("visualCrossingApiKey", visualCrossingApiKey);
     localStorage.setItem("aiProvider", aiProvider);
     localStorage.setItem("customAiUrl", customAiUrl);
     localStorage.setItem("showAISearch", showAISearch);
+    localStorage.setItem("weatherAPI", weatherAPI);
+    localStorage.setItem("openWeatherMapApiKey", openWeatherMapApiKey);
+    localStorage.setItem("weatherApiKey", weatherApiKey);
+    localStorage.setItem("visualCrossingApiKey", visualCrossingApiKey);
+    localStorage.setItem("weatherApiKey", weatherApiKey);
+    localStorage.setItem("showAISearch", showAISearch);
+    localStorage.setItem("weatherAPI", document.getElementById("weatherAPI").value);
+    localStorage.setItem("showWeather", document.getElementById("showWeather").value);
 
     let recentBgs = JSON.parse(localStorage.getItem("recentBackgrounds") || "[]");
     recentBgs = recentBgs.filter(url => {
@@ -434,3 +439,4 @@ export function startWeatherUpdate() {
         setInterval(fetchWeather, interval);
     }
 }
+
