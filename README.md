@@ -2,15 +2,13 @@
   <img width="80" height="80" alt="logo" src="https://github.com/user-attachments/assets/2ede3261-11af-4a78-8966-d4d573c65294" />
 </p>
 
-<h1 align="center">Fluxo Nexora 🧷</h1>
+<h1 align="center">Fluxo Nexora</h1>
 <p align="center">
   Kişiselleştirilebilir yeni sekme sayfası  
   <br />
   <a href="https://berat-365.github.io/fluxo/" target="_blank">🌐 Canlı Demo</a>
   ·
   <a href="https://github.com/Berat-365/fluxo/issues">🐞 Hata Bildir</a>
-  ·
-  <a href="#kişiselleştirme">⚙️ Özelleştir</a>
 </p>
 
 ---
