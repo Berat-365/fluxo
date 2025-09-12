@@ -2,15 +2,33 @@
 
 ## Supported Versions
 
-Our Fluxo 3.8 browser provides a basic level of protection. User data is only kept locally and is reset when the browser cache is cleared.
+The following versions are supported with security updates:
 
-We will announce the SecureMax version with Fluxo 4.
+| Version | Supported | Security |
+| ------- | ------------------ | ------------------ |
+| Fluxo 1.3 | ❌ (No support) |
+| Fluxo 3.1.2 | ➖ (Partial support) | https://onecompiler.com/users/43qgwsawh/codes |
+| Fluxo 3.8 | ✅ (Active support) | 🛡️ Fluxo Secure 1 |
 
-| Version | Supported |
-| ------- | ------------------ |
-| FluxoSecure 1 | :white_check_mark: |
-| FluxoSecureMax | :x: Currently unavailable |
+---
 
 ## Reporting a Vulnerability
 
-To report security and system vulnerabilities, contact us via FluxoWeb>Settings>Support
+If you have found a vulnerability, please follow these steps:
+
+1. Do not post the issue publicly in the Issues section.
+2. Email me directly: **[akgogbrt@gmail.com]** or submit via Fluxo>Menu>Support
+3. Email subject: `Fluxo Security Report`.
+4. Initial response within 48 hours.
+
+---
+
+## Process
+
+- Reported vulnerabilities are kept confidential.
+- Confirmed issues are fixed as soon as possible and added to the release notes.
+- Workarounds are shared if necessary.
+
+---
+
+> 🔒 Your security reports are invaluable to the project. Thank you for your contribution!
