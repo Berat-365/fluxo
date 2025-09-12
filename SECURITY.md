@@ -2,7 +2,9 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are currently supported with security updates.
+Our Fluxo 3.8 browser provides a basic level of protection. User data is only kept locally and is reset when the browser cache is cleared.
+
+We will announce the SecureMax version with Fluxo 4.
 
 | Version | Supported |
 | ------- | ------------------ |
