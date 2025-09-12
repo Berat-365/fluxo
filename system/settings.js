@@ -1,4 +1,3 @@
-
 // Renk seçimi
 export function selectColor(color) {
     console.log("Seçilen renk:", color);
@@ -104,7 +103,9 @@ export async function cacheBackgroundImage(url) {
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
-            localStorage.setItem(`bgCache_${url}`, reader.result);
+            if (reader.result && reader.result.startsWith("data:image")) {
+                localStorage.setItem(`bgCache_${url}`, reader.result);
+            }
         };
     } catch (e) {
         console.error("Arka plan önbellekleme hatası:", e);
