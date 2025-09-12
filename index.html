@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fluxo</title>
     <link rel="icon" type="image/icon" href="ico/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Inter:wght@400;700&family=Lavishly+Yours&family=Rouge+Script&family=Fascinate&family=Qahiri&family=Roboto+Mono:wght@400;700&family=Fira+Sans:wght@400;700&family=Meow+Script&family=Source+Code+Pro:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Poppins:wght@400;700&family=Raleway:wght@400;700&family=Ubuntu:wght@400;700&family=Merriweather:wght@400;700&family=Dancing+Script:wght@400;700&family=Pacifico&family=Satisfy&family=Zilla+Slab:wght@400;700&family=Spectral:wght@400;700&family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;700&family=Playfair+Display:wght@400;700&family=Alegreya:wght@400;700&family=Alegreya+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Source+Serif+Pro:wght@400;700&family=Fraunces:wght@400;700&family=Inknut+Antiqua:wght@400;700&family=BioRhyme:wght@400;700&family=Karla:wght@400;700&family=Lora:wght@400;700&family=Work+Sans:wght@400;700&family=Rubik:wght@400;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Serif:wght@400;700&family=IBM+Plex+Mono:wght@400;700&family=Crimson+Text:wght@400;700&family=Arvo:wght@400;700&family=Nunito:wght@400;700&family=Cardo:wght@400;700&family=EB+Garamond:wght@400;700&family=Oswald:wght@400;700&family=Bitter:wght@400;700&family=Libre+Baskerville:wght@400;700&family=Tangerine:wght@400;700&family=Bad+Script&family=Sacramento&family=Archivo+Narrow:wght@400;700&family=Domine:wght@400;700&family=Josefin+Sans:wght@400;700&family=Vollkorn:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&family=Cabin:wght@400;700&family=Overpass:wght@400;700&family=Quicksand:wght@400;700&family=Heebo:wght@400;700&family=Fjalla+One&family=Catamaran:wght@400;700&family=Mukta:wght@400;700&family=Barlow:wght@400;700&family=Signika:wght@400;700&family=Cormorant:wght@400;700&family=Space+Grotesk:wght@400;700&family=Syne:wght@400;700&family=Bebas+Neue&family=Anton&family=Chivo:wght@400;700&family=Manrope:wght@400;700&family=Red+Hat+Display:wght@400;700&family=Exo+2:wght@400;700&family=Comfortaa:wght@400;700&family=Mulish:wght@400;700&family=Asap:wght@400;700&family=Kumbh+Sans:wght@400;700&family=Lexend:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <style>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init({
+                publicKey: "aq-zHpAOGx4vIhf5o",
+            });
+        })();
+    </script>
+    <script src="/system/feedbackScript.js"></script>
+    <style>           
         /* Microphone icon turns red when active */
         #voiceIcon.active {
             filter: invert(29%) sepia(99%) saturate(7482%) hue-rotate(359deg) brightness(97%) contrast(119%);
@@ -33,6 +42,7 @@
     <div class="tab-menu">
         <button class="tab-button active" data-tab="settings" data-lang-key="settings">Ayarlar</button>
         <button class="tab-button" data-tab="history" data-lang-key="history">Geçmiş</button>
+        <button class="tab-button" data-tab="support" data-lang-key="support">Destek</button>        
     </div>
     <div id="settingsContent" class="tab-content active">
         <button id="applySettingsBtn" class="accent" data-lang-key="apply">Uygula</button>
@@ -209,6 +219,17 @@
         <h3 data-lang-key="searchHistory">Arama Geçmişi</h3>
         <div id="historyList"></div>
     </div>
+    <div id="supportContent" class="tab-content">
+    <h3 data-lang-key="support">Destek</h3>
+    <form id="feedbackForm">
+        <label for="feedbackMessage">Şikayet/Geri Bildirim</label>
+        <input type="text" id="feedbackTitle" name="title" placeholder="Geri bildirim başlığı" required>
+        <textarea id="feedbackMessage" name="message" placeholder="Geri bildiriminizi buraya yazın" rows="5" required></textarea>
+        
+        <button type="submit" class="accent">Geri Bildirim Gönder</button>
+        <div id="feedbackStatus" class="error-message"></div>
+    </form>
+</div>
 </div>
 <button id="accountButton" title="Hesap">
         <img id="accountIcon" src="ico/account.png" alt="Hesap">
@@ -1090,6 +1111,7 @@ document.addEventListener("click", (e) => {
 });
     };
 </script>
+
 
 
 
