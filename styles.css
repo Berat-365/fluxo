@@ -10,7 +10,7 @@
 }
 body {
     background-color: #20212400;
-    color: #e8eaed;
+    color: #ffffff;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -25,6 +25,11 @@ body {
 body.light {
     background-color: #fff;
     color: #000;
+    transition: background-color 0.5s ease, color 0.5s ease, opacity 0.3s ease; /* Açık tema için de animasyon */
+}
+body.dark {
+    background-color: #202124;
+    color: #e8eaed;
     transition: background-color 0.5s ease, color 0.5s ease, opacity 0.3s ease; /* Açık tema için de animasyon */
 }
 body.light .search-bar input,
@@ -77,10 +82,10 @@ body.light .weather-widget {
     color: #000;
 }
 .weather-widget:hover {
-    background-color: rgba(60, 64, 67, 0.9);
+    background-color: rgb(60, 64, 67);
 }
 body.light .weather-widget:hover {
-    background-color: rgba(224, 224, 224, 0.9);
+    background-color: rgb(224, 224, 224);
 }
 .weather-widget.hidden { display: none; }
 .weather-error {
@@ -93,7 +98,7 @@ body.light .weather-widget:hover {
     display: inline-block;
 }
 body.light .weather-error {
-    background-color: rgba(255, 68, 68, 0.05);
+    background-color: rgba(255, 68, 68, 0);
     color: #cc0000;
 }
 #voiceSearchModal {
@@ -127,9 +132,10 @@ body.light #voiceSearchModal {
     max-height: 200px;
     padding: 0.75rem;
     border: 1px solid rgb(255, 255, 255);
-    border-radius: 30px;
+    border-radius: 20px;
     background: rgb(48, 49, 52);
     color: #fff;
+    margin-bottom: 10px;
     font-size: 1rem;
 }
 body.light #voiceTranscript {
@@ -139,9 +145,9 @@ body.light #voiceTranscript {
 #voiceSearchModal .accent {
     color: white;
     background-color: #202124;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2rem;
     border: none;
-    border-radius: 15px;
+    border-radius: 30px;
     cursor: pointer;
     font-size: 0.875rem;
     font-weight: 500;
@@ -288,10 +294,6 @@ body.light .search-bar input:focus {
     transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
     will-change: transform, box-shadow;
 }
-.buttons button:hover {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    filter: brightness(1.2);
-}
 .buttons button:active {
     transform: scale(0.95);
     filter: brightness(0.9);
@@ -300,6 +302,10 @@ body.light .search-bar input:focus {
     transform: scale(1.08);
     background-color: var(--accent-color);
     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+body.light .buttons button:hover {
+    background-color: var(--accent-color);
+    color: #ffffff;
 }
 .favorites {
     margin-top: 30px;
@@ -407,7 +413,7 @@ body.light .search-bar input:focus {
 }
 #addFavoriteBtn {
     background-color: var(--accent-color);
-    color: #000;
+    color: #ffffff;
     border-radius: 40%;
     width: 60px;
     height: 60px;
@@ -422,6 +428,10 @@ body.light .search-bar input:focus {
     margin-left: 8px;
     margin-right: 8px;
 }
+#addFavoriteModalBtn.accent {
+    margin-right: 10px;
+}
+
 #addFavoriteBtn:hover {
     color: #ffffff !important;
     transform: scale(1.08);
@@ -552,13 +562,15 @@ body.light #menuPanel::-webkit-scrollbar-thumb:hover {
 }
 .tab-menu {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #444;
+    gap: 20px; /* Butonlar arasındaki boşluğu artırdık (10px -> 20px) */
+    margin-bottom: 20px; /* Çizgi ile içerik arasındaki boşluğu artırdık */
+    padding-bottom: 10px; /* Çizginin butonlardan uzaklaşması için alt dolguyu ekledik */
+    border-bottom: 2px solid #444; /* Mevcut çizgi */
 }
 body.light .tab-menu {
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid #ccc; /* Açık tema için çizgi rengi */
 }
+
 .tab-button {
     background: none;
     border: none;
@@ -568,6 +580,31 @@ body.light .tab-menu {
     color: #e8eaed;
     cursor: pointer;
     transition: color 0.2s, background 0.2s;
+    position: relative; /* Aktif çizgi için konumlandırma */
+}
+
+.tab-button.active {
+    color: var(--accent-color); /* Aktif buton için vurgu rengi */
+    position: relative;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -12px; /* Çizgiyi butondan uzaklaştırmak için (border-bottom ile çakışmaması için) */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color ); /* Aktif butonun altında vurgu çizgisi */
+}
+
+/* Açık tema için aktif buton rengi */
+body.light .tab-button {
+    color: #333; /* Açık tema için buton rengi */
+}
+
+body.light .tab-button.active {
+    color: var(--accent-color);
 }
 body.light .tab-button {
     color: #000;
@@ -847,6 +884,17 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
     text-align: center;
     animation: scaleIn 0.18s ease-out forwards;
 }
+body.light #addFavoriteModal {
+    background-color: #f1f3f4;
+    color: #000;
+}
+body.light #addFavoriteModal input {
+    background-color: #e0e0e0;
+    color: #000;
+}
+body.light #addFavoriteModal button {
+    color: #000;
+}
 #addFavoriteModal label {
     display: block;
     margin-bottom: 8px;
@@ -864,16 +912,25 @@ body.light #suggestions::-webkit-scrollbar-thumb:hover {
 #addFavoriteModal button {
     padding: 10px 20px;
     border: none;
-    border-radius: 20px;
-    background-color: var(--accent-color);
-    color: #000;
+    border-radius: 30px;
+    background-color: #202124;
+    color: #ffffff;
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     will-change: transform, box-shadow;
 }
+body.light #addFavoriteModal button {
+    background-color: #e0e0e0;
+    color: #000;
+}
+body.light #addFavoriteModal button:hover {
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
 #addFavoriteModal button:hover {
     transform: scale(1.05);
+    background-color: var(--accent-color);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 #addFavoriteModal button:active {
@@ -989,7 +1046,7 @@ body.light #accountModalInner::-webkit-scrollbar-thumb:hover {
     font-size: 1rem;
     outline: none;
     background: #202124;
-    color: #222;
+    color: #ffffff;
     transition: border 0.15s;
 }
 #accountForm input[type="text"]:focus,
@@ -1008,6 +1065,7 @@ body.light #accountForm input[type="password"] {
 }
 #accountForm .accent {
     min-width: 90px;
+    margin-top: 10px;
 }
 #accountLoggedIn {
     display: none;
@@ -1017,6 +1075,7 @@ body.light #accountForm input[type="password"] {
 }
 #accountLoggedIn .accent {
     min-width: 90px;
+    margin-top: 10px;
 }
 #accountWelcome {
     font-weight: 600;
@@ -1086,5 +1145,164 @@ body.light .error-message {
 input[type="checkbox"] {
     width: 16px;
     height: 16px;
-    accent-color: var(--accent-color, #00bcd4);
+    accent-color: var(--accent-color);
+}
+.history-item {
+    padding: 10px;
+    background-color: #202124;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+body.light .history-item {
+    background-color: #e0e0e0;
+}
+body.light .history-item:hover {
+    background-color: #d1d1d1;
+}
+.history-engine {
+    font-size: 12px;
+    color: #888;
+    margin-left: 10px;
+}
+body.light .history-engine {
+    color: #555;
+}
+.history-remove-btn {
+    font-size: 16px;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 5px;
+}
+body.light .history-remove-btn {
+    color: #363333;
+}
+.history-remove-btn:hover {
+    color: #ff6666;
+}
+body.light .history-remove-btn:hover {
+    color: #ff3333;
+}
+@media (forced-colors: active) {
+    :root {
+        --accent-color: CanvasText; /* Sistem renklerini kullan */
+        --site-font: system-ui, sans-serif; /* Sistem fontuyla uyumluluk */
+    }
+    body {
+        background-color: Canvas;
+        color: CanvasText;
+    }
+    body.light {
+        background-color: Canvas;
+        color: CanvasText;
+    }
+    .search-bar input,
+    .buttons button,
+    .favorite-item,
+    #menuPanel,
+    #accountModalInner,
+    .weather-widget {
+        background-color: Canvas;
+        color: CanvasText;
+        border: 1px solid ButtonBorder;
+    }
+    .favorite-item a,
+    .logo .logo-name,
+    #suggestions,
+    #suggestions li:hover,
+    #suggestions li.selected {
+        color: CanvasText;
+        background-color: ButtonFace;
+    }
+    .weather-error {
+        color: CanvasText;
+        background-color: transparent;
+    }
+    button:hover,
+    .favorite-item:hover,
+    #addFavoriteBtn:hover {
+        background-color: ButtonFace;
+        color: CanvasText;
+    }
+}
+div#voiceTranscript.transcript:focus {
+    outline: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
+}
+#recentBgList {
+    background-color: #303134;          /* Koyu arka plan */
+    color: white;                       /* Yazılar beyaz */
+    padding: 10px;                      /* İç boşluk genişletildi */
+    border-radius: 13px;                /* Daha yuvarlak köşeler */
+    width: 270px;                       /* Standart genişlik */
+    text-align: left;                   /* Yazılar sola hizalı */
+    z-index: 1005;                      /* Üste çıksın */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Derin gölge */
+    max-height: 60%;                   /* Çok uzarsa ekrana sığsın */
+    overflow-y: auto;                   /* Kaydırılabilir */
+    scrollbar-width: thin;              /* İnce kaydırma çubuğu */
+    scrollbar-color: #5c5e60 #303134;   /* Modern scrollbar */
+}
+.recent-bg-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #202124;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    max-height: 50px;
+}
+body.light #recentBgList {
+    background-color: #f1f3f4; /* Açık arka plan */
+    color: #000000; /* Koyu yazı */
+}
+.recent-bg-item:hover {
+    background: rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#recentBgList .recent-bg-item img {
+    width: 40px !important;
+    height: 30px !important;
+    border-radius: 10px !important;
+}
+
+#recentBgList .recent-bg-item span {
+    color: #e8eaed; 
+    font-size: 14px;
+    max-height: 40px;
+    word-break: break-word;
+    overflow: hidden;
+}
+body.light #recentBgList .recent-bg-item span {
+    color: #000000; 
+}
+
+.recent-bg-preview {
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: #202124;
+    transition: background-color 0.2s;
+}
+#bgFileInput {
+    background-color: #303134;        /* Koyu arka plan */
+    color: #e8eaed;                   /* Açık yazı */
+    border: 1px solid #5c5e60;        /* İnce gri çerçeve */
+    border-radius: 12px;              /* Yuvarlatılmış köşeler */
+    padding: 8px 12px;                /* İç boşluk */
+    font-size: 14px;                  /* Yazı boyutu */
+    width: 100%;                      /* Tam genişlik */
+    cursor: pointer;                  /* El işareti */
+}
+body.light .recent-bg-item {
+    background-color: #e0e0e0;       /* Açık arka plan */
+    color: #000000;                   /* Koyu yazı */
 }
