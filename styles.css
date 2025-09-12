@@ -1171,21 +1171,6 @@ body.light .history-item:hover {
 body.light .history-engine {
     color: #555;
 }
-.history-remove-btn {
-    font-size: 16px;
-    color: #ffffff;
-    cursor: pointer;
-    padding: 5px;
-}
-body.light .history-remove-btn {
-    color: #363333;
-}
-.history-remove-btn:hover {
-    color: #ff6666;
-}
-body.light .history-remove-btn:hover {
-    color: #ff3333;
-}
 @media (forced-colors: active) {
     :root {
         --accent-color: CanvasText; /* Sistem renklerini kullan */
@@ -1227,6 +1212,36 @@ body.light .history-remove-btn:hover {
         background-color: ButtonFace;
         color: CanvasText;
     }
+}
+input#bgUrlInput:focus {
+    outline: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
+}
+input#searchInput:focus {
+    outline: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
+}
+input#accountUsername:focus {
+    outline: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
+}
+input#accountPassword:focus {
+    outline: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
+}
+input#modalName:focus {
+    outline: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
+}
+input#modalUrl:focus {
+    outline: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
 }
 div#voiceTranscript.transcript:focus {
     outline: none;
@@ -1305,6 +1320,26 @@ body.light #recentBgList .recent-bg-item span {
 body.light .recent-bg-item {
     background-color: #e0e0e0;       /* Açık arka plan */
     color: #000000;                   /* Koyu yazı */
+}
+#bgFileInput:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 6px var(--accent-color);
+}
+.remove-bg-btn {
+    cursor: pointer;
+    color: #ff4444;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 0 8px;
+    transition: color 0.2s;
+}
+
+.remove-bg-btn:hover {
+    color: #cc0000;
+}
+.hidden {
+    display: none !important;
 }
 #feedbackForm {
     display: flex;
