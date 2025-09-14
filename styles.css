@@ -530,7 +530,7 @@ body.light #accountButton:hover {
     max-height: 80vh;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #5c5e60 #303134;
+    scrollbar-color: #5c5e60 #ffffff00;
     animation: modalFadeIn 0.18s;
     contain: content; /* İçeriğin taşmasını engeller */
 }
@@ -1429,4 +1429,14 @@ body.light #feedbackForm input[type="file"] {
 
 body.light #feedbackStatus.success {
     color: #009900;
+}
+
+#accentColor::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#accentColor::-webkit-color-swatch {
+    border-radius: 6px;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
 }
