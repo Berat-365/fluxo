@@ -6,9 +6,8 @@ The following versions are supported with security updates:
 
 | Version | Supported | Security |
 | ------- | ------------------ | ------------------ |
-| Fluxo 1.3 | ❌ (No support) |
-| Fluxo 3.1.2 | ➖ (Partial support) | https://onecompiler.com/users/43qgwsawh/codes |
-| Fluxo 3.8 | ✅ (Active support) | 🛡️ Fluxo Secure 1 |
+| Fluxo 3.8 | ➖ (Security Updates Only) | 🛡️ Fluxo Secure 1 |
+| Fluxo 4  | ✨ Coming Soon | 🛡️ Fluxo Secure Ultra |
 
 ---
 
@@ -17,11 +16,21 @@ The following versions are supported with security updates:
 If you have found a vulnerability, please follow these steps:
 
 1. Do not post the issue publicly in the Issues section.
-2. Email me directly: **[akgogbrt@gmail.com]** or submit via Fluxo>Menu>Support
+2. Email me directly: **[lakastanmi@gmail.com]** or submit via Fluxo>Menu>Support
 3. Email subject: `Fluxo Security Report`.
 4. Initial response within 48 hours.
 
 ---
+
+## Old Versions
+
+| Version | Supported | Security |
+| ------- | ------------------ | ------------------ |
+| Fluxo 1.3 | ❌ (No support) |
+| Fluxo 3.1.2 | ❌ (No support) | https://onecompiler.com/users/43qgwsawh/codes |
+
+---
+
 
 ## Process
 
