@@ -1,47 +1,60 @@
 <p align="center">
-  <img width="80" height="80" alt="logo" src="https://github.com/user-attachments/assets/2ede3261-11af-4a78-8966-d4d573c65294" />
+  <img width="100" height="100" alt="Fluxo Logo" src="https://github.com/user-attachments/assets/2ede3261-11af-4a78-8966-d4d573c65294" />
 </p>
 
-<h1 align="center">Fluxo Nexora</h1>
+<h1 align="center">Fluxo Zenora</h1>
 <p align="center">
-  Kişiselleştirilebilir yeni sekme sayfası  
+  <strong>Yeni Nesil Kişiselleştirilebilir Yeni Sekme Sayfası</strong>
   <br />
-  <a href="https://berat-365.github.io/fluxo/" target="_blank">🌐 Canlı Demo</a>
-  ·
+  <a href="https://berat-365.github.io/fluxo/" target="_blank">🌐 Canlı Demo</a> ·
   <a href="https://github.com/Berat-365/fluxo/issues">🐞 Hata Bildir</a>
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-4.20.4-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/license-GNU GENERAL PUBLIC LICENSE-red?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/status-Stable-green?style=for-the-badge" />
+</p>
+
+---
+
+## ✨ Öne Çıkan Özellikler
+
+| Özellik | Açıklama |
+|---------|----------|
+| 🚀 Hızlı Ana Sayfa | Düşük ram kullanımı ve hızlı açılışı ile kullanıcı deneyimi zirvede |
+| 🎨 Kişiselleştirme | Tema, dil, yazı tipi ve birçok sistemi kolayca özelleştirin. |
+| 🌤 Hava Durumu & Arama | Güncel hava durumu ve akıllı arama önerileri. |
+| 📂 Favori Kartlar | Sık kullandığınız siteleri hızlı erişim kartlarına ekleyin ve klasörleyin |
+| 🔧 Geliştirici Dostu | Kolay kurulum, açık kaynak, katkıya hazır. |
 
 ---
 
 ## 🚀 Başlangıç
 
-Fluxo’yu tarayıcınızda kullanmak için:  
-1. Tarayıcınıza **CustomNewTabURL** veya türevlerinden birini yükleyin.  
+Fluxo’yu tarayıcınızda kullanmak çok kolay:  
+
+1. Tarayıcınıza **CustomNewTabURL** veya benzeri bir eklenti yükleyin.  
 2. Eklenti ayarlarına `https://berat-365.github.io/fluxo/` adresini girin.  
-3. İşte bu kadar 🎉
+3. Hemen kullanmaya başlayın 🎉
+
+> Yakında resmi eklentimizi çıkarıyoruz! 🔥
 
 ---
 
-## 🎨 Kişiselleştirme
+## 💻 Geliştirme Ortamı
 
-- Menü → **Ayarlar → Kişiselleştirme** yolunu izleyin.  
-- Tema, dil, favoriler ve daha fazlasını kendi zevkinize göre ayarlayın.  
+Projeyi kendi bilgisayarınızda çalıştırmak için:
 
----
+```bash
+# Depoyu klonlayın
+git clone https://github.com/Berat-365/fluxo.git
 
-## ⚠️ Uyarılar
+# Klasöre girin
+cd fluxo
 
-- Reklam engelleyiciler (özellikle YouTube kaynaklı arka planlar) hata verebilir.  
-- Örnek hata günlüğü:  "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT"
+# Gerekli paketleri yükleyin
+npm install
 
-
----
-
-## 🛠️ Teknolojiler
-
-- HTML, CSS, JavaScript  
-- GitHub Pages ile ücretsiz hosting  
-
----
-
-> ✨ Bu site [GitHub Pages](https://pages.github.com/) kullanılarak yayınlanmıştır.
+# Geliştirme sunucusunu başlatın
+npm run dev
