@@ -663,6 +663,10 @@ export async function applySettings(options = {}) {
       if (el) el.style.display = (settings[settingKey] || 'true') === 'true' ? '' : 'none';
     });
 
+    const linkBehavior = settings.linkBehavior || defaultSettings.linkBehavior;
+    window.linkBehavior = linkBehavior;
+    safeSetItem('linkBehavior', linkBehavior); 
+
     window.linkBehavior = settings.linkBehavior || defaultSettings.linkBehavior;
     window.multiSearchEnabled = settings.multiSearchEnabled === 'true';
     window.safeSearch = settings.safeSearch === 'true';
