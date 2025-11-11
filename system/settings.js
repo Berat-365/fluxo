@@ -1052,7 +1052,6 @@ document.addEventListener('DOMContentLoaded', () => {
   $('applySettingsBtn')?.addEventListener('click', () => {
     if (saveSettingsFromInputs()) {
       console.log('Ayarlar kaydedildi ve uygulandı.');
-      alert('Ayarlar başarıyla kaydedildi.');
     } else {
       console.warn('Ayarlar kaydedilemedi. Depolama alanınızı kontrol edin.');
       alert('Ayarlar kaydedilemedi. Lütfen tarayıcı ayarlarınızı kontrol edin.');
@@ -1147,3 +1146,4 @@ $('resetBrowserBtn')?.addEventListener('click', () => {
     startWeatherUpdate: typeof window.startWeatherUpdate === 'function' ? window.startWeatherUpdate : undefined
   });
 });
+
