@@ -582,7 +582,6 @@ export async function applySettings(options = {}) {
     }
     const settings = cachedSettings || { ...defaultSettings };
 
-    // Sync kritik UI
     const themeStylesheet = document.getElementById('systemThemeLink');
     if (themeStylesheet) {
         const systemTheme = settings.systemTheme || 'vanilla';
@@ -671,7 +670,6 @@ export async function applySettings(options = {}) {
     window.privateMode = settings.privateMode === 'true';
     window.backgroundHistory = JSON.parse(settings.backgroundHistory || '[]');
 
-    // Async tasks
     const asyncTasks = [
       async () => { try { return options.updateSearchEnginePreview?.() || updateSearchEnginePreview(); } catch (e) { console.error(e); } },
       async () => { try { await loadCachedBackground(settings.bgUrl || defaultSettings.bgUrl, 50); } catch (e) { console.error(e); } },
@@ -680,14 +678,13 @@ export async function applySettings(options = {}) {
       async () => { try { if (options.fetchWeather) options.fetchWeather(); else if (typeof window.fetchWeather === 'function') window.fetchWeather(); } catch (e) { console.error(e); } },
       async () => { try { options.bindShortcuts?.() || bindShortcuts(); } catch (e) { console.error(e); } },
       async () => { try { if (options.startWeatherUpdate) options.startWeatherUpdate(); else if (typeof window.startWeatherUpdate === 'function') window.startWeatherUpdate(); } catch (e) { console.error(e); } },
-      // Yeni: Bekleme ekranı kontrolü
       async () => {
         try {
           const enabled = settings.idleScreenEnabled === 'true';
-          const timeoutMinutes = Math.max(1, Math.min(60, parseInt(settings.idleScreenTimeout) || 2)); // 2 dk varsayılan
-        if (window.initIdleScreen) {
-      window.initIdleScreen(enabled, timeoutMinutes);
-      }
+          const timeoutMinutes = Math.max(1, Math.min(60, parseInt(settings.idleScreenTimeout) || 2));
+          if (window.initIdleScreen) {
+            window.initIdleScreen(enabled, timeoutMinutes);
+          }
         } catch (e) { console.error(e); }
       }
     ];
@@ -871,10 +868,10 @@ export function resetBrowser() {
     screen.classList.remove('active');
   }
 
-function updateClock() {
+  function updateClock() {
     const now = new Date();
     const hourSelect = document.getElementById('hourSelections');
-    const hour12 = hourSelect?.value === '12'; // true = 12 saat, false = 24 saat
+    const hour12 = hourSelect?.value === '12';
 
     const timeOptions = { 
         hour: '2-digit', 
@@ -886,18 +883,15 @@ function updateClock() {
 
     clockEl.textContent = now.toLocaleTimeString(undefined, timeOptions);
     dateEl.textContent = now.toLocaleDateString(undefined, dateOptions);
-}
-
+  }
 
   function showIdle() {
     if (screen.classList.contains('active')) return;
     screen.classList.add('active');
-
     lastLang = null;
     updateClock();
     clockInterval = setInterval(updateClock, 1000);
 
-    // Artık sadece tıklayınca kapanacak
     const hide = () => {
       screen.classList.remove('active');
       if (clockInterval) clearInterval(clockInterval);
@@ -907,15 +901,12 @@ function updateClock() {
     screen.addEventListener('click', hide, { once: true, passive: true });
   }
 
-  // Test için dışa açıyoruz
   window.testIdleScreen = showIdle;
 
   function resetTimer() {
     if (idleTimer) clearTimeout(idleTimer);
-
     const enabled = safeGetItem('idleScreenEnabled') === 'true';
     if (!enabled) return;
-
     const timeoutMinutes = Math.max(1, Math.min(60, parseInt(safeGetItem('idleScreenTimeout')) || 2));
     const timeoutMs = timeoutMinutes * 60 * 1000;
     idleTimer = setTimeout(showIdle, timeoutMs);
@@ -923,13 +914,10 @@ function updateClock() {
 
   function bindActivityEvents() {
     cleanup();
-
     const events = ['click', 'keydown', 'mousemove', 'touchstart', 'wheel', 'scroll']
       .map(type => ({ type, handler: resetTimer, options: { passive: true } }));
-
     events.forEach(ev => document.addEventListener(ev.type, ev.handler, ev.options));
     userActivityEvents = events;
-
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) resetTimer();
     });
@@ -937,12 +925,10 @@ function updateClock() {
 
   function initIdleScreen(enabled = true, timeoutMinutes = 2) {
     cleanup();
-
     if (!enabled || timeoutMinutes < 1) {
       screen.classList.remove('active');
       return;
     }
-
     safeSetItem('idleScreenTimeout', String(timeoutMinutes));
     bindActivityEvents();
     resetTimer();
@@ -968,7 +954,6 @@ function updateClock() {
     };
   }
 })();
-
 
 // ------------------------- Input güncelleme -------------------------
 function updateSettingsInputs(settings) {
@@ -1001,18 +986,16 @@ function updateSettingsInputs(settings) {
     hourSelections: 'hourSelections',
   };
 
-  // 1. Input'ları doldur
   Object.entries(inputMap).forEach(([inputId, settingKey]) => {
     const el = document.getElementById(inputId);
-if (el) {
-  const val = (settings[settingKey] !== undefined && settings[settingKey] !== null && settings[settingKey] !== '')
-                ? settings[settingKey]
-                : defaultSettings[settingKey] || '';
-  el.value = val;
-}
+    if (el) {
+      const val = (settings[settingKey] !== undefined && settings[settingKey] !== null && settings[settingKey] !== '')
+                    ? settings[settingKey]
+                    : defaultSettings[settingKey] || '';
+      el.value = val;
+    }
   });
 
-  // 2. Checkbox'lar
   const toggleIds = [
     'showFavorites', 'showSuggestions', 'showWeather', 'showInfoBar', 'showSearch',
     'showSearchShortcuts', 'showAISearch', 'showAccountButton',
@@ -1029,7 +1012,6 @@ if (el) {
     }
   });
 
-  // 3. Radio button'lar
   const safeSearchOptions = document.getElementById('safeSearchOptions');
   if (safeSearchOptions) {
     safeSearchOptions.value = (settings.safeSearch !== undefined ? settings.safeSearch : defaultSettings.safeSearch) === 'true'
@@ -1045,7 +1027,6 @@ if (el) {
     privateModeOptions.value = settings.privateMode === 'true' ? 'privateModeEnable' : 'privateModeDisable';
   }
 
-  // 4. idleScreenTimeout için özel kontrol (varsayılan 2)
   const idleEl = document.getElementById('idleScreenTimeout');
   if (idleEl) {
     const savedValue = settings.idleScreenTimeout;
@@ -1060,3 +1041,105 @@ export function updateSettingsPanel() {
     updateSettingsInputs(settings);
   });
 }
+
+// ------------------------- EVENT LISTENERS (EKSİK OLAN KISIM) -------------------------
+document.addEventListener('DOMContentLoaded', () => {
+  // Uygula butonu
+  $('applySettingsBtn')?.addEventListener('click', () => {
+    if (saveSettingsFromInputs()) {
+      console.log('Ayarlar kaydedildi ve uygulandı.');
+      alert('Ayarlar başarıyla kaydedildi.');
+    } else {
+      console.warn('Ayarlar kaydedilemedi. Depolama alanınızı kontrol edin.');
+      alert('Ayarlar kaydedilemedi. Lütfen tarayıcı ayarlarınızı kontrol edin.');
+    }
+  });
+
+  // Aktar/Al butonu
+  $('importSettingsBtn')?.addEventListener('click', openImportExportModal);
+
+  // Modal kapatma
+  $('closeImportExportModalBtn')?.addEventListener('click', closeImportExportModal);
+
+  // Dışa aktar
+  $('exportSettingsBtn')?.addEventListener('click', () => {
+    const settingsJson = exportSettings();
+    const blob = new Blob([settingsJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fluxo-settings.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // İçe aktar
+  $('importSettingsBtnModal')?.addEventListener('click', () => {
+    $('importFileInput')?.click();
+  });
+  $('importFileInput')?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (importSettings(ev.target.result)) {
+        applySettings({
+          updateSearchEnginePreview,
+          loadCachedBackground,
+          updateLanguage: typeof window.updateLanguage === 'function' ? window.updateLanguage : undefined,
+          loadFavorites: typeof window.loadFavorites === 'function' ? window.loadFavorites : undefined,
+          fetchWeather: typeof window.fetchWeather === 'function' ? window.fetchWeather : undefined,
+          bindShortcuts,
+          startWeatherUpdate: typeof window.startWeatherUpdate === 'function' ? window.startWeatherUpdate : undefined
+        });
+        alert('Ayarlar başarıyla içe aktarıldı.');
+        closeImportExportModal();
+      } else {
+        alert('Geçersiz ayar dosyası. Lütfen doğru bir JSON dosyası seçin.');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  // Arka plan yükleme
+  $('bgFileInput')?.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      await cacheBackgroundImage(url);
+      safeSetItem('bgUrl', url);
+      loadCachedBackground(url);
+      $('bgUrlInput').value = url;
+    }
+  });
+
+// Arka planı kaldır (doğrulama gerekmiyor)
+$('removeBgBtn')?.addEventListener('click', () => {
+  safeSetItem('bgUrl', '');
+  $('bgUrlInput').value = '';
+  loadCachedBackground('');
+  alert('Arka plan kaldırıldı.');
+});
+
+// Tarayıcıyı sıfırla (resetConfirm ile dil desteği)
+$('resetBrowserBtn')?.addEventListener('click', () => {
+  const confirmMessage = getLang('resetConfirm') || 'Tüm ayarlar, önbellek ve veriler silinecek. Devam etmek istiyor musunuz?';
+  
+  if (confirm(confirmMessage)) {
+    resetBrowser();
+  }
+});
+
+  // Başlangıçta ayarları uygula
+  applySettings({
+    updateSearchEnginePreview,
+    loadCachedBackground,
+    updateLanguage: typeof window.updateLanguage === 'function' ? window.updateLanguage : undefined,
+    loadFavorites: typeof window.loadFavorites === 'function' ? window.loadFavorites : undefined,
+    fetchWeather: typeof window.fetchWeather === 'function' ? window.fetchWeather : undefined,
+    bindShortcuts,
+    startWeatherUpdate: typeof window.startWeatherUpdate === 'function' ? window.startWeatherUpdate : undefined
+  });
+});
