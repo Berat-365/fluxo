@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-4.20.4-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/version-4.20.7-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/license-GNU GENERAL PUBLIC LICENSE-red?style=for-the-badge" />
   <img src="https://img.shields.io/badge/status-Stable-green?style=for-the-badge" />
 </p>
