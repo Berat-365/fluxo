@@ -351,6 +351,10 @@
                 <option value="mojeek">Mojeek</option>
                 <option value="startpage">Startpage</option>
                 <option value="ecosia">Ecosia</option>
+                <option value="wikipedia">Wikipedia</option>
+                <option value="searx">Searx</option>
+                <option value="archive">Internet Archive</option>
+                <option value="wolfram">Wolfram | Alpha</option>
             </select>
             <div id="searchEnginePreview" style="margin-top: 10px; text-align: center;">
                 <img src="" alt="Arama Motoru Önizlemesi" style="max-height: 40px; display: none;" id="engineLogo">
@@ -626,15 +630,19 @@
         <div class="multi-search-item" data-engine="google"><img src="https://www.google.com/favicon.ico" alt="Google" class="search-icon"><span>Google</span></div>
         <div class="multi-search-item" data-engine="bing"><img src="https://www.bing.com/favicon.ico" alt="Bing" class="search-icon"><span>Bing</span></div>
         <div class="multi-search-item" data-engine="duckduckgo"><img src="https://duckduckgo.com/favicon.ico" alt="DuckDuckGo" class="search-icon"><span>DuckDuckGo</span></div>
-        <div class="multi-search-item" data-engine="ask"><img src="https://www.ask.com/favicon.ico" alt="Ask" class="search-icon"><span>Ask</span></div>
         <div class="multi-search-item" data-engine="yandex"><img src="https://yandex.com/favicon.ico" alt="Yandex" class="search-icon"><span>Yandex</span></div>
         <div class="multi-search-item" data-engine="brave"><img src="https://brave.com/static-assets/images/brave-favicon.png" alt="Brave" class="search-icon"><span>Brave</span></div>
         <div class="multi-search-item" data-engine="yahoo"><img src="https://www.yahoo.com/favicon.ico" alt="Yahoo" class="search-icon"><span>Yahoo</span></div>
+        <div class="multi-search-item" data-engine="wikipedia"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=wikipedia.org" alt="Wikipedia" class="search-icon"><span>Wikipedia</span></div>
+        <div class="multi-search-item" data-engine="archive"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=archive.org" alt="Internet Archive" class="search-icon"><span>Internet Archive</span></div>
+        <div class="multi-search-item" data-engine="startpage"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=startpage.com" alt="Startpage" class="search-icon"><span>Startpage</span></div>
+        <div class="multi-search-item" data-engine="ecosia"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=ecosia.org" alt="Ecosia" class="search-icon"><span>Ecosia</span></div>     
+        <div class="multi-search-item" data-engine="ask"><img src="https://www.ask.com/favicon.ico" alt="Ask" class="search-icon"><span>Ask</span></div>   
         <div class="multi-search-item" data-engine="baidu"><img src="https://www.baidu.com/favicon.ico" alt="Baidu" class="search-icon"><span>Baidu</span></div>
         <div class="multi-search-item" data-engine="qwant"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=qwant.com" alt="Qwant" class="search-icon"><span>Qwant</span></div>
         <div class="multi-search-item" data-engine="mojeek"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=mojeek.com" alt="Mojeek" class="search-icon"><span>Mojeek</span></div>
-        <div class="multi-search-item" data-engine="startpage"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=startpage.com" alt="Startpage" class="search-icon"><span>Startpage</span></div>
-        <div class="multi-search-item" data-engine="ecosia"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=ecosia.org" alt="Ecosia" class="search-icon"><span>Ecosia</span></div>
+        <div class="multi-search-item" data-engine="searx"><img src="assets/engines/searx.png" alt="Searx" class="search-icon"><span>Searx</span></div>
+        <div class="multi-search-item" data-engine="wolfram"><img src="https://www.google.com/s2/favicons?sz=64&domain_url=wolframalpha.com" alt="Wolfram | Alpha" class="search-icon"><span>Wolfram | Alpha</span></div>
     </div>
     <hr>
     <div id="selectAllMultiSearch" data-lang-key="selectAll" class="multi-search-select-all">Tümünü Seç</div>
@@ -1411,7 +1419,3 @@ function updateInfoBarPosition() { const infoWrapper = document.getElementById("
     </script>
 </body>
 </html>
-
-
-
-
