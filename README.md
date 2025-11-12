@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="100" height="100" alt="Fluxo Logo" src="https://github.com/user-attachments/assets/2ede3261-11af-4a78-8966-d4d573c65294" />
+  <img width="100" height="100" alt="Fluxo Logo" src="assets/logo/logo.png" />
 </p>
 
 <h1 align="center">Fluxo Zenora</h1>
