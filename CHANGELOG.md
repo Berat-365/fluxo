@@ -4,6 +4,17 @@ Fluxo Zenora için düzenlemeler burada yer alır
 
 ---
 
+## Fluxo 4.21 - 2025-12-09
+### 🚀 Yeni Özellikler
+- Haber widgeti yenilendi ve daha fazla haber kanalı destekliyor yakında küçük değişikliklikler ile dündeme sokabiliriz
+
+### 🐛 Düzeltmeler
+- Firefox tarayıcılarda arkaplan galerisindeki arkaplanların hatalı çalışması düzeltildi
+- Hatalı Türkçe kullanımlar düzenlendi
+- Arkaplan galerisinden hatalı youtube menüsü kaldırıldı
+
+---
+
 ## Fluxo 4.20.7 - 2025-11-12
 ### 🚀 Yeni Özellikler
 - Wikipedia, Searx, Wolfram, Internet Archive arama motorları eklendi
