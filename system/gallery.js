@@ -60,9 +60,8 @@ async function loadGalleryItems() {
         switch (currentSource) {
             case 'unsplash': items = await fetchUnsplash(); break;
             case 'pexels': items = await fetchPexels(); break;
-            case 'youtube': items = await fetchYouTubeSuggestions(); break;
             case 'local': items = await getLocalWallpapers(); break;
-            case 'history': items = await getHistoryWallpapers(); break; // YENİ
+            case 'history': items = await getHistoryWallpapers(); break; 
         }
         renderGalleryItems(items);
     } catch (err) {
@@ -130,25 +129,6 @@ async function fetchPexels() {
         source: 'Pexels'
     }));
 }
-
-// === YOUTUBE (STATİK ÖNERİLER) ===
-async function fetchYouTubeSuggestions() {
-    const suggestions = [
-        { id: 'dQw4w9WgXcQ', title: 'Rain on Window', author: 'Relaxing White Noise' },
-        { id: '5qap5aO4i9A', title: 'Ocean Waves', author: 'Nature Relaxation' },
-        { id: '3A1X5fYb2gM', title: 'Forest Ambience', author: 'The Guild of Ambience' },
-        { id: '1z3X2Zx2X3A', title: 'City Night', author: 'Ambient Worlds' }
-    ];
-    return suggestions.map(video => ({
-        type: 'youtube',
-        url: `https://www.youtube.com/embed/${video.id}`,
-        thumb: `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`,
-        title: video.title,
-        author: video.author,
-        source: 'YouTube'
-    }));
-}
-
 // === YEREL DUVAR KAĞITLARI ===
 async function getLocalWallpapers() {
     const recent = JSON.parse(localStorage.getItem('wallpapers') || '[]');
@@ -168,14 +148,15 @@ function renderGalleryItems(items) {
         return;
     }
 
+    // create HTML with data-attributes (no inline onclick)
     bgGalleryGrid.innerHTML = items.map(item => `
-        <div class="gallery-item" onclick="window.selectBackground('${item.url}', '${item.type}')">
+        <div class="gallery-item" data-url="${item.url}" data-type="${item.type}" data-title="${(item.title||'').replace(/"/g,'&quot;')}">
             ${item.type === 'image' 
-                ? `<img src="${item.thumb}" alt="${item.title}">`
+                ? `<img src="${item.thumb}" alt="${(item.title||'').replace(/"/g,'&quot;')}">`
                 : item.type === 'youtube'
-                ? `<img src="${item.thumb}" alt="${item.title}">
+                ? `<img src="${item.thumb}" alt="${(item.title||'').replace(/"/g,'&quot;')}">
                    <div class="gallery-source">YouTube</div>`
-                : `<video src="${item.url}" muted loop></video>`
+                : `<video src="${item.url}" muted loop playsinline preload="metadata" poster="${item.thumb || ''}"></video>`
             }
             <div class="overlay">
                 <div><strong>${item.title}</strong></div>
@@ -185,23 +166,78 @@ function renderGalleryItems(items) {
         </div>
     `).join('');
 
-    // Video önizleme
-    bgGalleryGrid.querySelectorAll('video').forEach(v => v.play().catch(() => {}));
+    // Video önizleme (try play; bazı tarayıcılarda hata fırlatabilir)
+    bgGalleryGrid.querySelectorAll('video').forEach(v => {
+        v.muted = true;
+        v.play().catch(() => {});
+    });
+
+    // Attach click listeners (sağlam ve tarayıcı uyumlu)
+    bgGalleryGrid.querySelectorAll('.gallery-item').forEach(el => {
+        el.addEventListener('click', () => {
+            const url = el.dataset.url;
+            const type = el.dataset.type || 'image';
+            window.selectBackground(url, type);
+        });
+    });
 }
 
 // === ARKA PLAN SEÇ ===
-window.selectBackground = (url, type = 'image') => {
-    localStorage.setItem('bgUrl', url);
-    localStorage.setItem('bgType', type);
-    applyBackground(url);
-    bgGalleryModal.style.display = 'none';
-
+window.selectBackground = async (url, type = 'image') => {
     const status = document.getElementById('applyStatus');
-    if (status) {
-        status.textContent = 'Arka plan galeriden uygulandı!';
-        status.className = 'status-message success';
-        status.style.display = 'block';
-        setTimeout(() => status.style.display = 'none', 2000);
+    try {
+        if (type === 'image') {
+            // Ön yükleme: Image ile dene, hata olursa fetch+blob fallback
+            await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve();
+                img.onerror = async () => {
+                    // fallback: fetch blob (bazı yönlendirme/CORS durumlarında işe yarayabilir)
+                    try {
+                        const res = await fetch(url, { mode: 'cors' });
+                        if (!res.ok) throw new Error('Fetch hatası');
+                        const blob = await res.blob();
+                        const blobUrl = URL.createObjectURL(blob);
+                        applyBackground(blobUrl);
+                        // Lokal olarak orijinal URL'i kaydet (reload sonrası orijinal URL kullanılacak)
+                        localStorage.setItem('bgUrl', url);
+                        localStorage.setItem('bgType', type);
+                        resolve();
+                    } catch (e) {
+                        reject(e);
+                    }
+                };
+                // bazı kaynaklar için crossOrigin denenebilir, fakat ön tanımlı bırakıyoruz
+                img.src = url;
+            });
+
+            // Eğer preload başarılıysa doğrudan uygulama
+            applyBackground(url);
+        } else {
+            // video / youtube vb.
+            applyBackground(url);
+        }
+
+        // Başarılı durum
+        localStorage.setItem('bgUrl', url);
+        localStorage.setItem('bgType', type);
+        bgGalleryModal.style.display = 'none';
+
+        if (status) {
+            status.textContent = 'Arka plan galeriden uygulandı!';
+            status.className = 'status-message success';
+            status.style.display = 'block';
+            setTimeout(() => status.style.display = 'none', 2000);
+        }
+    } catch (err) {
+        if (status) {
+            status.textContent = `Arka plan yüklenemedi: ${err.message || 'Bilinmeyen hata'}`;
+            status.className = 'status-message error';
+            status.style.display = 'block';
+            setTimeout(() => status.style.display = 'none', 3000);
+        } else {
+            console.error('selectBackground error:', err);
+        }
     }
 };
 
