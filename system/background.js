@@ -30,7 +30,17 @@ export function applyBackground(bgUrl = '') {
     else if (bgUrl.includes('youtube.com') || bgUrl.includes('youtu.be')) {
         const videoId = bgUrl.match(/(?:watch\?v=|youtu\.be\/)([A-Za-z0-9_-]+)/)?.[1];
         if (backgroundYouTube && videoId) {
-            backgroundYouTube.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1`;
+ backgroundYouTube.src =
+    `https://www.youtube.com/embed/${videoId}` +
+    `?autoplay=1` +
+    `&mute=1` +
+    `&loop=1` +
+    `&playlist=${videoId}` +
+    `&controls=0` +
+    `&modestbranding=1` +
+    `&playsinline=1` +
+    `&enablejsapi=1`;
+
             backgroundYouTube.style.display = 'block';
         }
         if (backgroundVideo) backgroundVideo.style.display = 'none';
