@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-4.21-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/version-4.21.2-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/license-GNU GENERAL PUBLIC LICENSE-red?style=for-the-badge" />
   <img src="https://img.shields.io/badge/status-Stable-green?style=for-the-badge" />
 </p>
@@ -46,6 +46,7 @@ Fluxo’yu tarayıcınızda kullanmak çok kolay:
 
 1. Bazı reklam engelleyiciler youtube arkaplanlarını etkiler (maalesef bu bizim elimizde değil tarayıcı ve eklenti kısıtlamaları ve youtubeninde politikaları yüzünden bu uyarıyı yapmalıyız)
 2. Güncellemeler uzun aralıklarla yapılıyor bu yüzden bazı sorunlara hemen ulaşamıyoruz eğer sizin için büyük bir hata bulmanız durumunda bize ulaşın hatayı belirtin ara yamalarla düzeltebiliriz
+3. Birçok çeviriyi yapay zeka üzerinden oluşturuyoruz eğer kendi dilinize hakim biriyseniz lütfen bize düzeltilmiş dil dosyasını paylaşın 🙏🏽
 
 ---
 
