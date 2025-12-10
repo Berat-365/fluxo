@@ -735,6 +735,7 @@
             <h4 data-lang-key="notesWidget"><span class="drag-handle">⋮⋮</span>Notlar</h4>
             <input type="text" data-lang-key="addNoteHolder" id="noteInput" placeholder="Yeni not ekle...">
             <button data-lang-key="addNoteButton" class="accent small-accent-tools" onclick="addNote()">Ekle</button>
+            <hr>
             <ul id="notesList"></ul>
         </div>
 
@@ -744,6 +745,7 @@
             <input type="text" id="qrInput" data-lang-key="qrInputHolder" placeholder="QR metni gir...">
             <button class="accent small-accent-tools" onclick="downloadQR()" style="display: none;" data-lang-key="downloadQR" id="downloadQrBtn">İndir</button>
             <button class="accent small-accent-tools" data-lang-key="generateButton" onclick="generateQR()">Oluştur</button> 
+            <hr>
             <div id="qrDisplay"></div>
         </div>
 
@@ -800,145 +802,41 @@
             <button class="accent small-accent-tools" data-lang-key="convertButton" onclick="convertCurrency()">Çevir</button>
             <div id="currencyResult" style="margin-top: 10px; font-weight: bold;"></div>
         </div>
-<!-- Full Global News Sources Widget -->
+
 <div class="widget-item" id="newsWidget" draggable="true">
     <h4 data-lang-key="newsWidget">
         <span class="drag-handle">⋮⋮</span>Haberler
     </h4>
 
-    <select id="newsCountry" class="modern-select" onchange="fetchNews()">
+    <!-- Ülke seçimi -->
+<select id="newsCountryGroup" class="modern-select" onchange="updateSources()">
+    <option data-lang-key="selectCountry" value="">Ülke seçin</option>
+    <option data-lang-key="turkey" value="turkey">Türkiye</option>
+    <option data-lang-key="usa" value="usa">ABD</option>
+    <option data-lang-key="uk" value="uk">İngiltere</option>
+    <option data-lang-key="europe" value="europe">Avrupa</option>
+    <option data-lang-key="germany" value="germany">Almanya</option>
+    <option data-lang-key="france" value="france">Fransa</option>
+    <option data-lang-key="russia" value="russia">Rusya</option>
+    <option data-lang-key="middleeast" value="middleeast">Orta Doğu</option>
+    <option data-lang-key="china" value="china">Çin</option>
+    <option data-lang-key="japan" value="japan">Japonya</option>
+    <option data-lang-key="india" value="india">Hindistan</option>
+    <option data-lang-key="canada" value="canada">Kanada</option>
+    <option data-lang-key="australia" value="australia">Avustralya</option>
+    <option data-lang-key="world" value="world">Dünya</option>
+</select>
 
-        <!-- Türkiye -->
-        <optgroup label="Türkiye">
-            <option value="https://www.ntv.com.tr/gundem.rss">NTV</option>
-            <option value="https://i12.haber7.net/sondakika/newsstand/latest.xml">Haber7</option>
-            <option value="https://www.trthaber.com/rss/sondakika.rss">TRT Haber</option>
-            <option value="https://rss.hurriyet.com.tr/rss/gundem">Hürriyet</option>
-            <option value="https://www.cnnturk.com/feed/rss/all/news">CNN Türk</option>
-            <option value="https://www.sozcu.com.tr/feeds/rss/gundem.xml">Sözcü</option>
-            <option value="https://www.ahaber.com.tr/rss/sondakika.xml">A Haber</option>
-            <option value="https://www.milliyet.com.tr/rss/rssnew/gundemrss.xml">Milliyet</option>
-            <option value="https://www.yenisafak.com/rss?xml=1">Yeni Şafak</option>
-            <option value="https://www.star.com.tr/rss/rss.asp">Star</option>
-            <option value="https://www.turkiyegazetesi.com.tr/rss">Türkiye Gazetesi</option>
-            <option value="https://www.cumhuriyet.com.tr/rss/3.xml">Cumhuriyet</option>
-            <option value="https://www.halktv.com.tr/rss">Halk TV</option>
-            <option value="https://www.odatv4.com/rss.php">OdaTV</option>
-            <option value="https://www.ensonhaber.com/rss/ensonhaber.xml">Ensonhaber</option>
-            <option value="https://www.indyturk.com/rss.xml">Independent Türkçe</option>
-            <option value="https://bianet.org/english/rss">Bianet</option>
-            <option value="https://www.dunya.com/rss">Dünya</option>
-            <option value="https://tv5.com.tr/feed/">TV5</option>
-        </optgroup>
-
-        <!-- ABD -->
-        <optgroup label="United States">
-            <option value="https://rss.cnn.com/rss/edition_world.rss">CNN</option>
-            <option value="https://feeds.nbcnews.com/nbcnews/public/news">NBC</option>
-            <option value="https://rss.nytimes.com/services/xml/rss/nyt/World.xml">New York Times</option>
-            <option value="https://www.washingtonpost.com/arcio/rss/category/world/">Washington Post</option>
-            <option value="https://www.latimes.com/world-nation/rss2.0.xml">LA Times</option>
-            <option value="https://www.wsj.com/news/world?mod=rsswn">Wall Street Journal</option>
-            <option value="https://www.voanews.com/rss">Voice of America</option>
-            <option value="https://www.usatoday.com/rss/news/">USA Today</option>
-            <option value="https://thehill.com/feed/">The Hill</option>
-            <option value="https://www.politico.com/rss/politics08.xml">Politico</option>
-        </optgroup>
-
-        <!-- İngiltere -->
-        <optgroup label="United Kingdom">
-            <option value="https://feeds.bbci.co.uk/news/world/rss.xml">BBC World</option>
-            <option value="https://www.theguardian.com/world/rss">The Guardian</option>
-            <option value="https://www.telegraph.co.uk/world-news/rss.xml">The Telegraph</option>
-            <option value="https://www.independent.co.uk/news/uk/rss">The Independent</option>
-            <option value="https://www.ft.com/world?format=rss">Financial Times</option>
-            <option value="https://news.sky.com/feeds/rss/world.xml">Sky News</option>
-        </optgroup>
-
-        <!-- Avrupa -->
-        <optgroup label="Europe">
-            <option value="https://www.euronews.com/rss?level=world">Euronews</option>
-            <option value="https://www.politico.eu/feed/">Politico Europe</option>
-            <option value="https://www.europeaninterest.eu/feed/">European Interest</option>
-            <option value="https://euobserver.com/rss">EU Observer</option>
-        </optgroup>
-
-        <!-- Almanya -->
-        <optgroup label="Germany">
-            <option value="https://www.spiegel.de/international/index.rss">Spiegel</option>
-            <option value="https://www.dw.com/en/top-stories/s-9097?maca=en-rss-en-all-1573-rdf">Deutsche Welle</option>
-            <option value="https://www.faz.net/rss/aktuell/">FAZ</option>
-            <option value="https://www.tagesspiegel.de/contentexport/feed/rss">Tagesspiegel</option>
-        </optgroup>
-
-        <!-- Fransa -->
-        <optgroup label="France">
-            <option value="https://www.france24.com/en/rss">France 24</option>
-            <option value="https://www.rfi.fr/en/international/rss">RFI</option>
-            <option value="https://www.lemonde.fr/international/rss_full.xml">Le Monde</option>
-            <option value="https://www.lefigaro.fr/rss/figaro_international.xml">Le Figaro</option>
-        </optgroup>
-
-        <!-- Rusya -->
-        <optgroup label="Russia">
-            <option value="https://www.rt.com/rss/news/">RT</option>
-            <option value="https://tass.com/rss/v2.xml">TASS</option>
-            <option value="https://sputniknews.com/export/rss2/archive/index.xml">Sputnik</option>
-        </optgroup>
-
-        <!-- Orta Doğu -->
-        <optgroup label="Middle East">
-            <option value="https://www.aljazeera.com/xml/rss/all.xml">Al Jazeera</option>
-            <option value="https://english.alarabiya.net/.mrss/en.xml">Al Arabiya</option>
-            <option value="https://www.middleeasteye.net/rss">Middle East Eye</option>
-            <option value="https://www.jpost.com/Rss/RssFeedsHeadlines.aspx">Jerusalem Post</option>
-            <option value="https://www.haaretz.com/cmlink/1.822621">Haaretz</option>
-        </optgroup>
-
-        <!-- Çin -->
-        <optgroup label="China">
-            <option value="https://www.scmp.com/rss/91/feed/">SCMP</option>
-            <option value="https://www.globaltimes.cn/rss/1.html">Global Times</option>
-            <option value="https://www.chinadaily.com.cn/rss/china_rss.xml">China Daily</option>
-        </optgroup>
-
-        <!-- Japonya -->
-        <optgroup label="Japan">
-            <option value="https://www3.nhk.or.jp/nhkworld/en/news/rss/">NHK World</option>
-            <option value="https://japantoday.com/feed">Japan Today</option>
-            <option value="https://www.japantimes.co.jp/feed/">Japan Times</option>
-        </optgroup>
-
-        <!-- Hindistan -->
-        <optgroup label="India">
-            <option value="https://timesofindia.indiatimes.com/rssfeeds/296589292.cms">Times of India</option>
-            <option value="https://www.hindustantimes.com/rss/world-news">Hindustan Times</option>
-            <option value="https://indianexpress.com/section/world/feed/">Indian Express</option>
-        </optgroup>
-
-        <!-- Kanada -->
-        <optgroup label="Canada">
-            <option value="https://globalnews.ca/world/feed/">Global News</option>
-            <option value="https://www.cbc.ca/cmlink/rss-world">CBC</option>
-            <option value="https://www.ctvnews.ca/rss/world/ctvnews-ca-world-public-rss-1.822289">CTV News</option>
-        </optgroup>
-
-        <!-- Avustralya -->
-        <optgroup label="Australia">
-            <option value="https://www.smh.com.au/rss/world.xml">Sydney Morning Herald</option>
-            <option value="https://www.abc.net.au/news/feed/51120/rss.xml">ABC News</option>
-            <option value="https://www.theaustralian.com.au/feed">The Australian</option>
-        </optgroup>
-
+    <!-- Haber kaynağı seçimi -->
+    <select id="newsSource" class="modern-select" onchange="fetchNews()">
+        <option data-lang-key="chooseSource" value=""></option>
     </select>
 
     <ul id="newsList" style="list-style: none; padding: 0;">
-        <li> ... </li>
+        <li>...</li>
     </ul>
 
-    <button class="accent small-accent-tools" data-lang-key="updateButton" onclick="fetchNews()">
-        Güncelle
-    </button>
+    <button class="accent small-accent-tools" data-lang-key="updateButton" onclick="fetchNews(true)">Güncelle</button>
 </div>
 
     </div>
@@ -1530,98 +1428,5 @@ window.onload = () => {
 function updateInfoBarPosition() { const infoWrapper = document.getElementById("infoWrapper");}
 
     </script>
-<script>
-
-function fetchNews() {
-    const select = document.getElementById('newsCountry');
-    const newsList = document.getElementById('newsList');
-    if (!select || !newsList) return;
-
-    const url = select.value;
-    if (!url) {
-        newsList.innerHTML = '<li>Kaynak seçin.</li>';
-        return;
-    }
-
-    // Yükleniyor bildirimi
-    newsList.innerHTML = '<li>...</li>';
-
-    // AllOrigins proxy (basit ve ücretsiz). Eğer kendinize ait proxy varsa onu kullanın.
-    const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-
-    fetch(proxy)
-        .then(response => {
-            if (!response.ok) throw new Error('Sunucudan veri alınamadı.');
-            return response.text();
-        })
-        .then(text => {
-            // XML parse
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, "application/xml");
-            // Hatalı XML kontrolü
-            if (doc.querySelector('parsererror')) {
-                throw new Error('Geçersiz XML alındı.');
-            }
-
-            // RSS item'ları veya Atom entry'leri
-            const items = Array.from(doc.querySelectorAll('item, entry'));
-            if (!items.length) {
-                newsList.innerHTML = '<li>Kaynakta haber bulunamadı veya kaynak RSS formatında değil.</li>';
-                return;
-            }
-
-            // Max 15 öğe göster
-            const maxItems = 15;
-            newsList.innerHTML = '';
-            items.slice(0, maxItems).forEach(item => {
-                // Başlık
-                const titleEl = item.querySelector('title');
-                const title = titleEl ? titleEl.textContent.trim() : '(başlıksız)';
-
-                // Link (RSS: link veya guid, Atom: link[href])
-                let link = '';
-                const linkEl = item.querySelector('link');
-                if (linkEl) {
-                    if (linkEl.getAttribute && linkEl.getAttribute('href')) {
-                        link = linkEl.getAttribute('href');
-                    } else {
-                        link = linkEl.textContent.trim();
-                    }
-                } else {
-                    const guid = item.querySelector('guid');
-                    link = guid ? guid.textContent.trim() : '';
-                }
-
-                // Bazı linkler görece olabilir; proxy üzerinden açmaya gerek yok, yeni sekmede aç.
-                const safeLink = link || '#';
-
-                const li = document.createElement('li');
-                li.style.marginBottom = '8px';
-                li.innerHTML = `<a href="${safeLink}" target="_blank" rel="noopener noreferrer">${escapeHtml(title)}</a>`;
-                newsList.appendChild(li);
-            });
-        })
-        .catch(err => {
-            console.error('fetchNews error:', err);
-            newsList.innerHTML = `<li>Hata: ${escapeHtml(err.message || String(err))}. (CORS veya kaynak hatası olabilir.)</li>`;
-        });
-}
-
-// Basit HTML kaçış fonksiyonu
-function escapeHtml(s) {
-    return String(s)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-// Eğer sayfa yüklenmiş ve select içinde otomatik seçim varsa başlayalım
-document.addEventListener('DOMContentLoaded', () => {
-    // Sayfa açıldığında otomatik yüklemek isterseniz bu satırın yorumunu kaldırın:
-    // fetchNews();
-});
-</script>
 </body>
 </html>
