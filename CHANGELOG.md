@@ -4,6 +4,27 @@ Fluxo Zenora için düzenlemeler burada yer alır
 
 ---
 
+## Fluxo 4.21.2 - 2025-12-10
+### 🚀 Yeni Özellikler
+- Haber widgeti için yenilenmiş tasarım ve bölge seçme özelliği
+- Gelişmiş çeviriler
+- Renk paletine animasyon eklendi
+- Temalar için minik dokunuşlar
+
+### 🐛 Düzeltmeler
+- Not silince panelin kapanma hatası giderildi
+- Haberlerin haber çekememe hatası giderildi
+- Hatalı dil çevirileri düzenlendi
+- Çuvaşça, İspanyolca, Gagavuzca, Uygurca, Kırgızca çevirileri düzenlendi 
+- Tarayıcının eklediği okları düzenledim daha güzel ve şık duruyor artık
+- Neomorph temasının renk paletinin 3 satır olması düzenlendi
+- Dokunmatik arayüzler için buton ve modal tasarımları düzenlendi
+- Vanilladaki görünüm hataları giderildi
+- Folder ve favoriler arasındaki animasyon farkı düzeltildi
+- Geçmiş aramalar arayüzü değiştirildi
+
+---
+
 ## Fluxo 4.21 - 2025-12-09
 ### 🚀 Yeni Özellikler
 - Haber widgeti yenilendi ve daha fazla haber kanalı destekliyor yakında küçük değişikliklikler ile dündeme sokabiliriz
