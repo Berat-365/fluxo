@@ -30,15 +30,22 @@
 
 ---
 
+## ⚠️ Duyuru
+
+Fluxo Web eski bir versiyonda bırakılmıştır. Artık çalışmalarımızı eklenti versiyonunda devam ettiriyoruz
+
+Çok yakında (Firefox tabanlı tarayıcılar için eklenti duyurunca) Web sürümünü kapatacağız
+
+---
+
 ## 🚀 Başlangıç
 
 Fluxo’yu tarayıcınızda kullanmak çok kolay:  
 
-1. Tarayıcınıza **CustomNewTabURL** veya benzeri bir eklenti yükleyin.  
-2. Eklenti ayarlarına `https://berat-365.github.io/fluxo/` adresini girin.  
-3. Hemen kullanmaya başlayın 🎉
+1. Tarayıcınıza **Fluxo** eklentisini kurun (Şu anda Microsoft Storede mevcut)  
+2. Hemen kullanmaya başlayın 🎉
 
-> Yakında resmi eklentimizi çıkarıyoruz! 🔥
+> Yakında Web sürümü kapatılacak
 
 ---
 
@@ -46,7 +53,7 @@ Fluxo’yu tarayıcınızda kullanmak çok kolay:
 
 1. Bazı reklam engelleyiciler youtube arkaplanlarını etkiler (maalesef bu bizim elimizde değil tarayıcı ve eklenti kısıtlamaları ve youtubeninde politikaları yüzünden bu uyarıyı yapmalıyız)
 2. Güncellemeler uzun aralıklarla yapılıyor bu yüzden bazı sorunlara hemen ulaşamıyoruz eğer sizin için büyük bir hata bulmanız durumunda bize ulaşın hatayı belirtin ara yamalarla düzeltebiliriz
-3. Birçok çeviriyi yapay zeka üzerinden oluşturuyoruz eğer kendi dilinize hakim biriyseniz lütfen bize düzeltilmiş dil dosyasını paylaşın 🙏🏽
+3. Birçok çeviriyi yapay zeka üzerinden oluşturuyoruz eğer kendi dilinize hakim biriyseniz bize ulaşın
 
 ---
 
